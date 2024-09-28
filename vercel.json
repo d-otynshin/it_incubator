@@ -3,7 +3,7 @@
   "name": "it_incubator",
   "builds": [
     {
-      "src": "index.ts",
+      "src": "src/index.ts",
       "use": "@vercel/node"
     }
   ],
