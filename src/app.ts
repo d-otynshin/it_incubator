@@ -3,12 +3,13 @@ import cors from 'cors'
 import { SETTINGS } from './settings';
 import { getVideosController } from './videos/getVideosController';
 
-export const app = express() // создать приложение
-app.use(express.json()) // создание свойств-объектов body и query во всех реквестах
+export const app = express()
+
+app.use(express.json())
 app.use(cors())
 
 app.get('/', (_, res) => {
-  res.status(200).json({version: '1.0'})
+  res.status(200).json({ version: '1.0' })
 })
 app.get(SETTINGS.PATH.VIDEOS, getVideosController)
 // app.use(SETTINGS.PATH.VIDEOS, videosRouter)
