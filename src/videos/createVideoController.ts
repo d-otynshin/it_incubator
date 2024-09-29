@@ -1,23 +1,10 @@
 import { Response, Request } from 'express'
 import { OutputErrorsType } from '../input-output-types/output-errors-type'
 import { db } from '../db/db'
-import { InputVideoType, Resolutions } from '../input-output-types/video-types'
+import { InputVideoType } from '../input-output-types/video-types'
 import { VideoDBType } from '../db/video-db-type';
 import { addDays } from '../helpers/date/addDays';
-
-const inputValidation = (video: InputVideoType) => {
-  const errors: OutputErrorsType = {
-    errorsMessages: []
-  }
-
-  if (!Array.isArray(video.availableResolutions) || video.availableResolutions.find(p => !Resolutions[p])) {
-
-    errors.errorsMessages.push({
-      message: 'wrong available resolution', field: 'availableResolution'
-    })
-  }
-  return errors
-}
+import { validateVideo } from '../helpers/inputValidation';
 
 const generateRandomId = () => {
   const timestamp = Date.now(); // Current timestamp in milliseconds
@@ -25,7 +12,8 @@ const generateRandomId = () => {
   return Number(`${timestamp}${randomComponent}`);
 };
 export const createVideoController = (req: Request<any, any, InputVideoType>, res: Response<VideoDBType | OutputErrorsType>) => {
-  const errors = inputValidation(req.body)
+  //@ts-ignore
+  const errors = validateVideo(req.body)
 
   if (errors.errorsMessages.length) {
     return res.status(400).json(errors)
