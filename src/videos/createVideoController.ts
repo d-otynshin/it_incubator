@@ -8,9 +8,9 @@ const inputValidation = (video: InputVideoType) => {
   const errors: OutputErrorsType = {
     errorsMessages: []
   }
-  if (!Array.isArray(video.availableResolution)
-    || video.availableResolution.find(p => !Resolutions[p])
-  ) {
+
+  if (!Array.isArray(video.availableResolution) || video.availableResolution.find(p => !Resolutions[p])) {
+
     errors.errorsMessages.push({
       message: 'wrong available resolution', field: 'availableResolution'
     })
@@ -18,6 +18,11 @@ const inputValidation = (video: InputVideoType) => {
   return errors
 }
 
+const generateRandomId = () => {
+  const timestamp = Date.now(); // Current timestamp in milliseconds
+  const randomComponent = Math.floor(Math.random() * 1000); // A random number to ensure uniqueness
+  return Number(`${timestamp}${randomComponent}`);
+};
 export const createVideoController = (req: Request<any, any, InputVideoType>, res: Response<VideoDBType | OutputErrorsType>) => {
   const errors = inputValidation(req.body)
 
@@ -27,7 +32,9 @@ export const createVideoController = (req: Request<any, any, InputVideoType>, re
 
   const newVideo: any = {
     ...req.body,
-    id: Date.now() + Math.random(),
+    createdAt: new Date().toISOString(),
+    publicationDate: new Date().toISOString(),
+    id: generateRandomId(),
   }
   db.videos = [...db.videos, newVideo]
 

@@ -1,3 +1,5 @@
+import { Resolutions } from '../input-output-types/video-types';
+
 export type VideoDBType = {
   id: number;
   title: string;
@@ -6,5 +8,5 @@ export type VideoDBType = {
   minAgeRestriction: null | number;
   createdAt: string;
   publicationDate: string;
-  availableResolutions: number[];
+  availableResolutions: Resolutions[];
 }
