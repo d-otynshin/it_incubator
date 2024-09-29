@@ -17,14 +17,15 @@ type CreateVideoRequest = {
 
 export const updateVideoController = (req: Request<CreateVideoParams, null, CreateVideoRequest>, res: Response) => {
   const videos = db.videos;
+  const videoIndex = videos.findIndex(video => video.id === parseInt(req.params.id, 10));
 
-  let video = videos.find(video => video.id === parseInt(req.params.id, 10));
-
-  if (!video) {
+  if (videoIndex === -1) {
     return res.status(404).json({ error: 'Video not found' });
   }
 
-  video = { ...video, ...req.body }
+  videos[videoIndex] = { ...videos[videoIndex], ...req.body }
+
+  setDB({ videos });
 
   return res.status(204).send();
 }
