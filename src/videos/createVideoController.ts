@@ -3,6 +3,7 @@ import { OutputErrorsType } from '../input-output-types/output-errors-type'
 import { db } from '../db/db'
 import { InputVideoType, Resolutions } from '../input-output-types/video-types'
 import { VideoDBType } from '../db/video-db-type';
+import { addDays } from '../helpers/date/addDays';
 
 const inputValidation = (video: InputVideoType) => {
   const errors: OutputErrorsType = {
@@ -33,7 +34,7 @@ export const createVideoController = (req: Request<any, any, InputVideoType>, re
   const newVideo: any = {
     ...req.body,
     createdAt: new Date().toISOString(),
-    publicationDate: new Date().toISOString(),
+    publicationDate: addDays(new Date(), 1).toISOString(),
     id: generateRandomId(),
   }
   db.videos = [...db.videos, newVideo]

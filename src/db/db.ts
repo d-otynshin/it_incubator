@@ -1,12 +1,11 @@
 import { VideoDBType } from './video-db-type';
-import { mockVideos } from './mock';
 
 export type DBType = {
   videos: VideoDBType[]
 }
 
 export const db: DBType = {
-  videos: mockVideos,
+  videos: [],
 }
 
 export const setDB = (dataset?: Partial<DBType>) => {

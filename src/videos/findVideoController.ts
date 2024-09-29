@@ -2,9 +2,7 @@ import { Request, Response } from 'express';
 import { db } from '../db/db';
 
 interface FindByIdRequest extends Request {
-  params: {
-    id: string;
-  };
+  params: { id: string };
 }
 
 export const findVideoController = (req: FindByIdRequest, res: Response) => {
