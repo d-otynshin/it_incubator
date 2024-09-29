@@ -1,7 +1,7 @@
 export type InputVideoType = {
   title: string;
   author: string;
-  availableResolution: Resolutions[];
+  availableResolutions: Resolutions[];
 };
 
 export enum Resolutions {
