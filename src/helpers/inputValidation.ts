@@ -20,7 +20,7 @@ export const validateVideo = (video?: VideoDBType): { errorsMessages: Validation
   }
 
   if (video?.title) {
-    const validTitlePattern = /^[a-zA-Z0-9\s]+$/;
+    const validTitlePattern = /^[^-_]+$/;
 
     if (!validTitlePattern.test(video?.title)) {
       errors.push({ message: "invalid title", field: "title" });
@@ -30,6 +30,14 @@ export const validateVideo = (video?: VideoDBType): { errorsMessages: Validation
   // Validate author (required and non-empty)
   if (typeof video?.author !== 'string' || video?.author.trim().length === 0) {
     errors.push({ message: "must be a non-empty string", field: "author" });
+  }
+
+  if (video?.author) {
+    const validTitlePattern = /^[^-_]+$/;
+
+    if (!validTitlePattern.test(video?.author)) {
+      errors.push({ message: "invalid author", field: "author" });
+    }
   }
 
   // Validate canBeDownloaded

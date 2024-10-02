@@ -12,7 +12,7 @@ export const findVideoController = (req: FindByIdRequest, res: Response) => {
   const video = videos.find(p => p.id === parseInt(id, 10));
 
   if (video) {
-    return res.status(201).json(video);
+    return res.status(200).json(video);
   } else {
     return res.status(404).json({ message: "User not found" });
   }

@@ -44,4 +44,18 @@ describe('/videos', () => {
 
     expect(response.status).toBe(201);
   });
+
+  it('should return 400 with invalid author', async () => {
+    const invalidVideo = {
+      author: "length_21-weqweqweqwq",
+      title: "valid title",
+      availableResolutions:["P240","P720"]
+    }
+
+    const response = await request
+    .post(SETTINGS.PATH.VIDEOS)
+    .send(invalidVideo);
+
+    expect(response.status).toBe(400);
+  });
 })
