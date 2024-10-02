@@ -19,6 +19,14 @@ export const validateVideo = (video?: VideoDBType): { errorsMessages: Validation
     errors.push({ message: "must be a non-empty string", field: "title" });
   }
 
+  if (video?.title) {
+    const validTitlePattern = /^[a-zA-Z0-9\s]+$/;
+
+    if (!validTitlePattern.test(video?.title)) {
+      errors.push({ message: "invalid title", field: "title" });
+    }
+  }
+
   // Validate author (required and non-empty)
   if (typeof video?.author !== 'string' || video?.author.trim().length === 0) {
     errors.push({ message: "must be a non-empty string", field: "author" });
