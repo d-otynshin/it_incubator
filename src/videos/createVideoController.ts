@@ -24,6 +24,7 @@ export const createVideoController = (req: Request<any, any, InputVideoType>, re
 
   const newVideo: any = {
     canBeDownloaded: false,
+    minAgeRestriction: null,
     createdAt: new Date().toISOString(),
     publicationDate: addDays(new Date(), 1).toISOString(),
     id: generateRandomId(),
