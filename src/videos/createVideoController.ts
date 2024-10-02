@@ -1,14 +1,17 @@
 import { Response, Request } from 'express'
+
 import { OutputErrorsType } from '../input-output-types/output-errors-type'
-import { db } from '../db/db'
 import { InputVideoType } from '../input-output-types/video-types'
-import { VideoDBType } from '../db/video-db-type';
-import { addDays } from '../helpers/date/addDays';
 import { validateVideo } from '../helpers/inputValidation';
+import { addDays } from '../helpers/date/addDays';
+
+import { db } from '../db/db'
+import { VideoDBType } from '../db/video-db-type';
 
 const generateRandomId = () => {
-  const timestamp = Date.now(); // Current timestamp in milliseconds
-  const randomComponent = Math.floor(Math.random() * 1000); // A random number to ensure uniqueness
+  const timestamp = Date.now();
+  const randomComponent = Math.floor(Math.random() * 1000);
+
   return Number(`${timestamp}${randomComponent}`);
 };
 export const createVideoController = (req: Request<any, any, InputVideoType>, res: Response<VideoDBType | OutputErrorsType>) => {
@@ -25,6 +28,7 @@ export const createVideoController = (req: Request<any, any, InputVideoType>, re
     publicationDate: addDays(new Date(), 1).toISOString(),
     id: generateRandomId(),
   }
+
   db.videos = [...db.videos, newVideo]
 
   return res.status(201).json(newVideo)

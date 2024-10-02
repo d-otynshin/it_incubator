@@ -14,11 +14,6 @@ type ValidationError = { message: string, field: string }
 export const validateVideo = (video?: VideoDBType): { errorsMessages: ValidationError[] } => {
   const errors: { message: string, field: string }[] = [];
 
-  // Validate id
-  if (!Number.isInteger(video?.id)) {
-    errors.push({ message: "must be an integer", field: "id" });
-  }
-
   // Validate title (required and non-empty)
   if (typeof video?.title !== 'string' || video?.title.trim().length === 0) {
     errors.push({ message: "must be a non-empty string", field: "title" });
@@ -30,25 +25,20 @@ export const validateVideo = (video?: VideoDBType): { errorsMessages: Validation
   }
 
   // Validate canBeDownloaded
-  if (typeof video?.canBeDownloaded !== 'boolean') {
+  if (video?.canBeDownloaded && typeof video?.canBeDownloaded !== 'boolean') {
     errors.push({ message: "must be a boolean", field: "canBeDownloaded" });
   }
 
   // Validate minAgeRestriction
-  if (video?.minAgeRestriction !== null &&
+  if (video?.minAgeRestriction &&
     (typeof video?.minAgeRestriction !== 'number' ||
       video?.minAgeRestriction < 1 ||
       video?.minAgeRestriction > 18)) {
     errors.push({ message: "must be null or an integer between 1 and 18", field: "minAgeRestriction" });
   }
 
-  // Validate createdAt
-  if (!isValidISODate(video?.createdAt)) {
-    errors.push({ message: "must be a valid ISO 8601 date string", field: "createdAt" });
-  }
-
   // Validate publicationDate
-  if (!isValidISODate(video?.publicationDate)) {
+  if (video?.publicationDate && !isValidISODate(video?.publicationDate)) {
     errors.push({ message: "must be a valid ISO 8601 date string", field: "publicationDate" });
   }
 

@@ -23,6 +23,7 @@
   },
   "scripts": {
     "dev": "nodemon --inspect dist/index.js",
+    "jest": "jest -i",
     "watch": "tsc -w"
   }
 }
