@@ -1,4 +1,4 @@
-import { req } from './test-helpers'
+import { request } from './test-helpers'
 import { SETTINGS } from '../src/settings'
 import { setDB } from '../src/db/db';
 
@@ -6,7 +6,7 @@ describe('/videos', () => {
   beforeAll(() => setDB())
 
   it('should delete all data', async () => {
-    const response = await req
+    const response = await request
       .delete(`${SETTINGS.PATH.TESTING}/all-data`)
 
     expect(response.status).toBe(204)
@@ -24,7 +24,7 @@ describe('/videos', () => {
       availableResolutions: ['P720', 'P1080']
     };
 
-    const response = await req
+    const response = await request
       .post(SETTINGS.PATH.VIDEOS)
       .send(validVideo);
 
@@ -38,7 +38,7 @@ describe('/videos', () => {
       availableResolutions: ['P720']
     };
 
-    const response = await req
+    const response = await request
       .post(SETTINGS.PATH.VIDEOS)
       .send(validVideo);
 
