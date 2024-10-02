@@ -23,10 +23,11 @@ export const createVideoController = (req: Request<any, any, InputVideoType>, re
   }
 
   const newVideo: any = {
-    ...req.body,
+    canBeDownloaded: false,
     createdAt: new Date().toISOString(),
     publicationDate: addDays(new Date(), 1).toISOString(),
     id: generateRandomId(),
+    ...req.body,
   }
 
   db.videos = [...db.videos, newVideo]
