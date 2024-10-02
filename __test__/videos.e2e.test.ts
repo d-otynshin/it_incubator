@@ -1,34 +1,15 @@
 import { req } from './test-helpers'
-// import {setDB} from '../src/db/db'
-// import {dataset1} from './datasets'
 import { SETTINGS } from '../src/settings'
+import { setDB } from '../src/db/db';
 
 describe('/videos', () => {
-  // beforeAll(async () => { // очистка базы данных перед началом тестирования
-  //     setDB()
-  // })
+  beforeAll(() => setDB())
 
-  it('should get empty array', async () => {
-    // setDB() // очистка базы данных если нужно
+  it('should delete all data', async () => {
+    const response = await req
+      .delete(`${SETTINGS.PATH.TESTING}/all-data`)
 
-    const res = await req
-    .get(SETTINGS.PATH.VIDEOS)
-    .expect(200) // проверяем наличие эндпоинта
-
-    console.log(res.body) // можно посмотреть ответ эндпоинта
-
-    // expect(res.body.length).toBe(0) // проверяем ответ эндпоинта
-  })
-
-  it('should get not empty array', async () => {
-    // setDB(dataset1) // заполнение базы данных начальными данными если нужно
-
-    const res = await req.get(SETTINGS.PATH.VIDEOS).expect(200)
-
-    console.log(res.body)
-
-    // expect(res.body.length).toBe(1)
-    // expect(res.body[0]).toEqual(dataset1.videos[0])
+    expect(response.status).toBe(204)
   })
 
   it('should return 201 for valid video data', async () => {
