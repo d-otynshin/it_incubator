@@ -5,10 +5,10 @@ import { deleteBlogController } from './controllers/deleteBlogController';
 import { updateBlogController } from './controllers/updateBlogController';
 import { getBlogByIdController } from './controllers/getBlogByIdController';
 
-export const videosRouter = Router()
+export const blogsRouters = Router()
 
-videosRouter.get('/', getBlogsController)
-videosRouter.post('/', createBlogController)
-videosRouter.get('/:id', getBlogByIdController)
-videosRouter.put('/:id', updateBlogController)
-videosRouter.delete('/:id', deleteBlogController)
+blogsRouters.get('/', getBlogsController)
+blogsRouters.post('/', createBlogController)
+blogsRouters.get('/:id', getBlogByIdController)
+blogsRouters.put('/:id', updateBlogController)
+blogsRouters.delete('/:id', deleteBlogController)

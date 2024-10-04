@@ -3,6 +3,7 @@ import cors from 'cors'
 import { SETTINGS } from './settings';
 import { videosRouter } from './videos';
 import { testingRouter } from './testing';
+import { blogsRouters } from './blogs';
 
 export const app = express()
 
@@ -14,3 +15,4 @@ app.get('/', (_, res) => {
 })
 app.use(SETTINGS.PATH.VIDEOS, videosRouter)
 app.use(SETTINGS.PATH.TESTING, testingRouter)
+app.use(SETTINGS.PATH.BLOGS, blogsRouters)
