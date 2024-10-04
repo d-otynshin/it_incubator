@@ -16,3 +16,4 @@ app.get('/', (_, res) => {
 app.use(SETTINGS.PATH.VIDEOS, videosRouter)
 app.use(SETTINGS.PATH.TESTING, testingRouter)
 app.use(SETTINGS.PATH.BLOGS, blogsRouters)
+app.use(SETTINGS.PATH.POSTS, blogsRouters)
