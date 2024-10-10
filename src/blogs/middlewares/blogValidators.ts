@@ -1,4 +1,5 @@
 import { body } from 'express-validator'
+import { errorsHandlerMiddleware } from '../../middlewares/errorHandler';
 
 const nameValidator = body('name')
   .isString().withMessage('not a string')
@@ -16,5 +17,6 @@ const websiteUrlValidator = body('websiteUrl')
 export const blogValidators = [
   nameValidator,
   descriptionValidator,
-  websiteUrlValidator
+  websiteUrlValidator,
+  errorsHandlerMiddleware
 ]

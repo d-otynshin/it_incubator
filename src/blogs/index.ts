@@ -10,7 +10,7 @@ import { blogValidators } from './middlewares/blogValidators'
 export const blogsRouters = Router()
 
 blogsRouters.get('/', getBlogsController)
-blogsRouters.post('/', ...blogValidators, authMiddleware, createBlogController)
+blogsRouters.post('/', authMiddleware, ...blogValidators, createBlogController)
 blogsRouters.get('/:id', getBlogByIdController)
-blogsRouters.put('/:id', ...blogValidators, authMiddleware, updateBlogController)
+blogsRouters.put('/:id', authMiddleware, ...blogValidators, updateBlogController)
 blogsRouters.delete('/:id', authMiddleware, deleteBlogController)

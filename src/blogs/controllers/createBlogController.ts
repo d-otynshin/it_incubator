@@ -7,6 +7,7 @@ import { TBlogInput } from '../types';
 import { BlogDBType } from '../../db/blog-db-type';
 
 export const createBlogController = (req: Request<any, any, TBlogInput>, res: Response<BlogDBType | OutputErrorsType>) => {
+  console.log('req.body', req.body);
   const createdBlog = createBlogRepository(req.body)
 
   return res.status(201).json(createdBlog)
