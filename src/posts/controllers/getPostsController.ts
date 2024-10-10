@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { getPostsRepository } from '../repositories/getPostsRepository';
+import { postsRepository } from '../postsRepository';
 
 export const getPostsController = (_: Request, res: Response) => {
-  const posts = getPostsRepository()
+  const posts = postsRepository.get()
 
   res.status(200).json(posts)
 }

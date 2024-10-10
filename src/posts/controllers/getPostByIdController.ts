@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getPostByIdRepository } from '../repositories/getPostByIdRepository';
+import { postsRepository } from '../postsRepository';
 
 interface FindByIdRequest extends Request {
   params: { id: string };
@@ -8,11 +8,9 @@ interface FindByIdRequest extends Request {
 export const getPostByIdController = (req: FindByIdRequest, res: Response) => {
   const { id } = req.params;
 
-  const blog = getPostByIdRepository(id)
+  const post = postsRepository.getById(id)
 
-  if (blog) {
-    return res.status(200).json(blog);
-  } else {
-    return res.status(404).json({ message: "User not found" });
-  }
+  return post
+    ? res.status(200).json(post)
+    : res.status(404).json({ message: "User not found" })
 }

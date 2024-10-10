@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { deletePostRepository } from '../repositories/deletePostRepository';
+import { postsRepository } from '../postsRepository';
 
 interface FindByIdRequest extends Request {
   params: { id: string };
@@ -8,7 +8,7 @@ interface FindByIdRequest extends Request {
 export const deletePostController = (req: FindByIdRequest, res: Response) => {
   const { id } = req.params;
 
-  const isDeleted = deletePostRepository(id)
+  const isDeleted = postsRepository.delete(id)
 
   return isDeleted
     ? res.status(204).send()
