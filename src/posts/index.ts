@@ -11,7 +11,7 @@ import { findBlogValidator } from '../blogs/middlewares/blogValidators';
 export const postsRouters = Router()
 
 postsRouters.get('/', getPostsController)
-postsRouters.post('/', authMiddleware, findByBlogIdValidator, ...postsValidators, createPostController)
+postsRouters.post('/', authMiddleware, ...postsValidators, createPostController)
 postsRouters.get('/:id', getPostByIdController)
 postsRouters.put(
   '/:id',
