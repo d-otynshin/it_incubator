@@ -21,9 +21,9 @@ export const findBlogValidator = (
   res: Response,
   next: NextFunction
 ) => {
-  const post = getBlogByIdRepository(req.params.id);
+  const blog = getBlogByIdRepository(req.params.id);
 
-  if (!post) {
+  if (!blog) {
     res.status(404).json({})
 
     return
