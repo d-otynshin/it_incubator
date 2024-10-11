@@ -12,5 +12,5 @@ export const deleteBlogController = (req: FindByIdRequest, res: Response) => {
 
   return isDeleted
     ? res.status(204).send()
-    : res.status(404).json({ error: 'Video not found' })
+    : res.status(404).json({ error: 'Blog not found' })
 }

@@ -36,5 +36,4 @@ export const blogValidators = [
   nameValidator,
   descriptionValidator,
   websiteUrlValidator,
-  errorsHandlerMiddleware
 ]

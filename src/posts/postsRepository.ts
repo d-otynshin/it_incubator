@@ -16,7 +16,9 @@ export const postsRepository = {
       ...body,
     }
 
-    db.posts = [...db.posts, createdPost]
+    const posts = [...db.posts, createdPost]
+
+    setDB({ posts })
 
     return createdPost
   },
