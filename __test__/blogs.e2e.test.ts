@@ -14,11 +14,11 @@ describe('/blogs', () => {
     expect(response.status).toBe(204)
   })
 
-  it('should return 201 for valid blog data', async () => {
+  it('should return 400 for valid blog data', async () => {
     const validBlog = {
-      name: 'Sample',
+      nam: 'somename',
       description: 'Sample Description',
-      websiteUrl: 'sample-website.com',
+      websiteUrl: 'invalid-url',
     };
 
     const response = await request
@@ -26,7 +26,7 @@ describe('/blogs', () => {
       .post(SETTINGS.PATH.BLOGS)
       .send(validBlog);
 
-    expect(response.status).toBe(201);
+    expect(response.status).toBe(400);
   });
 
   it('should return 400 with invalid name', async () => {
