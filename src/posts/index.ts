@@ -5,7 +5,7 @@ import { deletePostController } from './controllers/deletePostController';
 import { updatePostController } from './controllers/updatePostController';
 import { getPostByIdController } from './controllers/getPostByIdController';
 import { authMiddleware } from '../middlewares/auth';
-import { findByBlogIdValidator, postsValidators } from './middlewares/postsValidators';
+import { postsValidators } from './middlewares/postsValidators';
 import { findBlogValidator } from '../blogs/middlewares/blogValidators';
 
 export const postsRouters = Router()
