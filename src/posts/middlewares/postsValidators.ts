@@ -23,6 +23,10 @@ const titleValidator = body('title')
 const blogIdValidator = body('blogId')
   .trim()
   .isString().withMessage('not string')
+
+export const findByBlogIdValidator = body('blogId')
+  .trim()
+  .isString().withMessage('not string')
   .custom((blogId: string) => {
     const post = postsRepository.getByBlogId(blogId)
 
