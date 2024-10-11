@@ -21,14 +21,10 @@ const titleValidator = body('title')
   .isLength({ min: 1, max: 30 }).withMessage('more than 30 or 0')
 
 const blogIdValidator = body('blogId')
-  .notEmpty().withMessage('required')
   .trim()
-  .isString().withMessage('not a string')
-
-const postIdValidator = body('blogId')
   .isString().withMessage('not string')
-  .trim().custom((postId: string) => {
-    const post = postsRepository.getById(postId)
+  .custom((blogId: string) => {
+    const post = postsRepository.getByBlogId(blogId)
 
     return Boolean(post)
   }).withMessage('no such post')
@@ -38,6 +34,5 @@ export const postsValidators = [
   shortDescriptionValidator,
   contentValidator,
   blogIdValidator,
-  // postIdValidator,
   errorsHandlerMiddleware
 ]

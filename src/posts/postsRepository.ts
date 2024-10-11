@@ -39,6 +39,11 @@ export const postsRepository = {
 
     return posts.find(p => p.id === id);
   },
+  getByBlogId: (blogId: string): PostDBType | undefined => {
+    const { posts } = db;
+
+    return posts.find(p => p.blogId === blogId);
+  },
   get: () => {
     const { posts } = db
 
