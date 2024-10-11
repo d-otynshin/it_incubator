@@ -14,11 +14,19 @@ export const db: DBType = {
   posts: [],
 }
 
-export const setDB = (dataset?: Partial<DBType>) => {
+export type ReadonlyDBType = {
+  blogs: Readonly<BlogDBType[]>
+  posts: Readonly<PostDBType[]>
+}
+
+export const setDB = (dataset?: Partial<ReadonlyDBType>) => {
   if (!dataset) {
-    db.videos = []
+    db.blogs = []
+    db.posts = []
+
     return
   }
 
-  db.videos = dataset.videos || db.videos
+  db.blogs = dataset.blogs?.map(b => ({...b})) || db.blogs
+  db.posts = dataset.posts?.map(p => ({...p})) || db.posts
 }

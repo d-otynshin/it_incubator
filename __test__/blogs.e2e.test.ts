@@ -1,9 +1,11 @@
 import { request } from './test-helpers'
 import { SETTINGS } from '../src/settings'
 import { setDB } from '../src/db/db';
+import { codedAuth } from './datasets';
 
 describe('/blogs', () => {
   beforeAll(() => setDB())
+  afterAll(() => setDB())
 
   it('should delete all data', async () => {
     const response = await request
@@ -20,6 +22,7 @@ describe('/blogs', () => {
     };
 
     const response = await request
+      .set({ 'Authorization': 'Basic ' + codedAuth })
       .post(SETTINGS.PATH.BLOGS)
       .send(validBlog);
 
@@ -27,15 +30,16 @@ describe('/blogs', () => {
   });
 
   it('should return 400 with invalid name', async () => {
-    const invalidVideo = {
-      name: "length_21-weqweqweqwq",
+    const invalidBlog = {
+      name: 'length_21-weqweqweqwq',
       description: 'Sample Description',
       websiteUrl: 'sample-website.com',
     }
 
     const response = await request
-      .post(SETTINGS.PATH.VIDEOS)
-      .send(invalidVideo);
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .post(SETTINGS.PATH.BLOGS)
+      .send(invalidBlog);
 
     expect(response.status).toBe(400);
   });
