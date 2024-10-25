@@ -1,6 +1,7 @@
 import { body } from 'express-validator';
 import { postsRepository } from '../postsRepository';
 import { getBlogByIdRepository } from '../../blogs/repositories/getBlogByIdRepository';
+import { NextFunction, Request, Response } from 'express';
 
 const contentValidator = body('content')
   .notEmpty().withMessage('required')
@@ -43,6 +44,22 @@ export const findByBlogIdValidator = body('blogId')
 
     return Boolean(post)
   }).withMessage('no such post')
+
+export const findPostValidator = (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const post = postsRepository.getById(req.params.id);
+
+  if (!post) {
+    res.status(404).json({})
+
+    return
+  }
+
+  next()
+}
 
 export const postsValidators = [
   titleValidator,

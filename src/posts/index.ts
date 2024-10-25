@@ -5,7 +5,12 @@ import { deletePostController } from './controllers/deletePostController';
 import { updatePostController } from './controllers/updatePostController';
 import { getPostByIdController } from './controllers/getPostByIdController';
 import { authMiddleware } from '../middlewares/auth';
-import { findBlogByIdValidator, findByBlogIdValidator, postsValidators } from './middlewares/postsValidators';
+import {
+  findBlogByIdValidator,
+  findByBlogIdValidator,
+  findPostValidator,
+  postsValidators
+} from './middlewares/postsValidators';
 import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
 
 export const postsRouters = Router()
@@ -25,6 +30,7 @@ postsRouters.get('/:id', getPostByIdController)
 postsRouters.put(
   '/:id',
   authMiddleware,
+  findPostValidator,
   ...postsValidators,
   findByBlogIdValidator,
   errorsHandlerMiddleware,

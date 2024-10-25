@@ -66,8 +66,6 @@ describe('/posts', () => {
       .put(`${SETTINGS.PATH.POSTS}/${postId}`)
       .send(validPost)
 
-    console.log(updatePostResponse.body)
-
     expect(updatePostResponse.status).toBe(204);
   });
 
@@ -105,12 +103,20 @@ describe('/posts', () => {
     await createPost('12345', 400)
   });
 
+  it('should return error 400 if :id from uri param not found, and post is invalid', async () => {
+    const putPostResponse = await request
+    .set({ 'Authorization': 'Basic ' + codedAuth })
+    .put(`${SETTINGS.PATH.POSTS}/12345`)
+    .send(invalidPost)
 
-  it('should return error if :id from uri param not found', async () => {
+    expect(putPostResponse.status).toBe(404);
+  });
+
+  it('should return error 404 if :id from uri param not found', async () => {
     const putPostResponse = await request
       .set({ 'Authorization': 'Basic ' + codedAuth })
       .put(`${SETTINGS.PATH.POSTS}/12345`)
-      .send({ ...validPost })
+      .send(validPost)
 
     expect(putPostResponse.status).toBe(404);
   });
@@ -133,8 +139,6 @@ describe('/posts', () => {
       .set({ 'Authorization': 'Basic ' + codedAuth })
       .put(`${SETTINGS.PATH.POSTS}/${postId}`)
       .send(invalidPost)
-
-    console.log('updatePostResponse', updatePostResponse.body)
 
     expect(updatePostResponse.status).toBe(400);
 
