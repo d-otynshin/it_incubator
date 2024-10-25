@@ -66,6 +66,8 @@ describe('/posts', () => {
       .put(`${SETTINGS.PATH.POSTS}/${postId}`)
       .send(validPost)
 
+    console.log(updatePostResponse.body)
+
     expect(updatePostResponse.status).toBe(204);
   });
 
@@ -80,7 +82,8 @@ describe('/posts', () => {
       .put(`${SETTINGS.PATH.POSTS}/${postId}`)
       .send({ ...validPost, blogId: '12345' })
 
-    expect(putPostResponse.status).toBe(404);
+    // TODO: recheck!
+    expect(putPostResponse.status).toBe(400);
   });
 
   it('should return error if passed body is incorrect; status 400; ', async () => {
@@ -105,10 +108,47 @@ describe('/posts', () => {
 
   it('should return error if :id from uri param not found', async () => {
     const putPostResponse = await request
-    .set({ 'Authorization': 'Basic ' + codedAuth })
-    .put(`${SETTINGS.PATH.POSTS}/12345`)
-    .send({ ...validPost, blogId: 123 })
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .put(`${SETTINGS.PATH.POSTS}/12345`)
+      .send({ ...validPost })
 
     expect(putPostResponse.status).toBe(404);
+  });
+
+  it('should return error if passed body is incorrect', async () => {
+    const createBlogResponse = await createBlog()
+    const blogId = createBlogResponse.body.id;
+
+    const createPostResponse = await createPost(blogId)
+    const postId = createPostResponse.body.id;
+
+    const invalidPost = {
+      title: 'valid',
+      content: 'valid',
+      blogId: 12345,
+      shortDescription: 'length_101-DnZlTI1cwedwedweqdekhUHpqOqCzftIYiSHCV8fKjYFQOoCIwmUczzW9V5K8cqY3aPKo3XKwbfrmeWOJyQgGnlX5sP3aW3RlaRS'
+    }
+
+    const updatePostResponse = await request
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .put(`${SETTINGS.PATH.POSTS}/${postId}`)
+      .send(invalidPost)
+
+    console.log('updatePostResponse', updatePostResponse.body)
+
+    expect(updatePostResponse.status).toBe(400);
+
+    expect(updatePostResponse.body.errorsMessages).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          field: 'shortDescription',
+          message: expect.any(String),
+        }),
+        expect.objectContaining({
+          field: 'blogId',
+          message: expect.any(String),
+        }),
+      ])
+    );
   });
 })

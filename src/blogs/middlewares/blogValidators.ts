@@ -1,5 +1,4 @@
 import { body } from 'express-validator'
-import { errorsHandlerMiddleware } from '../../middlewares/errorHandler';
 import { Request, Response, NextFunction } from 'express';
 import { getBlogByIdRepository } from '../repositories/getBlogByIdRepository';
 

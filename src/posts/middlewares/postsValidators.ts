@@ -1,6 +1,5 @@
 import { body } from 'express-validator';
 import { postsRepository } from '../postsRepository';
-import { errorsHandlerMiddleware } from '../../middlewares/errorHandler';
 
 const contentValidator = body('content')
   .notEmpty().withMessage('required')
@@ -26,8 +25,9 @@ const blogIdValidator = body('blogId')
 
 export const findByBlogIdValidator = body('blogId')
   .trim()
-  .isString().withMessage('not string')
   .custom((blogId: string) => {
+    if (!blogId) return true
+
     const post = postsRepository.getByBlogId(blogId)
 
     return Boolean(post)
@@ -38,5 +38,4 @@ export const postsValidators = [
   shortDescriptionValidator,
   contentValidator,
   blogIdValidator,
-  errorsHandlerMiddleware
 ]
