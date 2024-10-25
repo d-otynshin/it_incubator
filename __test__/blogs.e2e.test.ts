@@ -65,9 +65,9 @@ describe('/blogs', () => {
     };
 
     const responseUpdate = await request
-    .set({ 'Authorization': 'Basic ' + codedAuth })
-    .put(`${SETTINGS.PATH.BLOGS}/12345`)
-    .send(updateBlogBody);
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .put(`${SETTINGS.PATH.BLOGS}/12345`)
+      .send(updateBlogBody);
 
     expect(responseUpdate.status).toBe(404);
   });

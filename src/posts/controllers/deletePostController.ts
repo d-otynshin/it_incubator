@@ -12,5 +12,5 @@ export const deletePostController = (req: FindByIdRequest, res: Response) => {
 
   return isDeleted
     ? res.status(204).send()
-    : res.status(404).json({ error: 'Video not found' })
+    : res.status(404).send({ error: 'Post not found' })
 }

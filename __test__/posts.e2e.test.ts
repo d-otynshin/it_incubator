@@ -101,4 +101,14 @@ describe('/posts', () => {
     await createBlog()
     await createPost('12345', 400)
   });
+
+
+  it('should return error if :id from uri param not found', async () => {
+    const putPostResponse = await request
+    .set({ 'Authorization': 'Basic ' + codedAuth })
+    .put(`${SETTINGS.PATH.POSTS}/12345`)
+    .send({ ...validPost, blogId: 123 })
+
+    expect(putPostResponse.status).toBe(404);
+  });
 })
