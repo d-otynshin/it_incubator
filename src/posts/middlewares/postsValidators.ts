@@ -1,5 +1,6 @@
 import { body } from 'express-validator';
 import { postsRepository } from '../postsRepository';
+import { getBlogByIdRepository } from '../../blogs/repositories/getBlogByIdRepository';
 
 const contentValidator = body('content')
   .notEmpty().withMessage('required')
@@ -22,6 +23,16 @@ const titleValidator = body('title')
 const blogIdValidator = body('blogId')
   .trim()
   .isString().withMessage('not string')
+
+export const findBlogByIdValidator = body('blogId')
+.trim()
+.custom((blogId: string) => {
+  if (!blogId) return true
+
+  const blog = getBlogByIdRepository(blogId)
+
+  return Boolean(blog)
+}).withMessage('no such post')
 
 export const findByBlogIdValidator = body('blogId')
   .trim()
