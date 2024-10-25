@@ -71,4 +71,19 @@ describe('/blogs', () => {
 
     expect(responseUpdate.status).toBe(404);
   });
+
+  it('should return 400 with invalid name', async () => {
+    const invalidBlog = {
+      name: 'length_21-weqweqweqwq',
+      description: 'Sample Description',
+      websiteUrl: 'sample-website.com',
+    }
+
+    const response = await request
+    .set({ 'Authorization': 'Basic ' + codedAuth })
+    .post(SETTINGS.PATH.BLOGS)
+    .send(invalidBlog);
+
+    expect(response.status).toBe(400);
+  });
 })

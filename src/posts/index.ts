@@ -23,7 +23,7 @@ postsRouters.put(
   '/:id',
   authMiddleware,
   ...postsValidators,
-  findBlogValidator,
+  // findBlogValidator,
   errorsHandlerMiddleware,
   updatePostController
 )

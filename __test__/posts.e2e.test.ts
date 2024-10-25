@@ -49,6 +49,28 @@ describe('/posts', () => {
     expect(getPostResponse.status).toBe(200);
   });
 
+  it('should update post by id', async () => {
+    const createBlogResponse = await createBlog()
+    const blogId = createBlogResponse.body.id;
+
+    const createPostResponse = await createPost(blogId)
+    const postId = createPostResponse.body.id;
+
+    const getPostResponse = await request
+      .get(`${SETTINGS.PATH.POSTS}/${postId}`)
+
+    expect(getPostResponse.status).toBe(200);
+
+    console.log('getPostResponse', getPostResponse.body)
+
+    const updatePostResponse = await request
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .put(`${SETTINGS.PATH.POSTS}/${postId}`)
+      .send(validPost)
+
+    expect(updatePostResponse.status).toBe(204);
+  });
+
   it('should return status 404 with invalid blogId', async () => {
     const createBlogResponse = await createBlog()
     const blogId = createBlogResponse.body.id;
@@ -80,20 +102,5 @@ describe('/posts', () => {
   it('should return error if passed body is incorrect and blogId is invalid; ', async () => {
     await createBlog()
     await createPost('12345', 400)
-  });
-
-  it('should return 400 with invalid name', async () => {
-    const invalidBlog = {
-      name: 'length_21-weqweqweqwq',
-      description: 'Sample Description',
-      websiteUrl: 'sample-website.com',
-    }
-
-    const response = await request
-      .set({ 'Authorization': 'Basic ' + codedAuth })
-      .post(SETTINGS.PATH.BLOGS)
-      .send(invalidBlog);
-
-    expect(response.status).toBe(400);
   });
 })
