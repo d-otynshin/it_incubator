@@ -61,8 +61,6 @@ describe('/posts', () => {
 
     expect(getPostResponse.status).toBe(200);
 
-    console.log('getPostResponse', getPostResponse.body)
-
     const updatePostResponse = await request
       .set({ 'Authorization': 'Basic ' + codedAuth })
       .put(`${SETTINGS.PATH.POSTS}/${postId}`)

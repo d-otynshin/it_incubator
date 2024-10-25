@@ -10,5 +10,5 @@ export const updatePostController = (req: Request<UpdateBlogParams, null, PostDB
   const { id } = req.params;
   const isBlogUpdated = postsRepository.update(id, req.body)
 
-  return isBlogUpdated ? res.status(204).send(): res.status(404);
+  return isBlogUpdated ? res.status(204).send(): res.status(404).send();
 }
