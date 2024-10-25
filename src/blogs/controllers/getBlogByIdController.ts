@@ -12,5 +12,5 @@ export const getBlogByIdController = (req: FindByIdRequest, res: Response) => {
 
   return blog
     ? res.status(200).json(blog)
-    : res.status(404).json({ message: "User not found" })
+    : res.status(404).json({ message: "Blog not found" })
 }

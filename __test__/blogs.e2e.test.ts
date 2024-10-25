@@ -43,4 +43,32 @@ describe('/blogs', () => {
 
     expect(response.status).toBe(400);
   });
+
+  it('PUT => should return 404 for not found blog', async () => {
+    const validBlog = {
+      name: 'somename',
+      description: 'Sample Description',
+      websiteUrl: 'sample-website.com',
+    };
+
+    const createBlogResponse = await request
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .post(SETTINGS.PATH.BLOGS)
+      .send(validBlog);
+
+    expect(createBlogResponse.status).toBe(201);
+
+    const updateBlogBody = {
+      name: 'new',
+      description: 'new Description',
+      websiteUrl: 'new-website.com',
+    };
+
+    const responseUpdate = await request
+    .set({ 'Authorization': 'Basic ' + codedAuth })
+    .put(`${SETTINGS.PATH.BLOGS}/12345`)
+    .send(updateBlogBody);
+
+    expect(responseUpdate.status).toBe(404);
+  });
 })

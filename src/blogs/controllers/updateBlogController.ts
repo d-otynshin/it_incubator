@@ -10,5 +10,5 @@ export const updateBlogController = (
 
   const isBlogUpdated = updateBlogRepository(id, req.body)
 
-  return isBlogUpdated ? res.status(204).send(): res.status(404);
+  return isBlogUpdated ? res.status(204).send(): res.status(404).send();
 }

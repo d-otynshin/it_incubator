@@ -15,7 +15,6 @@ postsRouters.get('/', getPostsController)
 postsRouters.post('/',
   authMiddleware,
   ...postsValidators,
-  // findByBlogIdValidator,
   errorsHandlerMiddleware,
   createPostController
 )
