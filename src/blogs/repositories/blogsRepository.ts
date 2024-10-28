@@ -12,7 +12,7 @@ export const blogsRepository = {
       ...body,
       id: generateRandomId().toString(),
       createdAt: new Date().toISOString(),
-      isMembership: true
+      isMembership: false
     }
 
     await blogCollection.insertOne(createdBlog);
