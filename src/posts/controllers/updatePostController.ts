@@ -6,9 +6,12 @@ type UpdateBlogParams = {
   id: string;
 }
 
-export const updatePostController = (req: Request<UpdateBlogParams, null, PostDBType>, res: Response) => {
+export const updatePostController = async (
+  req: Request<UpdateBlogParams, null, PostDBType>,
+  res: Response
+) => {
   const { id } = req.params;
-  const isBlogUpdated = postsRepository.update(id, req.body)
+  const isBlogUpdated = await postsRepository.update(id, req.body)
 
   return isBlogUpdated ? res.status(204).send(): res.status(404).send();
 }

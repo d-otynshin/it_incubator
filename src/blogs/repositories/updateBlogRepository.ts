@@ -1,17 +1,11 @@
-import { db, setDB } from '../../db/db';
 import { TBlogInput } from '../types';
+import { Collection } from 'mongodb';
+import { BlogDBType } from '../../db/blog-db-type';
+import { db } from '../../db/monogo-db';
 
-export const updateBlogRepository = (id: string, body: TBlogInput) => {
-  const { blogs } = db;
-  const blogIndex = blogs.findIndex(blog => blog.id === id);
+export const updateBlogRepository = async (id: string, body: TBlogInput) => {
+  const blogCollection: Collection<BlogDBType> = db.collection<BlogDBType>('blogs');
+  const result = await blogCollection.updateOne({ id }, body)
 
-  if (blogIndex === -1) {
-    return false;
-  }
-
-  blogs[blogIndex] = { ...blogs[blogIndex], ...body }
-
-  setDB({ blogs });
-
-  return true;
+  return result.matchedCount === 1;
 }

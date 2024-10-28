@@ -1,8 +1,9 @@
-import { db } from '../../db/db';
 import { BlogDBType } from '../../db/blog-db-type';
+import { Collection, WithId } from 'mongodb';
+import { db } from '../../db/monogo-db';
 
-export const getBlogByIdRepository = (id: string): BlogDBType | undefined => {
-  const { blogs } = db;
+export const getBlogByIdRepository = async (id: string): Promise<WithId<BlogDBType> | null> => {
+  const blogCollection: Collection<BlogDBType> = db.collection<BlogDBType>('blogs');
 
-  return blogs.find(b => b.id === id);
+  return blogCollection.findOne({ id })
 }

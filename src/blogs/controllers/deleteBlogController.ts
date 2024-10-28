@@ -5,10 +5,10 @@ interface FindByIdRequest extends Request {
   params: { id: string };
 }
 
-export const deleteBlogController = (req: FindByIdRequest, res: Response) => {
+export const deleteBlogController = async (req: FindByIdRequest, res: Response) => {
   const { id } = req.params;
 
-  const isDeleted = deleteBlogRepository(id)
+  const isDeleted = await deleteBlogRepository(id)
 
   return isDeleted
     ? res.status(204).send()

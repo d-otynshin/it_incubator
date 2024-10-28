@@ -5,10 +5,10 @@ interface FindByIdRequest extends Request {
   params: { id: string };
 }
 
-export const getBlogByIdController = (req: FindByIdRequest, res: Response) => {
+export const getBlogByIdController = async (req: FindByIdRequest, res: Response) => {
   const { id } = req.params;
 
-  const blog = getBlogByIdRepository(id)
+  const blog = await getBlogByIdRepository(id)
 
   return blog
     ? res.status(200).json(blog)

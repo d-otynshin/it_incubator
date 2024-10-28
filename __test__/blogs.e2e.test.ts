@@ -14,6 +14,31 @@ describe('/blogs', () => {
     expect(response.status).toBe(204)
   })
 
+  it('should return success status', async () => {
+    const response = await request
+    .get(SETTINGS.PATH.BLOGS)
+
+    expect(response.status).toBe(200)
+  })
+
+  it('should return 201 for valid blog data', async () => {
+    const validBlog = {
+      name: 'somename',
+      description: 'Sample Description',
+      websiteUrl: 'valid-url.com',
+    };
+
+    const response = await request
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .post(SETTINGS.PATH.BLOGS)
+      .send(validBlog);
+
+    console.log(response.body);
+
+    expect(response.status).toBe(201);
+  });
+
+
   it('should return 400 for valid blog data', async () => {
     const validBlog = {
       nam: 'somename',

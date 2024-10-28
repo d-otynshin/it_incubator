@@ -1,17 +1,20 @@
-import { db, setDB } from '../../db/db';
 import { BlogDBType } from '../../db/blog-db-type';
 import { generateRandomId } from '../../helpers';
 import { TBlogInput } from '../types';
+import { Collection } from 'mongodb';
+import { db } from '../../db/monogo-db';
 
-export const createBlogRepository = (body: TBlogInput) => {
+const blogCollection: Collection<BlogDBType> = db.collection<BlogDBType>('blogs');
+
+export const createBlogRepository = async (body: TBlogInput) => {
   const createdBlog: BlogDBType = {
-    id: generateRandomId().toString(),
     ...body,
+    id: generateRandomId().toString(),
+    createdAt: new Date().toISOString(),
+    isMembership: true
   }
 
-  const blogs = [...db.blogs, createdBlog]
-
-  setDB({ blogs })
+  await blogCollection.insertOne(createdBlog);
 
   return createdBlog
 }

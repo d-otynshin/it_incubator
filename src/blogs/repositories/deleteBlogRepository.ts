@@ -1,16 +1,10 @@
-import { db, setDB } from '../../db/db';
+import { Collection } from 'mongodb';
+import { BlogDBType } from '../../db/blog-db-type';
+import { db } from '../../db/monogo-db';
 
-export const deleteBlogRepository = (id: string): boolean => {
-  const { blogs } = db;
+export const deleteBlogRepository = async (id: string): Promise<boolean> => {
+  const blogCollection: Collection<BlogDBType> = db.collection<BlogDBType>('blogs');
+  const result = await blogCollection.deleteOne({ id })
 
-  const index = blogs.findIndex(blog => blog.id === id);
-
-  if (index === -1) {
-    return false;
-  }
-
-  blogs.splice(index, 1);
-  setDB({ blogs });
-
-  return true;
+  return result.deletedCount === 1;
 }

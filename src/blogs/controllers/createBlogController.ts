@@ -6,11 +6,11 @@ import { createBlogRepository } from '../repositories/createBlogRepository';
 import { TBlogInput } from '../types';
 import { BlogDBType } from '../../db/blog-db-type';
 
-export const createBlogController = (
+export const createBlogController = async (
   req: Request<any, any, TBlogInput>,
   res: Response<BlogDBType | OutputErrorsType>
 ) => {
-  const createdBlog = createBlogRepository(req.body)
+  const createdBlog = await createBlogRepository(req.body)
 
   return res.status(201).json(createdBlog)
 }
