@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { deleteBlogRepository } from '../repositories/deleteBlogRepository';
+import { blogsRepository } from '../repositories/blogsRepository';
 
 interface FindByIdRequest extends Request {
   params: { id: string };
@@ -8,7 +8,7 @@ interface FindByIdRequest extends Request {
 export const deleteBlogController = async (req: FindByIdRequest, res: Response) => {
   const { id } = req.params;
 
-  const isDeleted = await deleteBlogRepository(id)
+  const isDeleted = await blogsRepository.delete(id)
 
   return isDeleted
     ? res.status(204).send()
