@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { postsRepository } from '../postsRepository';
+import { mapId } from '../../helpers/mapId';
 
 interface FindByIdRequest extends Request {
   params: { id: string };
@@ -14,6 +15,6 @@ export const getPostByIdController = async (
   const post = await postsRepository.getById(id)
 
   return post
-    ? res.status(200).json(post)
+    ? res.status(200).json(mapId(post))
     : res.status(404).json({ message: "Post not found" })
 }

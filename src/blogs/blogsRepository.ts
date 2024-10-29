@@ -7,7 +7,7 @@ import { TBlogInput } from './types';
 const blogCollection: Collection<BlogDBType> = db.collection<BlogDBType>('blogs');
 
 export const blogsRepository = {
-  create: async (body: TBlogInput) => {
+  create: async (body: TBlogInput): Promise<WithId<BlogDBType>> => {
     const createdBlog: BlogDBType = {
       ...body,
       id: generateRandomId().toString(),
@@ -17,7 +17,7 @@ export const blogsRepository = {
 
     await blogCollection.insertOne(createdBlog);
 
-    return createdBlog
+    return createdBlog as WithId<BlogDBType>;
   },
   delete: async (id: string) => {
     const result = await blogCollection.deleteOne({ id })

@@ -1,14 +1,14 @@
 import { PostDBType } from '../db/post-db-type';
 import { generateRandomId } from '../helpers';
 import { TPostInput } from './types';
-import { Collection } from 'mongodb';
+import { Collection, WithId } from 'mongodb';
 import { db } from '../db/monogo-db';
 import { blogsRepository } from '../blogs/blogsRepository';
 
 const postsCollection: Collection<PostDBType> = db.collection<PostDBType>('posts');
 
 export const postsRepository = {
-  create: async (body: TPostInput): Promise<PostDBType | null> => {
+  create: async (body: TPostInput): Promise<WithId<PostDBType> | null> => {
     const blog = await blogsRepository.getById(body.blogId)
 
     if (!blog) return null;
@@ -22,14 +22,14 @@ export const postsRepository = {
 
     await postsCollection.insertOne(createdPost)
 
-    return createdPost
+    return createdPost as WithId<PostDBType>;
   },
   delete: async (id: string): Promise<boolean> => {
     const result = await postsCollection.deleteOne({ id })
 
     return result.deletedCount === 1;
   },
-  getById: async (id: string): Promise<PostDBType | null> => {
+  getById: async (id: string): Promise<WithId<PostDBType> | null> => {
     return postsCollection.findOne({ id })
   },
   getByBlogId: async (blogId: string): Promise<PostDBType | null> => {
