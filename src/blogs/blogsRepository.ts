@@ -25,7 +25,7 @@ export const blogsRepository = {
     return result.deletedCount === 1;
   },
   getById: async (id: string): Promise<WithId<BlogDBType> | null> => {
-    return blogCollection.findOne({ id }, { projection: {  _id: 0 } })
+    return blogCollection.findOne({ id })
   },
   get: async (): Promise<BlogDBType[]> => {
     return blogCollection.find({}, { projection: {  _id: 0 } }).toArray()

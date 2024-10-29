@@ -22,19 +22,23 @@ describe('/blogs', () => {
     expect(response.status).toBe(200)
   })
 
-  it('should return 201 for valid blog data', async () => {
+  it('should return 200 for getting valid blog data', async () => {
     const validBlog = {
       name: 'some_name',
       description: 'Sample Description',
       websiteUrl: 'valid-url.com',
     };
 
-    const response = await request
+    const createBlogResponse = await request
       .set({ 'Authorization': 'Basic ' + codedAuth })
       .post(SETTINGS.PATH.BLOGS)
       .send(validBlog);
 
-    expect(response.status).toBe(201);
+    const blogId = createBlogResponse.body.id
+
+    const blog = await request.get(`${SETTINGS.PATH.BLOGS}/${blogId}`);
+
+    expect(blog.status).toBe(200);
   });
 
 
