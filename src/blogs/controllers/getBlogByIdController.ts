@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getBlogByIdRepository } from '../repositories/getBlogByIdRepository';
+import { blogsRepository } from '../blogsRepository';
 
 interface FindByIdRequest extends Request {
   params: { id: string };
@@ -8,7 +8,7 @@ interface FindByIdRequest extends Request {
 export const getBlogByIdController = async (req: FindByIdRequest, res: Response) => {
   const { id } = req.params;
 
-  const blog = await getBlogByIdRepository(id)
+  const blog = await blogsRepository.getById(id)
 
   return blog
     ? res.status(200).json(blog)

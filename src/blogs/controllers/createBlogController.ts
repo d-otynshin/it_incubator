@@ -4,7 +4,7 @@ import { OutputErrorsType } from '../../input-output-types/output-errors-type'
 
 import { TBlogInput } from '../types';
 import { BlogDBType } from '../../db/blog-db-type';
-import { blogsRepository } from '../repositories/blogsRepository';
+import { blogsRepository } from '../blogsRepository';
 
 export const createBlogController = async (
   req: Request<any, any, TBlogInput>,

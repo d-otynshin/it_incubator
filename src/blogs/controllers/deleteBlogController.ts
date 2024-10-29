@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { blogsRepository } from '../repositories/blogsRepository';
+import { blogsRepository } from '../blogsRepository';
 
 interface FindByIdRequest extends Request {
   params: { id: string };

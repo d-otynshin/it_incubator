@@ -1,15 +1,15 @@
-import { getBlogByIdRepository } from '../blogs/repositories/getBlogByIdRepository';
 import { PostDBType } from '../db/post-db-type';
 import { generateRandomId } from '../helpers';
 import { TPostInput } from './types';
 import { Collection } from 'mongodb';
 import { db } from '../db/monogo-db';
+import { blogsRepository } from '../blogs/blogsRepository';
 
 const postsCollection: Collection<PostDBType> = db.collection<PostDBType>('posts');
 
 export const postsRepository = {
   create: async (body: TPostInput): Promise<PostDBType | null> => {
-    const blog = await getBlogByIdRepository(body.blogId)
+    const blog = await blogsRepository.getById(body.blogId)
 
     if (!blog) return null;
 
@@ -33,10 +33,10 @@ export const postsRepository = {
     return postsCollection.findOne({ id })
   },
   getByBlogId: async (blogId: string): Promise<PostDBType | null> => {
-    return postsCollection.findOne({ blogId })
+    return postsCollection.findOne({ blogId }, { projection: {  _id: 0 } })
   },
   get: async () => {
-    return postsCollection.find({}).toArray()
+    return postsCollection.find({}, { projection: {  _id: 0 } }).toArray()
   },
   update: async (id: string, body: TPostInput): Promise<boolean> => {
     const result = await postsCollection.updateOne({ id }, body)

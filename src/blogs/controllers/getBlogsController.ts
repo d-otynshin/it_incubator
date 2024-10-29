@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { getBlogsRepository } from '../repositories/getBlogsRepository';
+import { blogsRepository } from '../blogsRepository';
 
 export const getBlogsController = async (_: Request, res: Response) => {
-  const blogs = await getBlogsRepository()
+  const blogs = await blogsRepository.get();
 
   res.status(200).json(blogs)
 }

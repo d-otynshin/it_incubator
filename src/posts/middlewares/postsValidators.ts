@@ -1,7 +1,7 @@
 import { body } from 'express-validator';
 import { postsRepository } from '../postsRepository';
-import { getBlogByIdRepository } from '../../blogs/repositories/getBlogByIdRepository';
 import { NextFunction, Request, Response } from 'express';
+import { blogsRepository } from '../../blogs/blogsRepository';
 
 const contentValidator = body('content')
   .notEmpty().withMessage('required')
@@ -27,10 +27,10 @@ const blogIdValidator = body('blogId')
 
 export const findBlogByIdValidator = body('blogId')
 .trim()
-.custom((blogId: string) => {
+.custom(async (blogId: string) => {
   if (!blogId) return true
 
-  const blog = getBlogByIdRepository(blogId)
+  const blog = await blogsRepository.getById(blogId)
 
   return Boolean(blog)
 }).withMessage('no such post')

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { BlogDBType } from '../../db/blog-db-type';
-import { updateBlogRepository } from '../repositories/updateBlogRepository';
+import { blogsRepository } from '../blogsRepository';
 
 export const updateBlogController = async (
   req: Request<{ id: string }, null, BlogDBType>,
@@ -8,7 +8,7 @@ export const updateBlogController = async (
 ) => {
   const { id } = req.params;
 
-  const isBlogUpdated = await updateBlogRepository(id, req.body)
+  const isBlogUpdated = await blogsRepository.updateById(id, req.body)
 
   return isBlogUpdated ? res.status(204).send(): res.status(404).send();
 }
