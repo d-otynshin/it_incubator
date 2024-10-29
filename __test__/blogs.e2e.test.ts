@@ -1,11 +1,12 @@
-import { request } from './test-helpers'
+import { connect, request, closeDatabase, clearDatabase } from './test-helpers';
 import { SETTINGS } from '../src/settings'
-import { setDB } from '../src/db/db';
 import { codedAuth } from './datasets';
 
 describe('/blogs', () => {
-  beforeAll(() => setDB())
-  afterAll(() => setDB())
+  beforeAll(async () => { await connect() })
+  afterAll(async () => { await closeDatabase() })
+
+  beforeEach(async () => { await clearDatabase() });
 
   it('should delete all data', async () => {
     const response = await request
@@ -23,7 +24,7 @@ describe('/blogs', () => {
 
   it('should return 201 for valid blog data', async () => {
     const validBlog = {
-      name: 'somename',
+      name: 'some_name',
       description: 'Sample Description',
       websiteUrl: 'valid-url.com',
     };
@@ -33,15 +34,13 @@ describe('/blogs', () => {
       .post(SETTINGS.PATH.BLOGS)
       .send(validBlog);
 
-    console.log(response.body);
-
     expect(response.status).toBe(201);
   });
 
 
   it('should return 400 for valid blog data', async () => {
     const validBlog = {
-      nam: 'somename',
+      name: 'somename',
       description: 'Sample Description',
       websiteUrl: 'invalid-url',
     };

@@ -8,7 +8,7 @@ export const deleteAllController = async (
   const postsCollection = db.collection('posts');
   const blogsCollection = db.collection('blogs');
 
-  await Promise.all([blogsCollection.drop(), postsCollection.drop()])
+  await Promise.all([blogsCollection.deleteMany(), postsCollection.deleteMany()])
 
   return response.status(204).send({})
 }

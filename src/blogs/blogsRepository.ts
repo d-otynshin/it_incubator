@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb';
+import { Collection, WithId } from 'mongodb';
 import { BlogDBType } from '../db/blog-db-type';
 import { db } from '../db/monogo-db';
 import { generateRandomId } from '../helpers';
@@ -24,7 +24,7 @@ export const blogsRepository = {
 
     return result.deletedCount === 1;
   },
-  getById: async (id: string): Promise<BlogDBType | null> => {
+  getById: async (id: string): Promise<WithId<BlogDBType> | null> => {
     return blogCollection.findOne({ id }, { projection: {  _id: 0 } })
   },
   get: async (): Promise<BlogDBType[]> => {

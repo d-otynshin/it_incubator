@@ -33,10 +33,10 @@ export const postsRepository = {
     return postsCollection.findOne({ id })
   },
   getByBlogId: async (blogId: string): Promise<PostDBType | null> => {
-    return postsCollection.findOne({ blogId }, { projection: {  _id: 0 } })
+    return postsCollection.findOne({ blogId })
   },
   get: async () => {
-    return postsCollection.find({}, { projection: {  _id: 0 } }).toArray()
+    return postsCollection.find({}).toArray()
   },
   update: async (id: string, body: TPostInput): Promise<boolean> => {
     const result = await postsCollection.updateOne({ id }, body)
