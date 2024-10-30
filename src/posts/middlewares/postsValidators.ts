@@ -42,7 +42,7 @@ export const findByBlogIdValidator = body('blogId')
 
     const post = await postsRepository.getByBlogId(blogId)
 
-    return Boolean(post)
+    return Boolean(post) ? true : Promise.reject()
   }).withMessage('no such post')
 
 export const findPostValidator = async (

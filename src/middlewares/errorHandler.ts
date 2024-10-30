@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from 'express'
 import { validationResult } from 'express-validator'
 import { FieldNamesType, OutputErrorsType } from '../input-output-types/output-errors-type'
 
-export const errorsHandlerMiddleware = (
+export const errorsHandlerMiddleware = async (
   request: Request,
   response: Response<OutputErrorsType>,
   next: NextFunction
