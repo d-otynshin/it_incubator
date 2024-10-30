@@ -39,7 +39,7 @@ export const postsRepository = {
     return postsCollection.find({}).toArray()
   },
   update: async (id: string, body: TPostInput): Promise<boolean> => {
-    const result = await postsCollection.updateOne({ id }, body)
+    const result = await postsCollection.updateOne({ id }, { $set: body })
 
     return result.matchedCount === 1;
   }

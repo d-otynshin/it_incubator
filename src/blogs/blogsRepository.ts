@@ -31,7 +31,7 @@ export const blogsRepository = {
     return blogCollection.find({}, { projection: {  _id: 0 } }).toArray()
   },
   updateById: async (id: string, body: TBlogInput): Promise<boolean> => {
-    const result = await blogCollection.updateOne({ id }, body)
+    const result = await blogCollection.updateOne({ id }, { $set: body })
 
     return result.matchedCount === 1;
   }
