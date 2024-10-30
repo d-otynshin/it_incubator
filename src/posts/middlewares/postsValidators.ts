@@ -37,20 +37,20 @@ export const findBlogByIdValidator = body('blogId')
 
 export const findByBlogIdValidator = body('blogId')
   .trim()
-  .custom((blogId: string) => {
+  .custom(async (blogId: string) => {
     if (!blogId) return true
 
-    const post = postsRepository.getByBlogId(blogId)
+    const post = await postsRepository.getByBlogId(blogId)
 
     return Boolean(post)
   }).withMessage('no such post')
 
-export const findPostValidator = (
+export const findPostValidator = async (
   req: Request<{ id: string }>,
   res: Response,
   next: NextFunction
 ) => {
-  const post = postsRepository.getById(req.params.id);
+  const post = await postsRepository.getById(req.params.id);
 
   if (!post) {
     res.status(404).json({})
