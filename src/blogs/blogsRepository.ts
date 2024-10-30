@@ -27,7 +27,7 @@ export const blogsRepository = {
   getById: async (id: string): Promise<WithId<BlogDBType> | null> => {
     return blogCollection.findOne({ id })
   },
-  get: async (): Promise<BlogDBType[]> => {
+  get: async (): Promise<WithId<BlogDBType>[]> => {
     return blogCollection.find({}, { projection: {  _id: 0 } }).toArray()
   },
   updateById: async (id: string, body: TBlogInput): Promise<boolean> => {
