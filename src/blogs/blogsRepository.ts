@@ -3,6 +3,8 @@ import { BlogDBType } from '../db/blog-db-type';
 import { db } from '../db/monogo-db';
 import { generateRandomId } from '../helpers';
 import { TBlogInput } from './types';
+import { QueryParams } from '../helpers/parseQuery';
+import { fetchPaginated } from '../helpers/fetchPaginated';
 
 const blogCollection: Collection<BlogDBType> = db.collection<BlogDBType>('blogs');
 
@@ -27,8 +29,14 @@ export const blogsRepository = {
   getById: async (id: string): Promise<WithId<BlogDBType> | null> => {
     return blogCollection.findOne({ id })
   },
-  get: async (): Promise<WithId<BlogDBType>[]> => {
-    return blogCollection.find({}, { projection: {  _id: 0 } }).toArray()
+  get: async (query: QueryParams) => {
+    let { searchNameTerm } = query;
+
+    if (!searchNameTerm) {
+      searchNameTerm = '';
+    }
+
+    return fetchPaginated(blogCollection, query, { searchNameTerm })
   },
   updateById: async (id: string, body: TBlogInput): Promise<boolean> => {
     const result = await blogCollection.updateOne({ id }, { $set: body })

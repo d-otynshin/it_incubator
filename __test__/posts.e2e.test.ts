@@ -105,9 +105,9 @@ describe('/posts', () => {
 
   it('should return error 400 if :id from uri param not found, and post is invalid', async () => {
     const putPostResponse = await request
-    .set({ 'Authorization': 'Basic ' + codedAuth })
-    .put(`${SETTINGS.PATH.POSTS}/12345`)
-    .send(invalidPost)
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .put(`${SETTINGS.PATH.POSTS}/12345`)
+      .send(invalidPost)
 
     expect(putPostResponse.status).toBe(404);
   });

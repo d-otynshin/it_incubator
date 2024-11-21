@@ -1,9 +1,12 @@
 import { Request, Response } from 'express'
 import { blogsRepository } from '../blogsRepository';
-import { mapId } from '../../helpers/mapId';
 
-export const getBlogsController = async (_: Request, res: Response) => {
-  const blogs = await blogsRepository.get();
+export const getBlogsController = async (
+  req: Request,
+  res: Response
+) => {
+  const { query } = req;
+  const blogs = await blogsRepository.get(query);
 
-  res.status(200).json(blogs.map(mapId))
+  res.status(200).json(blogs)
 }
