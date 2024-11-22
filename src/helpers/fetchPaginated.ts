@@ -11,7 +11,7 @@ export async function fetchPaginated<TCollection extends Document>(
 
   const sortOption: Sort = { [sortBy]: sortDirection === 'asc' ? 1 : -1 };
 
-  const totalItems = await collection.countDocuments(filter);
+  const totalCount = await collection.countDocuments(filter);
   const data = await collection
     .find(filter)
     .sort(sortOption)
@@ -20,8 +20,8 @@ export async function fetchPaginated<TCollection extends Document>(
     .toArray();
 
   return {
-    totalItems,
-    totalPages: Math.ceil(totalItems / pageSize),
-    data: data.map(mapId),
+    totalCount,
+    pagesCount: Math.ceil(totalCount / pageSize),
+    items: data.map(mapId),
   };
 }
