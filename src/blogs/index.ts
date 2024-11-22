@@ -7,12 +7,13 @@ import { getBlogByIdController } from './controllers/getBlogByIdController';
 import { authMiddleware } from '../middlewares/auth';
 import { blogValidators } from './middlewares/blogValidators'
 import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
+import { getPostsController } from './controllers/getPostsController';
 
 export const blogsRouters = Router()
 
 blogsRouters.get('/', getBlogsController)
 blogsRouters.post('/', authMiddleware, ...blogValidators, errorsHandlerMiddleware, createBlogController)
 blogsRouters.get('/:id', getBlogByIdController)
-blogsRouters.get('/:id/posts', getBlogByIdController)
+blogsRouters.get('/:id/posts', getPostsController)
 blogsRouters.put('/:id', authMiddleware, ...blogValidators, errorsHandlerMiddleware, updateBlogController)
 blogsRouters.delete('/:id', authMiddleware, deleteBlogController)

@@ -5,8 +5,10 @@ export const getPostsController = async (
   req: Request,
   res: Response
 ) => {
-  const { query } = req;
-  const blogs = await blogsRepository.get(query);
+  const { query, params } = req;
+  const { id: blogId } = params
+
+  const blogs = await blogsRepository.getPosts(blogId, query);
 
   res.status(200).json(blogs)
 }

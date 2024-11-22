@@ -7,6 +7,7 @@ import { QueryParams } from '../helpers/parseQuery';
 import { fetchPaginated } from '../helpers/fetchPaginated';
 
 const blogCollection: Collection<BlogDBType> = db.collection<BlogDBType>('blogs');
+const postCollection: Collection<BlogDBType> = db.collection<BlogDBType>('posts');
 
 export const blogsRepository = {
   create: async (body: TBlogInput): Promise<WithId<BlogDBType>> => {
@@ -44,15 +45,8 @@ export const blogsRepository = {
 
     return fetchPaginated(blogCollection, query, filter)
   },
-  getPosts: async (query: QueryParams) => {
-    let { searchNameTerm } = query;
-    let filter: { searchNameTerm: string } | {} = { searchNameTerm };
-
-    if (!searchNameTerm) {
-      filter = {};
-    }
-
-    return fetchPaginated(blogCollection, query, filter)
+  getPosts: async (blogId: string, query: QueryParams) => {
+    return fetchPaginated(postCollection, query, { blogId })
   },
   updateById: async (id: string, body: TBlogInput): Promise<boolean> => {
     const result = await blogCollection.updateOne({ id }, { $set: body })
