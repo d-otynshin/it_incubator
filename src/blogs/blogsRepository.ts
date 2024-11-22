@@ -31,12 +31,13 @@ export const blogsRepository = {
   },
   get: async (query: QueryParams) => {
     let { searchNameTerm } = query;
+    let filter: { searchNameTerm: string } | {} = { searchNameTerm };
 
     if (!searchNameTerm) {
-      searchNameTerm = '';
+      filter = {};
     }
 
-    return fetchPaginated(blogCollection, query, { searchNameTerm })
+    return fetchPaginated(blogCollection, query, filter)
   },
   updateById: async (id: string, body: TBlogInput): Promise<boolean> => {
     const result = await blogCollection.updateOne({ id }, { $set: body })

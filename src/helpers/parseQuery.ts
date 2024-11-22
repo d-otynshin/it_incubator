@@ -3,7 +3,7 @@ export type QueryParams = {
   pageSize?: string;
   sortBy?: string;
   sortDirection?: 'asc' | 'desc';
-  searchNameTerm?: string;
+  searchNameTerm?: string | null;
 }
 
 export function parseQuery(query: QueryParams) {
