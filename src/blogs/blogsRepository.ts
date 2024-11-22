@@ -31,6 +31,21 @@ export const blogsRepository = {
   },
   get: async (query: QueryParams) => {
     let { searchNameTerm } = query;
+    let filter: { searchNameTerm: string } | {} = {
+      title: {
+        $regex: searchNameTerm,
+        $options: 'i'
+      }
+    };
+
+    if (!searchNameTerm) {
+      filter = {};
+    }
+
+    return fetchPaginated(blogCollection, query, filter)
+  },
+  getPosts: async (query: QueryParams) => {
+    let { searchNameTerm } = query;
     let filter: { searchNameTerm: string } | {} = { searchNameTerm };
 
     if (!searchNameTerm) {
