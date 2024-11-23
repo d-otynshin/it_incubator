@@ -10,7 +10,7 @@ export function parseQuery(query: QueryParams) {
   const {
     pageNumber,
     pageSize,
-    sortBy = 'createdBy',
+    sortBy = 'createdAt',
     sortDirection = 'desc',
   } = query;
 
