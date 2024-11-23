@@ -23,5 +23,7 @@ export async function fetchPaginated<TCollection extends Document>(
     totalCount,
     pagesCount: Math.ceil(totalCount / pageSize),
     items: data.map(mapId),
+    page: pageNumber,
+    pageSize,
   };
 }
