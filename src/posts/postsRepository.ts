@@ -4,6 +4,8 @@ import { TPostInput } from './types';
 import { Collection, WithId } from 'mongodb';
 import { db } from '../db/monogo-db';
 import { blogsRepository } from '../blogs/blogsRepository';
+import { fetchPaginated } from '../helpers/fetchPaginated';
+import { QueryParams } from '../helpers/parseQuery';
 
 const postsCollection: Collection<PostDBType> = db.collection<PostDBType>('posts');
 
@@ -35,8 +37,8 @@ export const postsRepository = {
   getByBlogId: async (blogId: string): Promise<PostDBType | null> => {
     return postsCollection.findOne({ blogId })
   },
-  get: async () => {
-    return postsCollection.find({}).toArray()
+  get: async (query: QueryParams) => {
+    return fetchPaginated(postsCollection, query)
   },
   update: async (id: string, body: TPostInput): Promise<boolean> => {
     const result = await postsCollection.updateOne({ id }, { $set: body })

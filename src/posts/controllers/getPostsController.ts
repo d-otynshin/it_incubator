@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 import { postsRepository } from '../postsRepository';
-import { mapId } from '../../helpers/mapId';
 
 export const getPostsController = async (
-  _: Request,
+  req: Request,
   res: Response
 ) => {
-  const posts = await postsRepository.get()
+  const { query } = req;
+  const posts = await postsRepository.get(query)
 
-  res.status(200).json(posts.map(mapId))
+  res.status(200).json(posts)
 }
