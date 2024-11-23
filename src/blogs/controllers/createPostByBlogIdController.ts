@@ -1,20 +1,20 @@
 import { Response, Request } from 'express'
 
-import { OutputErrorsType } from '../../input-output-types/output-errors-type'
-
-import { TBlogInput } from '../types';
-import { BlogDBType } from '../../db/blog-db-type';
 import { blogsRepository } from '../blogsRepository';
 import { mapId } from '../../helpers/mapId';
+import { TPostInput } from '../../posts/types';
+import { PostDBType } from '../../db/post-db-type';
 
 export const createPostByBlogIdController = async (
-  req: Request<any, any, TBlogInput>,
-  res: Response<BlogDBType>
+  req: Request<any, any, TPostInput>,
+  res: Response<PostDBType>
 ) => {
   const id = req.params.id;
   const body = req.body;
 
-  const createdBlog = await blogsRepository.createPost(id, body)
+  const createdPost = await blogsRepository.createPost(id, body)
 
-  return res.status(201).json(mapId(createdBlog))
+  return createdPost
+    ? res.status(201).json(mapId(createdPost))
+    : res.status(404).send()
 }

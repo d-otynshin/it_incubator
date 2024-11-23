@@ -8,16 +8,16 @@ export type QueryParams = {
 
 export function parseQuery(query: QueryParams) {
   const {
-    pageNumber = '1', // Default pageNumber
-    pageSize = '10', // Default pageSize
-    sortBy = 'createdBy', // Default sortBy field
-    sortDirection = 'desc', // Default sort direction
+    pageNumber,
+    pageSize,
+    sortBy = 'createdBy',
+    sortDirection = 'desc',
   } = query;
 
   return {
-    pageNumber: parseInt(pageNumber, 10),
-    pageSize: parseInt(pageSize, 10),
-    sortBy,
+    pageNumber: pageNumber ? parseInt(pageNumber, 10) : 1,
+    pageSize: pageSize? parseInt(pageSize, 10) : 10,
+    sortBy: sortBy ? sortBy : 'createdBy',
     sortDirection: sortDirection.toLowerCase() === 'asc' ? 'asc' : 'desc',
   };
 }
