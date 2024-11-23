@@ -27,6 +27,6 @@ blogsRouters.post('/:id/posts',
   createPostByBlogIdController
 )
 blogsRouters.get('/:id', getBlogByIdController)
-blogsRouters.get('/:id/posts', getPostsController)
+blogsRouters.get('/:blogId/posts', getPostsController)
 blogsRouters.put('/:id', authMiddleware, ...blogValidators, errorsHandlerMiddleware, updateBlogController)
 blogsRouters.delete('/:id', authMiddleware, deleteBlogController)

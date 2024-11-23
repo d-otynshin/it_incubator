@@ -6,7 +6,7 @@ export const getPostsController = async (
   res: Response
 ) => {
   const { query, params } = req;
-  const { id: blogId } = params
+  const { blogId } = params
 
   const blogs = await blogsRepository.getPosts(blogId, query);
 
