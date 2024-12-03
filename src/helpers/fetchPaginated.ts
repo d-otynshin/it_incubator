@@ -13,14 +13,6 @@ export async function fetchPaginated<TCollection extends Document>(
 
   let totalCount = await collection.countDocuments(filter);
 
-  if (filter) {
-    const { blogId } = filter as any;
-
-    if (blogId === '') {
-      totalCount = totalCount - 1;
-    }
-  }
-
   const data = await collection
     .find(filter)
     .sort(sortOption)

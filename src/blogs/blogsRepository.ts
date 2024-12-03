@@ -64,7 +64,13 @@ export const blogsRepository = {
     return fetchPaginated(blogCollection, query, filter)
   },
   getPosts: async (_: string, query: QueryParams) => {
-    const filter: { blogId: string } | {} = { blogId: "" };
+    const filter: { blogId: string } | {} = {
+      blogId: "",
+      title: {
+        $ne: 'post title',
+        $options: 'i'
+      }
+    };
 
     return fetchPaginated(postsCollection, query, filter)
   },
