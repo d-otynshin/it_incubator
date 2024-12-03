@@ -64,7 +64,13 @@ export const blogsRepository = {
     return fetchPaginated(blogCollection, query, filter)
   },
   getPosts: async (blogId: string, query: QueryParams) => {
-    return fetchPaginated(postsCollection, query, { blogId })
+    let filter: { blogId: string } | {} = { blogId };
+
+    if (!query) {
+      filter = {}
+    }
+
+    return fetchPaginated(postsCollection, query, filter)
   },
   updateById: async (id: string, body: TBlogInput): Promise<boolean> => {
     const result = await blogCollection.updateOne({ id }, { $set: body })
