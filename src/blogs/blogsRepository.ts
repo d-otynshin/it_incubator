@@ -51,7 +51,7 @@ export const blogsRepository = {
   get: async (query: QueryParams) => {
     let { searchNameTerm } = query;
     let filter: { searchNameTerm: string } | {} = {
-      title: {
+      name: {
         $regex: searchNameTerm,
         $options: 'i'
       }
@@ -63,7 +63,7 @@ export const blogsRepository = {
 
     return fetchPaginated(blogCollection, query, filter)
   },
-  getPosts: async (blogId: string, query: QueryParams) => {
+  getPosts: async (_: string, query: QueryParams) => {
     const filter: { blogId: string } | {} = { blogId: "" };
 
     return fetchPaginated(postsCollection, query, filter)
