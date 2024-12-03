@@ -131,13 +131,10 @@ describe('/blogs', () => {
 
   it('should return 200, for posts by blogId equal to empty string', async () => {
     await createBlog()
-    const createPostResponse = await createPost('')
-    console.log(createPostResponse.body);
+    await createPost('')
 
     const getPostsResponse = await request
       .get(`${SETTINGS.PATH.BLOGS}/''/posts`)
-
-    console.log(getPostsResponse.body);
 
     expect(getPostsResponse.status).toBe(200);
   });

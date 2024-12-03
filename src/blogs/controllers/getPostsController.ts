@@ -11,8 +11,6 @@ export const getPostsController = async (
   // const blog = await blogsRepository.getById(blogId)
   // if (!blog) return res.status(404).json({ message: "Blog not found" })
 
-  console.log('blogId', blogId);
-
   const blogs = await blogsRepository.getPosts(blogId, query);
 
   return res.status(200).json(blogs)
