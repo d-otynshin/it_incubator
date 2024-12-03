@@ -130,11 +130,13 @@ describe('/blogs', () => {
   });
 
   it('should return 200, for posts by blogId equal to empty string', async () => {
-    await createBlog()
+    const createBlogResponse = await createBlog()
     await createPost('')
 
+    const blogId = createBlogResponse.body.id;
+
     const getPostsResponse = await request
-      .get(`${SETTINGS.PATH.BLOGS}//posts`)
+      .get(`${SETTINGS.PATH.BLOGS}/${blogId}/posts`)
 
     console.log(getPostsResponse.body);
 

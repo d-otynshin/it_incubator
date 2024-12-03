@@ -67,8 +67,7 @@ export const blogsRepository = {
     const filter: { blogId: string } | {} = {
       blogId: "",
       title: {
-        $ne: 'post title',
-        $options: 'i'
+        $ne: "post title",
       }
     };
 
