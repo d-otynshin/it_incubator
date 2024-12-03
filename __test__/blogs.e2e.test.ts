@@ -134,7 +134,9 @@ describe('/blogs', () => {
     await createPost('')
 
     const getPostsResponse = await request
-      .get(`${SETTINGS.PATH.BLOGS}/''/posts`)
+      .get(`${SETTINGS.PATH.BLOGS}//posts`)
+
+    console.log(getPostsResponse.body);
 
     expect(getPostsResponse.status).toBe(200);
   });
