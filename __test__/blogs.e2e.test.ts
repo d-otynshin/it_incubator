@@ -1,4 +1,4 @@
-import { connect, request, closeDatabase, clearDatabase } from './test-helpers';
+import { connect, request, closeDatabase, clearDatabase, createBlog, createPost } from './test-helpers';
 import { SETTINGS } from '../src/settings'
 import { codedAuth } from './datasets';
 
@@ -114,4 +114,38 @@ describe('/blogs', () => {
 
     expect(response.status).toBe(400);
   });
+
+  it('should return 200, for posts by blogId', async () => {
+    const createBlogResponse = await createBlog()
+    const blogId = createBlogResponse.body.id;
+
+    await createPost(blogId)
+
+    const getPostsResponse = await request
+    .get(`${SETTINGS.PATH.BLOGS}/${blogId}/posts`)
+
+    console.log(getPostsResponse.body);
+
+    expect(getPostsResponse.status).toBe(200);
+  });
+
+  it('should return 200, for posts by blogId equal to empty string', async () => {
+    await createBlog()
+    const createPostResponse = await createPost('')
+    console.log(createPostResponse.body);
+
+    const getPostsResponse = await request
+      .get(`${SETTINGS.PATH.BLOGS}/''/posts`)
+
+    console.log(getPostsResponse.body);
+
+    expect(getPostsResponse.status).toBe(200);
+  });
+
+  it('should return success status', async () => {
+    const response = await request
+    .get(`${SETTINGS.PATH.BLOGS}?pageSize=5&pageNumber=1&searchNameTerm=Tim&sortDirection=asc&sortBy=name`)
+
+    expect(response.status).toBe(200)
+  })
 })

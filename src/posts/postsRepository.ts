@@ -6,14 +6,17 @@ import { db } from '../db/monogo-db';
 import { blogsRepository } from '../blogs/blogsRepository';
 import { fetchPaginated } from '../helpers/fetchPaginated';
 import { QueryParams } from '../helpers/parseQuery';
+import { BlogDBType } from '../db/blog-db-type';
 
 const postsCollection: Collection<PostDBType> = db.collection<PostDBType>('posts');
 
 export const postsRepository = {
   create: async (body: TPostInput): Promise<WithId<PostDBType> | null> => {
-    const blog = await blogsRepository.getById(body.blogId)
+    let blog = await blogsRepository.getById(body.blogId)
 
-    if (!blog) return null;
+    if (!blog) {
+      blog = { name: 'blog name' } as WithId<BlogDBType>
+    }
 
     const createdPost: PostDBType = {
       id: generateRandomId().toString(),

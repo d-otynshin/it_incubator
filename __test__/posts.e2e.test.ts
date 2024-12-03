@@ -1,29 +1,7 @@
-import { request } from './test-helpers'
+import { createBlog, createPost, request } from './test-helpers';
 import { SETTINGS } from '../src/settings'
 import { setDB } from '../src/db/db';
-import { codedAuth, invalidPost, validBlog, validPost } from './datasets';
-
-const createBlog = async (expectedStatus = 201) => {
-  const createBlogResponse = await request
-    .set({ 'Authorization': 'Basic ' + codedAuth })
-    .post(SETTINGS.PATH.BLOGS)
-    .send(validBlog);
-
-  expect(createBlogResponse.status).toBe(expectedStatus);
-
-  return createBlogResponse;
-}
-
-const createPost = async (blogId: string, expectedStatus = 201) => {
-  const createPostResponse = await request
-    .set({ 'Authorization': 'Basic ' + codedAuth })
-    .post(SETTINGS.PATH.POSTS)
-    .send({ blogId, ...validPost });
-
-  expect(createPostResponse.status).toBe(expectedStatus);
-
-  return createPostResponse;
-}
+import { codedAuth, invalidPost, validPost } from './datasets';
 
 describe('/posts', () => {
   beforeAll(() => setDB())
