@@ -12,7 +12,7 @@ export const usersService = {
     const salt = await genSalt();
     const passwordHash = await hash(password, salt);
 
-    return await usersRepository.create({ salt, passwordHash, login, email })
+    return usersRepository.create({ salt, passwordHash, login, email })
   },
   delete: async (id: string) => {
     return usersRepository.delete(id);

@@ -3,6 +3,7 @@ import { db } from '../db/monogo-db';
 import { UserDBType } from '../db/user-db-type';
 import { QueryParams } from '../helpers/parseQuery';
 import { fetchPaginated } from '../helpers/fetchPaginated';
+import { generateRandomId } from '../helpers';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
 
@@ -11,7 +12,15 @@ const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users
 export const usersRepository = {
   create: async ({ login, passwordHash, salt, email }: UserDBType) => {
     try {
-      await usersCollection.insertOne({ login, passwordHash, salt, email });
+      const createdUser = {
+        login,
+        passwordHash,
+        salt,
+        email,
+        createdAt: new Date(),
+        id: generateRandomId().toString(),
+      }
+      await usersCollection.insertOne(createdUser);
 
       return true;
     } catch (error) {

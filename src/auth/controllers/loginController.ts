@@ -19,5 +19,5 @@ export const loginController = async (
 
   const isLoggedIn = await authService.login(loginOrEmail, password);
 
-  return isLoggedIn ? res.status(204).json({}) : res.status(400).json(error)
+  return isLoggedIn ? res.status(204).json({}) : res.status(401).json({ error })
 }
