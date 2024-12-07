@@ -8,6 +8,21 @@ type TFindUsers = Record<string, { $regex: string, $options: string }>
 
 const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users');
 
+const mapUsersOutput = (paginatedUsers: any) => {
+  const { items } = paginatedUsers;
+
+  paginatedUsers.items = items.map((user: WithId<UserDBType>) => {
+    return {
+      id: user.id,
+      createdAt: user.createdAt,
+      login: user.login,
+      email: user.email,
+    }
+  });
+
+  return paginatedUsers;
+}
+
 export const usersQueryRepository = {
   get: async (query: QueryParams) => {
     try {
@@ -30,18 +45,7 @@ export const usersQueryRepository = {
 
       const paginatedUsers = await fetchPaginated(usersCollection, query, filter);
 
-      const mappedUsers = paginatedUsers.items.map((user: WithId<UserDBType>) => {
-        return {
-          id: user.id,
-          createdAt: user.createdAt,
-          login: user.login,
-          email: user.email,
-        }
-      });
-
-      paginatedUsers.items = mappedUsers
-
-      return paginatedUsers;
+      return mapUsersOutput(paginatedUsers);
     } catch (error) {
       return null;
     }

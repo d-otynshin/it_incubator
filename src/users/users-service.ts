@@ -15,7 +15,9 @@ export const usersService = {
     const createdAt: Date = new Date();
     const id = generateRandomId().toString();
 
-    return usersRepository.create({ salt, passwordHash, login, email, createdAt, id });
+    const isCreated = await usersRepository.create({ salt, passwordHash, login, email, createdAt, id });
+
+    return isCreated ? { id, createdAt, email, login } : null;
   },
   delete: async (id: string) => {
     return usersRepository.delete(id);
