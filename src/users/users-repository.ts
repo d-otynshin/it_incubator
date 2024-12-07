@@ -10,17 +10,16 @@ type TFindUsers = Record<string, { $regex: string, $options: string }>
 const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users');
 
 export const usersRepository = {
-  create: async ({ login, passwordHash, salt, email }: UserDBType) => {
+  create: async ({ login, passwordHash, salt, email, createdAt, id }: UserDBType) => {
     try {
-      const createdUser = {
+      await usersCollection.insertOne({
         login,
         passwordHash,
         salt,
         email,
-        createdAt: new Date(),
-        id: generateRandomId().toString(),
-      }
-      await usersCollection.insertOne(createdUser);
+        createdAt,
+        id,
+      });
 
       return true;
     } catch (error) {
