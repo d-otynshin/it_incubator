@@ -36,9 +36,9 @@ export const clearDatabase = async () => {
 
 export const createBlog = async (expectedStatus = 201) => {
   const createBlogResponse = await request
-  .set({ 'Authorization': 'Basic ' + codedAuth })
-  .post(SETTINGS.PATH.BLOGS)
-  .send(validBlog);
+    .set({ 'Authorization': 'Basic ' + codedAuth })
+    .post(SETTINGS.PATH.BLOGS)
+    .send(validBlog);
 
   expect(createBlogResponse.status).toBe(expectedStatus);
 

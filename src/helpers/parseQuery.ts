@@ -4,6 +4,9 @@ export type QueryParams = {
   sortBy?: string;
   sortDirection?: 'asc' | 'desc';
   searchNameTerm?: string | null;
+  searchLoginTerm?: string | null;
+  searchEmailTerm?: string | null;
+
 }
 
 export function parseQuery(query: QueryParams) {

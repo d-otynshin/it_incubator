@@ -65,9 +65,9 @@ export const blogsRepository = {
   },
   getPosts: async (_: string, query: QueryParams) => {
     const filter: { blogId: string } | {} = {
-      blogId: "",
+      blogId: '',
       title: {
-        $ne: "post title",
+        $ne: 'post title',
       }
     };
 
