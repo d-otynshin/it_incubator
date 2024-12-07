@@ -3,7 +3,6 @@ import { db } from '../db/monogo-db';
 import { UserDBType } from '../db/user-db-type';
 import { QueryParams } from '../helpers/parseQuery';
 import { fetchPaginated } from '../helpers/fetchPaginated';
-import { generateRandomId } from '../helpers';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
 
