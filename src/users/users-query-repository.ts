@@ -30,7 +30,7 @@ export const usersQueryRepository = {
 
       const paginatedUsers = await fetchPaginated(usersCollection, query, filter);
 
-      return paginatedUsers.items.map((user: WithId<UserDBType>) => {
+      paginatedUsers.items = paginatedUsers.items.map((user: WithId<UserDBType>) => {
         return {
           id: user.id,
           createdAt: user.createdAt,
@@ -38,6 +38,8 @@ export const usersQueryRepository = {
           email: user.email,
         }
       });
+
+      return paginatedUsers;
     } catch (error) {
       return null;
     }
