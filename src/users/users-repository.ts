@@ -49,6 +49,18 @@ export const usersRepository = {
       return null;
     }
   },
+  find: async (loginOrEmail: string) => {
+    try {
+      return usersCollection.find({
+        $or: [
+          { login: loginOrEmail },
+          { email: loginOrEmail }
+        ]
+      });
+    } catch (error) {
+      return null;
+    }
+  },
   findOne: async (loginOrEmail: string) => {
     try {
       return usersCollection.findOne({

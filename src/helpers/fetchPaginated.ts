@@ -8,7 +8,6 @@ export async function fetchPaginated<TCollection extends Document>(
   filter = {}
 ) {
   const { pageSize, pageNumber, sortBy, sortDirection } = parseQuery(query);
-
   const sortOption: Sort = { [sortBy]: sortDirection === 'asc' ? 1 : -1 };
 
   let totalCount = await collection.countDocuments(filter);

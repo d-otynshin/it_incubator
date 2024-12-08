@@ -27,7 +27,7 @@ export const usersQueryRepository = {
   get: async (query: QueryParams) => {
     try {
       const { searchLoginTerm, searchEmailTerm } = query;
-      const filter: TFindUsers = {};
+      let filter: TFindUsers | any = {};
 
       if (searchLoginTerm) {
         filter.login = {
@@ -40,6 +40,15 @@ export const usersQueryRepository = {
         filter.email = {
           $regex: searchEmailTerm,
           $options: 'i'
+        }
+      }
+
+      if (searchLoginTerm && searchEmailTerm) {
+        filter = {
+          $and: [
+            { login: { $regex: searchLoginTerm, $options: "i" } },
+            { email: { $regex: searchEmailTerm, $options: "i" } }
+          ]
         }
       }
 
