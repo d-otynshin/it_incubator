@@ -21,7 +21,7 @@ postsRouters.post('/',
   authMiddleware,
   ...postsValidators,
   findBlogByIdValidator,
-  errorsHandlerMiddleware,
+  errorsHandlerMiddleware(),
   createPostController
 )
 
@@ -33,7 +33,7 @@ postsRouters.put(
   findPostValidator,
   ...postsValidators,
   findByBlogIdValidator,
-  errorsHandlerMiddleware,
+  errorsHandlerMiddleware(),
   updatePostController
 )
 

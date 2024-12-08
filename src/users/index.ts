@@ -8,5 +8,5 @@ import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
 export const usersRouter = Router();
 
 usersRouter.get('/', getUsersController)
-usersRouter.post('/', ...userValidators, errorsHandlerMiddleware, createUserController)
+usersRouter.post('/', ...userValidators, errorsHandlerMiddleware(401), createUserController)
 usersRouter.delete('/:id', deleteUsersController)

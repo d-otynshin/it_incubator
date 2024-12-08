@@ -17,16 +17,16 @@ blogsRouters.get('/', getBlogsController)
 blogsRouters.post('/',
   authMiddleware,
   ...blogValidators,
-  errorsHandlerMiddleware,
+  errorsHandlerMiddleware(),
   createBlogController
 )
 blogsRouters.post('/:id/posts',
   authMiddleware,
   ...postsValidators,
-  errorsHandlerMiddleware,
+  errorsHandlerMiddleware(),
   createPostByBlogIdController
 )
 blogsRouters.get('/:id', getBlogByIdController)
 blogsRouters.get('/:blogId/posts', getPostsController)
-blogsRouters.put('/:id', authMiddleware, ...blogValidators, errorsHandlerMiddleware, updateBlogController)
+blogsRouters.put('/:id', authMiddleware, ...blogValidators, errorsHandlerMiddleware(), updateBlogController)
 blogsRouters.delete('/:id', authMiddleware, deleteBlogController)
