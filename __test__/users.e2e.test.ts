@@ -26,7 +26,7 @@ describe('/users', () => {
     const validUser = {
       email: 'user@mail.com',
       login: 'user',
-      password: '123',
+      password: '123456',
     };
 
     await request
@@ -35,9 +35,30 @@ describe('/users', () => {
 
     const users = await request.get(SETTINGS.PATH.USERS);
 
-    console.log('users', users.body);
-
     expect(users.status).toBe(200);
+  });
+
+  it('should return 204 for valid login', async () => {
+    const validUser = {
+      email: 'user@mail.com',
+      login: 'user',
+      password: '123456',
+    };
+
+    await request
+      .post(SETTINGS.PATH.USERS)
+      .send(validUser);
+
+    const validLogin = {
+      loginOrEmail: 'user@mail.com',
+      password: '123456',
+    }
+
+    const loginResponse = await request
+    .post(`${SETTINGS.PATH.AUTH}/login`)
+    .send(validLogin);
+
+    expect(loginResponse.status).toBe(204);
   });
 
 

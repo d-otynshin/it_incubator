@@ -13,10 +13,10 @@ const mapUsersOutput = (paginatedUsers: any) => {
 
   paginatedUsers.items = items.map((user: WithId<UserDBType>) => {
     return {
-      id: user.id,
       createdAt: user.createdAt,
-      login: user.login,
       email: user.email,
+      id: user.id,
+      login: user.login,
     }
   });
 
