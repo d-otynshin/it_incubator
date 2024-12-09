@@ -8,7 +8,15 @@ import { fetchPaginated } from '../helpers/fetchPaginated';
 import { QueryParams } from '../helpers/parseQuery';
 import { BlogDBType } from '../db/blog-db-type';
 import { CommentDbType } from '../db/comment-db-type';
-import { TCommentInput } from '../comments/type';
+
+type TCreateComment = {
+  id: string;
+  content: string;
+  user: {
+    id: string;
+    login: string;
+  }
+}
 
 const postsCollection: Collection<PostDBType> = db.collection<PostDBType>('posts');
 const commentsCollection: Collection<CommentDbType> = db.collection<CommentDbType>('comments');
@@ -58,8 +66,8 @@ export const postsRepository = {
 
     return fetchPaginated(commentsCollection, query, filter)
   },
-  createComment: async (body: TCommentInput): Promise<WithId<CommentDbType> | null> => {
-    const post = await postsRepository.getById(body.id)
+  createComment: async ({ id, content, user }: TCreateComment): Promise<WithId<CommentDbType> | null> => {
+    const post = await postsRepository.getById(id)
 
     // if (!post) {
     //   blog = { name: 'blog name' } as WithId<BlogDBType>
@@ -70,14 +78,14 @@ export const postsRepository = {
     }
 
     const commentatorInfo = {
-      userId: '',
-      userLogin: ''
+      userId: user.id,
+      userLogin: user.login,
     }
 
     const createdComment: { postId: string } & CommentDbType = {
       id: generateRandomId().toString(),
       createdAt: new Date(),
-      content: body.content,
+      content: content,
       postId: post.id,
       commentatorInfo
     }

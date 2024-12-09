@@ -7,17 +7,18 @@ export const accessTokenGuardMiddleware = async (
   response: Response,
   next: NextFunction
 ) => {
-  if (!request.headers.authorization) return response.status(401).send();
+  if (!request.headers.authorization) return response.status(401).send({});
+
   const [authType, token] = request.headers.authorization.split(' ')[1];
 
-  if (authType !== 'Bearer') return response.status(401).send();
+  if (authType !== 'Bearer') return response.status(401).send({});
 
   const jwtPayload = await jwtService.verifyToken(token);
 
   if (jwtPayload) {
     const user = await usersRepository.getById(jwtPayload.userId);
 
-    if (!user) return response.status(401).send();
+    if (!user) return response.status(401).send({});
     // @ts-ignore
     const { id, login } = user;
 
@@ -26,6 +27,6 @@ export const accessTokenGuardMiddleware = async (
     request.user = { id, login };
     return next();
   }
-  return response.status(401).send();
+  return response.status(401).send({});
 
 }
