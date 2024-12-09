@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { blogsRepository } from '../blogsRepository';
+import { blogsRepository } from '../blogs-repository';
 import { mapId } from '../../helpers/mapId';
 import { BlogDBType } from '../../db/blog-db-type';
 

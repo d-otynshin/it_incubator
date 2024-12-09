@@ -49,14 +49,9 @@ export const usersRepository = {
       return null;
     }
   },
-  find: async (loginOrEmail: string) => {
+  getById: async (id: string) => {
     try {
-      return usersCollection.find({
-        $or: [
-          { login: loginOrEmail },
-          { email: loginOrEmail }
-        ]
-      });
+      return usersCollection.find({ id });
     } catch (error) {
       return null;
     }

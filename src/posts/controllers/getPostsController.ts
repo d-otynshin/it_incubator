@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { postsRepository } from '../postsRepository';
+import { postsRepository } from '../posts-repository';
 
 export const getPostsController = async (
   req: Request,

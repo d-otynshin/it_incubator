@@ -4,7 +4,7 @@ import { OutputErrorsType } from '../../input-output-types/output-errors-type'
 
 import { TPostInput } from '../types';
 import { PostDBType } from '../../db/post-db-type';
-import { postsRepository } from '../postsRepository';
+import { postsRepository } from '../posts-repository';
 import { mapId } from '../../helpers/mapId';
 
 export const createPostController = async (

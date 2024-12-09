@@ -3,12 +3,15 @@ import { generateRandomId } from '../helpers';
 import { TPostInput } from './types';
 import { Collection, WithId } from 'mongodb';
 import { db } from '../db/monogo-db';
-import { blogsRepository } from '../blogs/blogsRepository';
+import { blogsRepository } from '../blogs/blogs-repository';
 import { fetchPaginated } from '../helpers/fetchPaginated';
 import { QueryParams } from '../helpers/parseQuery';
 import { BlogDBType } from '../db/blog-db-type';
+import { CommentDbType } from '../db/comment-db-type';
+import { TCommentInput } from '../comments/type';
 
 const postsCollection: Collection<PostDBType> = db.collection<PostDBType>('posts');
+const commentsCollection: Collection<CommentDbType> = db.collection<CommentDbType>('comments');
 
 export const postsRepository = {
   create: async (body: TPostInput): Promise<WithId<PostDBType> | null> => {
@@ -42,6 +45,46 @@ export const postsRepository = {
   },
   get: async (query: QueryParams) => {
     return fetchPaginated(postsCollection, query)
+  },
+  getComments: async (postId: string, query: QueryParams) => {
+    // const filter: { blogId: string } | {} = {
+    //   blogId: '',
+    //   title: {
+    //     $ne: 'post title',
+    //   }
+    // };
+
+    const filter: { postId: string } | {} = { postId };
+
+    return fetchPaginated(commentsCollection, query, filter)
+  },
+  createComment: async (body: TCommentInput): Promise<WithId<CommentDbType> | null> => {
+    const post = await postsRepository.getById(body.id)
+
+    // if (!post) {
+    //   blog = { name: 'blog name' } as WithId<BlogDBType>
+    // }
+
+    if (!post) {
+      return null
+    }
+
+    const commentatorInfo = {
+      userId: '',
+      userLogin: ''
+    }
+
+    const createdComment: { postId: string } & CommentDbType = {
+      id: generateRandomId().toString(),
+      createdAt: new Date(),
+      content: body.content,
+      postId: post.id,
+      commentatorInfo
+    }
+
+    await commentsCollection.insertOne(createdComment)
+
+    return createdComment as unknown as WithId<CommentDbType>;
   },
   update: async (id: string, body: TPostInput): Promise<boolean> => {
     const result = await postsCollection.updateOne({ id }, { $set: body })

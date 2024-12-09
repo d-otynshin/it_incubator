@@ -1,6 +1,6 @@
 import { Response, Request } from 'express'
 
-import { blogsRepository } from '../blogsRepository';
+import { blogsRepository } from '../blogs-repository';
 import { mapId } from '../../helpers/mapId';
 import { TPostInput } from '../../posts/types';
 import { PostDBType } from '../../db/post-db-type';

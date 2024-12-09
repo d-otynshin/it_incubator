@@ -1,8 +1,9 @@
 import { usersRepository } from '../users/users-repository';
 import { hash } from 'bcrypt';
+import { jwtService } from '../adapters/jwt-service';
 
 export const authService = {
-  login: async (loginOrEmail: string, password: string) => {
+  checkCredentials: async (loginOrEmail: string, password: string) => {
     const user = await usersRepository.findOne(loginOrEmail);
 
     if (!user) {
@@ -11,6 +12,17 @@ export const authService = {
 
     const passwordHash = await hash(password, user.salt)
 
-    return passwordHash === user.passwordHash;
-  }
+    const isCorrect = passwordHash === user.passwordHash;
+
+    return isCorrect ? user : null;
+  },
+  login: async (loginOrEmail: string, password: string) => {
+    const user = await authService.checkCredentials(loginOrEmail, password);
+
+    if (!user) {
+      return null;
+    }
+
+    return jwtService.createToken(user.id);
+  },
 }

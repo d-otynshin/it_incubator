@@ -1,7 +1,7 @@
 import { body } from 'express-validator';
-import { postsRepository } from '../postsRepository';
+import { postsRepository } from '../posts-repository';
 import { NextFunction, Request, Response } from 'express';
-import { blogsRepository } from '../../blogs/blogsRepository';
+import { blogsRepository } from '../../blogs/blogs-repository';
 
 const contentValidator = body('content')
   .notEmpty().withMessage('required')
