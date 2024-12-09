@@ -9,5 +9,5 @@ import { authMiddleware } from '../middlewares/auth';
 export const usersRouter = Router();
 
 usersRouter.get('/', getUsersController)
-usersRouter.post('/', ...userValidators, errorsHandlerMiddleware(), createUserController)
+usersRouter.post('/', authMiddleware, ...userValidators, errorsHandlerMiddleware(), createUserController)
 usersRouter.delete('/:id', authMiddleware, deleteUsersController)
