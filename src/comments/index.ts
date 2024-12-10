@@ -8,10 +8,10 @@ import { accessTokenGuardMiddleware } from '../auth/middlewares/accessTokenGuard
 
 export const commentsRouter = Router();
 
-commentsRouter.get('/', getCommentByIdController)
+commentsRouter.get('/:id', getCommentByIdController)
 
 commentsRouter.put(
-  '/',
+  '/:id',
   accessTokenGuardMiddleware,
   contentValidator,
   errorsHandlerMiddleware(),

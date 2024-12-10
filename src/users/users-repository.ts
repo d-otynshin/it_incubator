@@ -51,7 +51,7 @@ export const usersRepository = {
   },
   getById: async (id: string) => {
     try {
-      return usersCollection.find({ id });
+      return usersCollection.findOne({ id });
     } catch (error) {
       return null;
     }
