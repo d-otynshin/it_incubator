@@ -17,7 +17,11 @@ export const loginController = async (
   const { body } = req;
   const { loginOrEmail, password } = body;
 
-  const isLoggedIn = await authService.login(loginOrEmail, password);
+  const accessToken = await authService.login(loginOrEmail, password);
 
-  return isLoggedIn ? res.status(200).json({}) : res.status(401).json(error)
+  console.log(accessToken);
+
+  return accessToken
+    ? res.status(200).json({ accessToken })
+    : res.status(401).json(error)
 }
