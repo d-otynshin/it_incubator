@@ -1,4 +1,4 @@
-import { createBlog, createPost, request } from './test-helpers';
+import { createBlog, createLogin, createPost, createUser, request } from './test-helpers';
 import { SETTINGS } from '../src/settings'
 import { setDB } from '../src/db/db';
 import { codedAuth, invalidPost, validPost } from './datasets';
@@ -133,4 +133,37 @@ describe('/posts', () => {
       ])
     );
   });
+
+  it('should return success status on comment creation', async () => {
+    const createBlogResponse = await createBlog()
+    const blogId = createBlogResponse.body.id;
+
+    const createPostResponse = await createPost(blogId)
+    const postId = createPostResponse.body.id;
+
+    const createdUserResponse = await createUser()
+
+    expect(createdUserResponse.status).toBe(201);
+
+    const validLogin = {
+      loginOrEmail: 'user@mail.com',
+      password: '123456',
+    }
+
+    const loginResponse = await createLogin(validLogin)
+    const accessToken = loginResponse.body.accessToken;
+
+    expect(loginResponse.status).toBe(200);
+
+    const validComment = {
+      content: 'test comment_12345678910',
+    }
+
+    const createCommentResponse = await request
+      .set({ 'Authorization': `Bearer ${accessToken}` })
+      .post(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
+      .send(validComment)
+
+    expect(createCommentResponse.status).toBe(201);
+  })
 })

@@ -49,7 +49,7 @@ postsRouters.get(
 )
 
 postsRouters.post(
-  '/:postId/comments',
+  '/:id/comments',
   accessTokenGuardMiddleware,
   findPostValidator,
   contentValidator,

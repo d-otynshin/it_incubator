@@ -18,3 +18,19 @@ export const invalidPost = {
   title: 'length_31-DrmM8lHeNjSykwSzQ7Her',
   content: 'valid',
 };
+
+export const validUser = {
+  email: 'user@mail.com',
+  login: 'user',
+  password: '123456',
+};
+
+export type TValidLogin = {
+  loginOrEmail: string;
+  password: string;
+}
+
+export const validLogin = {
+  loginOrEmail: 'user@mail.com',
+  password: '123456',
+}

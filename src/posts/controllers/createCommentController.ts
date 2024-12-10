@@ -9,7 +9,7 @@ export const createCommentController = async (
 ) => {
   const createdComment = await postsRepository.createComment({
     content: req.body.content,
-    id: req.params.postId,
+    id: req.params.id,
     //@ts-ignore
     user: req.user
   })

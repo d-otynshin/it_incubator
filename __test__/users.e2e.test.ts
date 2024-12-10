@@ -1,4 +1,4 @@
-import { connect, request, closeDatabase, clearDatabase } from './test-helpers';
+import { connect, request, closeDatabase, clearDatabase, createUser, createLogin } from './test-helpers';
 import { SETTINGS } from '../src/settings'
 import { codedAuth } from './datasets';
 
@@ -40,16 +40,7 @@ describe('/users', () => {
   });
 
   it('should return 204 for valid login', async () => {
-    const validUser = {
-      email: 'user@mail.com',
-      login: 'user',
-      password: '123456',
-    };
-
-    const createdUserResponse = await request
-      .set({ 'Authorization': 'Basic ' + codedAuth })
-      .post(SETTINGS.PATH.USERS)
-      .send(validUser);
+    const createdUserResponse = await createUser()
 
     expect(createdUserResponse.status).toBe(201);
 
@@ -58,9 +49,7 @@ describe('/users', () => {
       password: '123456',
     }
 
-    const loginResponse = await request
-    .post(`${SETTINGS.PATH.AUTH}/login`)
-    .send(validLogin);
+    const loginResponse = await createLogin(validLogin)
 
     expect(loginResponse.status).toBe(200);
   });
