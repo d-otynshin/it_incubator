@@ -3,8 +3,8 @@ import { updateCommentsController } from './controllers/updateCommentsController
 import { getCommentByIdController } from './controllers/getCommentsController';
 import { deleteCommentsController } from './controllers/deleteCommentsController';
 import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
-import { authMiddleware } from '../middlewares/auth';
 import { contentValidator } from './middlewares/validation';
+import { accessTokenGuardMiddleware } from '../auth/middlewares/accessTokenGuardMiddleware';
 
 export const commentsRouter = Router();
 
@@ -12,7 +12,7 @@ commentsRouter.get('/', getCommentByIdController)
 
 commentsRouter.put(
   '/',
-  authMiddleware,
+  accessTokenGuardMiddleware,
   contentValidator,
   errorsHandlerMiddleware(),
   updateCommentsController
@@ -20,6 +20,6 @@ commentsRouter.put(
 
 commentsRouter.delete(
   '/:id',
-  authMiddleware,
+  accessTokenGuardMiddleware,
   deleteCommentsController
 )
