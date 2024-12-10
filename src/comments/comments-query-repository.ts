@@ -1,6 +1,8 @@
 import { Collection } from 'mongodb';
 import { db } from '../db/monogo-db';
 import { CommentDbType } from '../db/comment-db-type';
+import { fetchPaginated } from '../helpers/fetchPaginated';
+import { QueryParams } from '../helpers/parseQuery';
 
 const commentsCollection: Collection<CommentDbType> = db.collection<CommentDbType>('comments');
 
@@ -12,11 +14,16 @@ const mapComment = (comment: CommentDbType) => ({
 })
 
 export const commentsQueryRepository = {
-  get: async (postId: string) => {
+  get: async (postId: string, query: QueryParams) => {
     try {
-      const commentsDb = await commentsCollection.find({ postId }).toArray()
+      const filter: { postId: string } | {} = { postId };
 
-      return commentsDb.map(mapComment);
+      const paginatedCommentsDb = await fetchPaginated(commentsCollection, query, filter)
+
+      // @ts-ignore
+      paginatedCommentsDb.items = paginatedCommentsDb.items.map(mapComment);
+
+      return paginatedCommentsDb;
     } catch (error) {
       return null;
     }

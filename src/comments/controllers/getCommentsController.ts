@@ -6,9 +6,9 @@ export const getCommentByIdController = async (
   res: Response,
 ) => {
   const { id } = req.params;
-  const comments = await commentsQueryRepository.get(id);
+  const comment = await commentsQueryRepository.getById(id);
 
-  return Array.isArray(comments)
-    ? res.status(200).json(comments)
+  return comment
+    ? res.status(200).json(comment)
     : res.status(404).send({ message: "Comment not found" })
 }
