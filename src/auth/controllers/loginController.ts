@@ -20,6 +20,6 @@ export const loginController = async (
   const accessToken = await authService.login(loginOrEmail, password);
 
   return accessToken
-    ? res.status(204).json({ accessToken })
+    ? res.status(200).json({ accessToken })
     : res.status(401).json(error)
 }

@@ -62,7 +62,7 @@ describe('/users', () => {
     .post(`${SETTINGS.PATH.AUTH}/login`)
     .send(validLogin);
 
-    expect(loginResponse.status).toBe(204);
+    expect(loginResponse.status).toBe(200);
   });
 
 
