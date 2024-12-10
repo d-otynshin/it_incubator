@@ -10,5 +10,5 @@ export const getCommentByIdController = async (
 
   return comment
     ? res.status(200).json(comment)
-    : res.status(404).send()
+    : res.status(404).send({ message: "Post not found" })
 }

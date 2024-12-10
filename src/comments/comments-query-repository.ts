@@ -7,7 +7,7 @@ const commentsCollection: Collection<CommentDbType> = db.collection<CommentDbTyp
 export const commentsQueryRepository = {
   get: async (id: string) => {
     try {
-      return commentsCollection.findOne({ id })
+      return commentsCollection.findOne({ postId: id })
     } catch (error) {
       return null;
     }
