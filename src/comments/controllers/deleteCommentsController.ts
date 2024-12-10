@@ -11,5 +11,5 @@ export const deleteCommentsController = async (
 
   return isDeleted
     ? res.status(204).send()
-    : res.status(404).send({ error: 'Post not found' })
+    : res.status(404).send({ error: 'Comment not found' })
 }
