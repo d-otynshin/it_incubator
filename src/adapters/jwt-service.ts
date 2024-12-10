@@ -5,7 +5,7 @@ export const jwtService = {
     return jwt.sign(
       { userId },
       'SECRET',
-      { expiresIn: 'AC_TIME' }
+      { expiresIn: '1h' }
     );
   },
   async decodeToken(token: string): Promise<any> {

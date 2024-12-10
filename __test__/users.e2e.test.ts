@@ -30,7 +30,8 @@ describe('/users', () => {
     };
 
     await request
-      .post(SETTINGS.PATH.USERS)
+    .set({ 'Authorization': 'Basic ' + codedAuth })
+    .post(SETTINGS.PATH.USERS)
       .send(validUser);
 
     const users = await request.get(SETTINGS.PATH.USERS);
@@ -45,9 +46,12 @@ describe('/users', () => {
       password: '123456',
     };
 
-    await request
+    const createdUserResponse = await request
+      .set({ 'Authorization': 'Basic ' + codedAuth })
       .post(SETTINGS.PATH.USERS)
       .send(validUser);
+
+    expect(createdUserResponse.status).toBe(201);
 
     const validLogin = {
       loginOrEmail: 'user@mail.com',
