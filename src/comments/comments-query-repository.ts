@@ -6,7 +6,7 @@ import { QueryParams } from '../helpers/parseQuery';
 
 const commentsCollection: Collection<CommentDbType> = db.collection<CommentDbType>('comments');
 
-const mapComment = (comment: CommentDbType) => ({
+export const mapComment = (comment: CommentDbType) => ({
   id: comment.id,
   content: comment.content,
   createdAt: comment.createdAt,

@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
 import { postsRepository } from '../posts-repository';
-import { mapId } from '../../helpers/mapId';
 import { CommentInputType } from '../../db/comment-db-type';
+import { mapComment } from '../../comments/comments-query-repository';
 
 export const createCommentController = async (
   req: Request<any, any, CommentInputType>,
@@ -15,6 +15,6 @@ export const createCommentController = async (
   })
 
   return createdComment
-    ? res.status(201).json(mapId(createdComment))
+    ? res.status(201).json(mapComment(createdComment))
     : res.status(404).send()
 }
