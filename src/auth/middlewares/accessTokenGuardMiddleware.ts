@@ -9,7 +9,7 @@ export const accessTokenGuardMiddleware = async (
 ) => {
   if (!request.headers.authorization) return response.status(401).json({ error: 'No authorization header' });
 
-  const [authType, token] = request.headers.authorization.split(' ')[1];
+  const [authType, token] = request.headers.authorization.split(' ');
 
   if (authType !== 'Bearer') return response.status(401).json({ error: 'Wrong authorization type' });
 
