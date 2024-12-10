@@ -8,9 +8,9 @@ import { accessTokenGuardMiddleware } from '../auth/middlewares/accessTokenGuard
 
 export const commentsRouter = Router();
 
-commentsRouter.post('/', (_, res) => {
-  return res.status(200).json({ message: 'new method' });
-})
+// commentsRouter.post('/', (_, res) => {
+//   return res.status(200).json({ message: 'new method' });
+// })
 
 commentsRouter.get('/:id', getCommentByIdController)
 
