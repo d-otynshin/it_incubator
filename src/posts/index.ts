@@ -14,8 +14,8 @@ import {
 import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
 import { contentValidator } from '../comments/middlewares/validation';
 import { createCommentController } from './controllers/createCommentController';
-import { getCommentByIdController } from '../comments/controllers/getCommentsController';
 import { accessTokenGuardMiddleware } from '../auth/middlewares/accessTokenGuardMiddleware';
+import { getCommentsController } from './controllers/getCommentsController';
 
 export const postsRouters = Router()
 
@@ -45,7 +45,7 @@ postsRouters.delete('/:id', authMiddleware, deletePostController)
 
 postsRouters.get(
   '/:id/comments',
-  getCommentByIdController
+  getCommentsController
 )
 
 postsRouters.post(

@@ -15,11 +15,11 @@ export const updateCommentsController = async (
   const comment = await commentsQueryRepository.getById(id);
 
   if (!comment) {
-    return res.status(404).send({ error: 'Comment not found' });
+    return res.status(404).json({ error: 'Comment not found' });
   }
 
   if (comment.commentatorInfo.userId !== userId) {
-    return res.status(403).send({ error: 'Comment update is forbidden' });
+    return res.status(403).json({ error: 'Try to update or delete the entity that was created by another user' });
   }
 
   const isUpdated = await commentsService.update({ id, content });
