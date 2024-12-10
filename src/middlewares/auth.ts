@@ -16,7 +16,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   if (auth.slice(0, 6) !== 'Basic ') {
     res
       .status(401)
-      .json({})
+      .json({ message: 'not basic type, not authorized' })
 
     return
   }
