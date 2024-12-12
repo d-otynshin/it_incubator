@@ -6,5 +6,7 @@ export const resendEmailController = async (req: Request, res: Response) => {
 
   const isResent = await authService.resendEmail(email);
 
-  return isResent ? res.status(204).json() : res.status(400).json({ error: 'email is not resent' });
+  return isResent
+    ? res.status(204).json()
+    : res.status(400).json({ errorsMessages: [{ field: 'email', message: 'Email is not resent' }] });
 }
