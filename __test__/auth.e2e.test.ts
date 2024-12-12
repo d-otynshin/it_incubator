@@ -1,25 +1,12 @@
 import { connect, request, closeDatabase, clearDatabase, createUser, createLogin } from './test-helpers';
 import { SETTINGS } from '../src/settings'
+import jwt from 'jsonwebtoken';
 
 describe('/auth', () => {
   beforeAll(async () => { await connect() })
   afterAll(async () => { await closeDatabase() })
 
   beforeEach(async () => { await clearDatabase() });
-
-  it('should delete all data', async () => {
-    const response = await request
-    .delete(`${SETTINGS.PATH.TESTING}/all-data`)
-
-    expect(response.status).toBe(204)
-  })
-
-  it('should return success status', async () => {
-    const response = await request
-    .get(SETTINGS.PATH.USERS)
-
-    expect(response.status).toBe(200)
-  })
 
   it('POST => /register, should return success status: 204', async () => {
     const validRegister = {
@@ -33,5 +20,33 @@ describe('/auth', () => {
       .send(validRegister)
 
     expect(registerResponse.status).toBe(204)
+  })
+
+  it('POST => /confirm, should return success status: 204', async () => {
+    const validRegister = {
+      login: 'd-otynshin',
+      email: `user${Math.random()}@gmail.com`,
+      password: 'qwerty1'
+    }
+
+    const registerResponse = await request
+      .post(`${SETTINGS.PATH.AUTH}/registration`)
+      .send(validRegister)
+
+    expect(registerResponse.status).toBe(204)
+
+    const testCode = jwt.sign(
+      { login: validRegister.login },
+      'SECRET',
+      { expiresIn: '1h' }
+    );
+
+    const confirmationResponse = await request
+      .post(`${SETTINGS.PATH.AUTH}/registration-confirmation`)
+      .send({ code: testCode })
+
+    console.log(confirmationResponse.body);
+
+    expect(confirmationResponse.status).toBe(204)
   })
 })

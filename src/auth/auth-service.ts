@@ -24,8 +24,9 @@ export const authService = {
     return jwtService.createToken(user.id);
   },
   registerUser: async (login: string, password: string, email: string): Promise<Boolean | null> => {
-    const user = await usersRepository.findOne(login);
+    const user = await usersRepository.findOne(email);
     if (user) return null;
+
 
     const salt = await genSalt();
     const passwordHash = await hash(password, salt)
@@ -51,8 +52,6 @@ export const authService = {
     await usersRepository.create(createdUser);
 
     try {
-      console.log('sending');
-
       await nodemailerService.sendEmail(
         createdUser.email,
         createdUser.emailConfirmation.code,
@@ -67,7 +66,8 @@ export const authService = {
     }
   },
   confirmEmail: async (code: string) => {
-    const { payload: { login } } = await jwtService.decodeToken(code);
+    const decodedToken = await jwtService.decodeToken(code);
+    const { login } = decodedToken;
 
     if (!login) return null;
 
@@ -92,6 +92,8 @@ export const authService = {
     const token = sign({ login: user.login }, 'SECRET', { expiresIn: '1h' });
 
     try {
+      await usersRepository.setConfirmationCode(user.login, token)
+
       await nodemailerService.sendEmail(
         email,
         token,
