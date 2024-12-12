@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 import { SETTINGS } from '../settings';
 
 export const nodemailerService = {
-  async sendEmail(email: string, code: string, template: (code: string) => string): Promise<boolean> {
+  async sendEmail(email: string, code: string, subject: string, template: (code: string) => string): Promise<boolean> {
 
     let transport = nodemailer.createTransport({
       service: 'gmail',
@@ -15,7 +15,7 @@ export const nodemailerService = {
     let info = await transport.sendMail({
       from: '"Sender" <no-reply>',
       to: email,
-      subject: 'Auth',
+      subject,
       html: template(code),
     });
 

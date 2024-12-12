@@ -55,6 +55,7 @@ export const authService = {
       await nodemailerService.sendEmail(
         createdUser.email,
         token,
+        'register',
         emailTemplates.registrationEmail
       );
 
@@ -110,6 +111,7 @@ export const authService = {
       await nodemailerService.sendEmail(
         email,
         code,
+        'resend',
         emailTemplates.registrationEmail
       );
 
