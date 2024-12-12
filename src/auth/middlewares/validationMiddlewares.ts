@@ -8,7 +8,7 @@ export const emailValidator = body('email')
 export const loginValidator = body('login')
   .trim()
   .isString().withMessage('not a string')
-  .isLength({ min: 1 }).withMessage('empty')
+  .isLength({ min: 3 }).withMessage('less than 3')
 
 export const passwordValidator = body('password')
   .trim()
