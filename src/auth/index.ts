@@ -5,7 +5,13 @@ import { getMeController } from './controllers/getMeController';
 import { confirmController } from './controllers/confirmController';
 import { registerController } from './controllers/registerController';
 import { resendEmailController } from './controllers/resendEmailController';
-import { codeValidator, emailValidator, loginValidator, passwordValidator } from './middlewares/validationMiddlewares';
+import {
+  codeValidator,
+  emailValidator,
+  loginOrEmailValidator,
+  loginValidator,
+  passwordValidator
+} from './middlewares/validationMiddlewares';
 import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
 import { checkEmailDuplicationMiddleware, checkLoginDuplicationMiddleware } from './middlewares/duplicateMiddleware';
 
@@ -13,7 +19,7 @@ export const authRouter = Router()
 
 authRouter.post(
   '/login',
-  loginValidator,
+  loginOrEmailValidator,
   errorsHandlerMiddleware(),
   loginController
 );

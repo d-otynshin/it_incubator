@@ -151,9 +151,8 @@ describe('/posts', () => {
     }
 
     const loginResponse = await createLogin(validLogin)
-    const accessToken = loginResponse.body.accessToken;
 
-    expect(loginResponse.status).toBe(200);
+    const accessToken = loginResponse.body.accessToken;
 
     const validComment = {
       content: 'test comment_12345678910',

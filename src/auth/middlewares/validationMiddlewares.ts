@@ -19,3 +19,8 @@ export const codeValidator = body('code')
   .trim()
   .isString().withMessage('not a string')
   .isLength({ min: 1 }).withMessage('empty')
+
+export const loginOrEmailValidator = body('loginOrEmail')
+.trim()
+.isString().withMessage('not a string')
+.isLength({ min: 1 }).withMessage('empty')

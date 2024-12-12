@@ -1,4 +1,4 @@
-import { connect, request, closeDatabase, clearDatabase, createUser, createLogin } from './test-helpers';
+import { connect, request, closeDatabase, clearDatabase } from './test-helpers';
 import { SETTINGS } from '../src/settings'
 import { codedAuth } from './datasets';
 
