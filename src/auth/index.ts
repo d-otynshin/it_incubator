@@ -7,7 +7,7 @@ import { registerController } from './controllers/registerController';
 import { resendEmailController } from './controllers/resendEmailController';
 import { codeValidator, emailValidator, loginValidator, passwordValidator } from './middlewares/validationMiddlewares';
 import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
-import { checkDuplicationMiddleware } from './middlewares/duplicateMiddleware';
+import { checkEmailDuplicationMiddleware, checkLoginDuplicationMiddleware } from './middlewares/duplicateMiddleware';
 
 export const authRouter = Router()
 
@@ -25,7 +25,8 @@ authRouter.post(
   emailValidator,
   passwordValidator,
   errorsHandlerMiddleware(),
-  checkDuplicationMiddleware,
+  checkLoginDuplicationMiddleware,
+  checkEmailDuplicationMiddleware,
   registerController
 );
 
