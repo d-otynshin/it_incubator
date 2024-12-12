@@ -13,7 +13,7 @@ export const loginValidator = body('login')
 export const passwordValidator = body('password')
   .trim()
   .isString().withMessage('not a string')
-  .isLength({ min: 1 }).withMessage('empty')
+  .isLength({ min: 3, max: 20 }).withMessage('less than 3 or more than 20')
 
 export const codeValidator = body('code')
   .trim()
