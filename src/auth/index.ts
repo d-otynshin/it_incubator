@@ -36,7 +36,7 @@ authRouter.post(
 
 authRouter.post(
   '/registration-email-resending',
-  codeValidator,
+  emailValidator,
   errorsHandlerMiddleware(),
   resendEmailController
 );
