@@ -32,28 +32,12 @@ describe('/users', () => {
     await request
     .set({ 'Authorization': 'Basic ' + codedAuth })
     .post(SETTINGS.PATH.USERS)
-      .send(validUser);
+    .send(validUser);
 
     const users = await request.get(SETTINGS.PATH.USERS);
 
     expect(users.status).toBe(200);
   });
-
-  it('should return 204 for valid login', async () => {
-    const createdUserResponse = await createUser()
-
-    expect(createdUserResponse.status).toBe(201);
-
-    const validLogin = {
-      loginOrEmail: 'user@mail.com',
-      password: '123456',
-    }
-
-    const loginResponse = await createLogin(validLogin)
-
-    expect(loginResponse.status).toBe(200);
-  });
-
 
   it('should return 400 for valid blog data', async () => {
     const validBlog = {

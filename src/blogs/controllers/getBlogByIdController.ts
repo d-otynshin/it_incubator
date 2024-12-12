@@ -12,8 +12,6 @@ export const getBlogByIdController = async (req: FindByIdRequest, res: Response)
 
   const blog = await blogsRepository.getById(id)
 
-  console.log('here');
-
   return blog
     ? res.status(200).json(mapId<BlogDBType>(blog))
     : res.status(404).json({ message: "Blog not found" })

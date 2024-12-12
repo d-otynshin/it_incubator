@@ -51,6 +51,8 @@ export const authService = {
     await usersRepository.create(createdUser);
 
     try {
+      console.log('sending');
+
       await nodemailerService.sendEmail(
         createdUser.email,
         createdUser.emailConfirmation.code,

@@ -168,8 +168,6 @@ describe('/posts', () => {
 
     const commentResponse = await request.get(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
 
-    console.log(commentResponse.body);
-
     expect(commentResponse.status).toBe(200);
   })
 })
