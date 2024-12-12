@@ -11,7 +11,12 @@ import { checkEmailDuplicationMiddleware, checkLoginDuplicationMiddleware } from
 
 export const authRouter = Router()
 
-authRouter.post('/login', loginController);
+authRouter.post(
+  '/login',
+  loginValidator,
+  errorsHandlerMiddleware(),
+  loginController
+);
 
 authRouter.get(
   '/me',

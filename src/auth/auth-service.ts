@@ -66,24 +66,28 @@ export const authService = {
     }
   },
   confirmEmail: async (code: string) => {
-    const decodedToken = await jwtService.decodeToken(code);
-    const { login } = decodedToken;
+    try {
+      const decodedToken = await jwtService.decodeToken(code);
+      const { login } = decodedToken;
 
-    if (!login) return null;
+      if (!login) return null;
 
-    const user = await usersRepository.findOne(login);
-    if (!user) return null;
+      const user = await usersRepository.findOne(login);
+      if (!user) return null;
 
-    const { emailConfirmation: { isConfirmed } } = user;
-    if (isConfirmed) return null
+      const { emailConfirmation: { isConfirmed } } = user;
+      if (isConfirmed) return null
 
-    if (code === user.emailConfirmation.code) {
-      await usersRepository.setConfirmed(login)
+      if (code === user.emailConfirmation.code) {
+        await usersRepository.setConfirmed(login)
 
-      return true;
+        return true;
+      }
+
+      return null;
+    } catch (error) {
+      return null;
     }
-
-    return null;
   },
   resendEmail: async (email: string) => {
     const user = await usersRepository.findOne(email);
