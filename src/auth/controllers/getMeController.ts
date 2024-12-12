@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { usersRepository } from '../../users/users-repository';
+import { mapId } from '../../helpers/mapId';
 
 export const getMeController = async (
   req: Request,
@@ -12,5 +13,7 @@ export const getMeController = async (
 
   const me = await usersRepository.getById(userId);
 
-  return res.status(200).send(me);
+  if (!me) return res.status(404).send({ error: 'No such user' });
+
+  return res.status(200).send(mapId(me));
 }

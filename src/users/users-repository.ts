@@ -9,7 +9,7 @@ type TFindUsers = Record<string, { $regex: string, $options: string }>
 const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users');
 
 export const usersRepository = {
-  create: async ({ login, passwordHash, salt, email, createdAt, id }: UserDBType) => {
+  create: async ({ login, passwordHash, salt, email, createdAt, id, emailConfirmation }: UserDBType) => {
     try {
       await usersCollection.insertOne({
         login,
@@ -18,6 +18,7 @@ export const usersRepository = {
         email,
         createdAt,
         id,
+        emailConfirmation
       });
 
       return true;
@@ -73,6 +74,24 @@ export const usersRepository = {
       const result = await usersCollection.deleteOne({ id })
 
       return result.deletedCount === 1;
+    } catch (error) {
+      return false;
+    }
+  },
+  setConfirmed: async (login: string) => {
+    try {
+      const result = await usersCollection.updateOne({ login }, { $set: { 'emailConfirmation.isConfirmed': true } });
+
+      return result.matchedCount === 1;
+    } catch (error) {
+      return false;
+    }
+  },
+  setConfirmationCode: async (login: string, code: string) => {
+    try {
+      const result = await usersCollection.updateOne({ login }, { $set:  { 'emailConfirmation.code': code } });
+
+      return result.matchedCount === 1;
     } catch (error) {
       return false;
     }

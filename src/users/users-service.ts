@@ -15,7 +15,22 @@ export const usersService = {
     const createdAt: Date = new Date();
     const id = generateRandomId().toString();
 
-    const isCreated = await usersRepository.create({ salt, passwordHash, login, email, createdAt, id });
+    const isCreated = await usersRepository.create(
+      {
+        salt,
+        passwordHash,
+        login,
+        email,
+        createdAt,
+        id,
+        emailConfirmation: {
+          code: '',
+          isConfirmed: true,
+          expirationDate: new Date()
+        }
+      }
+    );
+
     const createdUser = { createdAt, email, id, login }
 
     return isCreated ? createdUser : null;
