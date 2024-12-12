@@ -8,5 +8,6 @@ export const confirmController = async (req: Request, res: Response) => {
 
   return isConfirmed
     ? res.status(204).send()
-    : res.status(400).json({ error: 'Email is not confirmed' });
+    : res.status(400).json({ errorsMessages: [{ message: "email is not confirmed", field: "code" }] }
+    );
 }
