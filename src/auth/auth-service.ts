@@ -72,9 +72,10 @@ export const authService = {
     if (!login) return null;
 
     const user = await usersRepository.findOne(login);
-
     if (!user) return null;
-    if (user.emailConfirmation.isConfirmed) return null
+
+    const { emailConfirmation: { isConfirmed } } = user;
+    if (isConfirmed) return null
 
     if (code === user.emailConfirmation.code) {
       await usersRepository.setConfirmed(login)
@@ -87,12 +88,21 @@ export const authService = {
   resendEmail: async (email: string) => {
     const user = await usersRepository.findOne(email);
     if (!user) return null;
-    if (user.emailConfirmation.isConfirmed) return null
 
-    const token = sign({ login: user.login }, 'SECRET', { expiresIn: '1h' });
+    const { emailConfirmation: { isConfirmed } } = user;
+    if (isConfirmed) return null
+
+    const token = sign(
+      { login: user.login },
+      'SECRET',
+      { expiresIn: '1h' }
+    );
 
     try {
-      await usersRepository.setConfirmationCode(user.login, token)
+      await usersRepository.setConfirmationCode(
+        user.login,
+        token
+      );
 
       await nodemailerService.sendEmail(
         email,
