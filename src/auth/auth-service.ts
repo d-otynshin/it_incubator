@@ -54,7 +54,7 @@ export const authService = {
     try {
       await nodemailerService.sendEmail(
         createdUser.email,
-        createdUser.emailConfirmation.code,
+        token,
         emailTemplates.registrationEmail
       );
 
@@ -79,7 +79,8 @@ export const authService = {
       if (isConfirmed) return null
 
       if (code === user.emailConfirmation.code) {
-        await usersRepository.setConfirmed(login)
+        const isChanged = await usersRepository.setConfirmed(login)
+        if (!isChanged) return null;
 
         return true;
       }
@@ -103,7 +104,8 @@ export const authService = {
     );
 
     try {
-      await usersRepository.setConfirmationCode(login, token);
+      const isChanged = await usersRepository.setConfirmationCode(login, token);
+      if (!isChanged) return null;
 
       await nodemailerService.sendEmail(
         email,
