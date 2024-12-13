@@ -7,7 +7,7 @@ export const getMeController = async (
   req: Request,
   res: Response
 ) => {
-  const token = req.cookies.refresh_token;
+  const token = req.cookies.access;
   if (!token) return res.status(401).json({})
 
   const decodedToken = await jwtService.decodeToken(token);

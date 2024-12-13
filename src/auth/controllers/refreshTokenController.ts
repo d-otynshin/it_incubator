@@ -13,7 +13,7 @@ export const refreshTokenController = async (
 
   const { accessToken, refreshToken } = refreshTokenResponse;
 
-  res.cookie('refresh_token', refreshToken, { httpOnly: true, secure: true })
+  res.cookie('refresh', refreshToken, { httpOnly: true, secure: true })
   res.status(200).json({ accessToken })
 
   return;
