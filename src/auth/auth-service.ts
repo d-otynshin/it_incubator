@@ -110,7 +110,7 @@ export const authService = {
 
       await nodemailerService.sendEmail(
         email,
-        code,
+        token,
         'resend',
         emailTemplates.registrationEmail
       );
