@@ -13,7 +13,9 @@ export const refreshTokenController = async (
 
   const { accessToken, refreshToken } = refreshTokenResponse;
 
-  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
+  const maxAge = 24 * 60 * 60 * 1000;
+
+  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge })
   res.status(200).json({ accessToken })
 
   return;
