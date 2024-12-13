@@ -1,7 +1,7 @@
 import { db } from '../db/monogo-db';
 
 const invalidTokensCollection = db.collection('invalid_tokens');
-const validTokensCollection = db.collection('invalid_tokens');
+const validTokensCollection = db.collection('valid_tokens');
 
 export const authRepository = {
   getInvalidToken: async (token: string) => {
