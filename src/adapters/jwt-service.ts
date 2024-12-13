@@ -1,11 +1,15 @@
 import jwt from 'jsonwebtoken';
 
 export const jwtService = {
-  async createToken(userId: string): Promise<string> {
+  async createToken(
+    userId: string,
+    secret: string,
+    expiration: string | number
+  ): Promise<string> {
     return jwt.sign(
       { userId },
-      'SECRET',
-      { expiresIn: '1h' }
+      secret,
+      { expiresIn: expiration }
     );
   },
   async decodeToken(token: string): Promise<any> {

@@ -6,6 +6,12 @@ import { add } from 'date-fns/add';
 import { nodemailerService } from '../adapters/nodomailer-service';
 import { generateRandomId } from '../helpers';
 import { emailTemplates } from '../helpers/emailTemplates';
+import { authRepository } from './auth-repository';
+
+const EXPIRATION_TIME = {
+  ACCESS: 1000 * 10,
+  REFRESH: 1000 * 20,
+}
 
 export const authService = {
   checkCredentials: async (loginOrEmail: string, password: string) => {
@@ -21,7 +27,12 @@ export const authService = {
     const user = await authService.checkCredentials(loginOrEmail, password);
     if (!user) return null;
 
-    return jwtService.createToken(user.id);
+    const { id } = user;
+
+    const accessToken = await jwtService.createToken(id, 'SECRET', EXPIRATION_TIME.ACCESS);
+    const refreshToken = await jwtService.createToken(id, 'REFRESH', EXPIRATION_TIME.REFRESH);
+
+    return { accessToken, refreshToken };
   },
   registerUser: async (login: string, password: string, email: string): Promise<Boolean | null> => {
     const user = await usersRepository.findOne(email);
@@ -119,6 +130,41 @@ export const authService = {
     } catch (e: unknown) {
       console.error('Send email error', e);
 
+      return null;
+    }
+  },
+  refreshToken: async (token: string) => {
+    try {
+      const decodedToken = await jwtService.decodeToken(token);
+      if (!decodedToken) return null;
+
+      const { login } = decodedToken;
+      if (!login) return null;
+
+      const isInvalid = await authRepository.getInvalidToken(token);
+      if (isInvalid) return null;
+
+      const user = await usersRepository.findOne(login);
+      if (!user) return null;
+
+      const validToken = await authRepository.getValidToken(user.id);
+      if (!validToken) return null;
+
+      if (validToken.token !== token) return null;
+
+      const { id } = login;
+
+      const isInvalidTokenSet = await authRepository.setInvalidToken(token)
+      if (!isInvalidTokenSet) return null;
+
+      const accessToken = await jwtService.createToken(id, 'SECRET', EXPIRATION_TIME.ACCESS);
+      const refreshToken = await jwtService.createToken(id, 'REFRESH', EXPIRATION_TIME.REFRESH);
+
+      const isValidTokenUpdated = await authRepository.setValidToken(id, refreshToken);
+      if (!isValidTokenUpdated) return null;
+
+      return { accessToken, refreshToken };
+    } catch (error) {
       return null;
     }
   }

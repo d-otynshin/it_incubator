@@ -1,18 +1,22 @@
 import express from 'express'
 import cors from 'cors'
-import { SETTINGS } from './settings';
-import { testingRouter } from './testing';
-import { blogsRouters } from './blogs';
-import { postsRouters } from './posts';
-import { router } from './helpers/router';
-import { usersRouter } from './users';
+import cookieParser from 'cookie-parser';
+
 import { authRouter } from './auth';
+import { usersRouter } from './users';
+import { postsRouters } from './posts';
+import { blogsRouters } from './blogs';
+import { testingRouter } from './testing';
 import { commentsRouter } from './comments';
+
+import { SETTINGS } from './settings';
+import { router } from './helpers/router';
 
 export const app = express()
 
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 
 app.get(SETTINGS.PATH.INDEX, router)
 app.use(SETTINGS.PATH.TESTING, testingRouter)

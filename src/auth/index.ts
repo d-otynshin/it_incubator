@@ -14,8 +14,13 @@ import {
 } from './middlewares/validationMiddlewares';
 import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
 import { checkEmailDuplicationMiddleware, checkLoginDuplicationMiddleware } from './middlewares/duplicateMiddleware';
+import { logoutController } from './controllers/logoutController';
+import { refreshTokenController } from './controllers/refreshTokenController';
 
 export const authRouter = Router()
+
+authRouter.post('/logout', logoutController);
+authRouter.post('/refresh-token', refreshTokenController);
 
 authRouter.post(
   '/login',

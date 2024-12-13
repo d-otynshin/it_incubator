@@ -5,7 +5,7 @@ const error = {
   errorsMessages: [
     {
       message: "login or password is incorrect",
-      field: "login or password"
+      field: "loginOrEmail"
     }
   ]
 }
@@ -17,9 +17,16 @@ export const loginController = async (
   const { body } = req;
   const { loginOrEmail, password } = body;
 
-  const accessToken = await authService.login(loginOrEmail, password);
+  const loginResponse = await authService.login(loginOrEmail, password);
 
-  return accessToken
-    ? res.status(200).json({ accessToken })
-    : res.status(401).json(error)
+  if (!loginResponse) {
+    return res.status(401).json(error)
+  }
+
+  const { accessToken, refreshToken } = loginResponse;
+
+  res.cookie('refresh_token', refreshToken, { httpOnly: true, secure: true })
+  res.status(200).json({ accessToken })
+
+  return;
 }
