@@ -20,9 +20,9 @@ export const jwtService = {
       return null;
     }
   },
-  async verifyToken(token: string): Promise<{ userId: string } | null> {
+  async verifyToken(token: string): Promise<{ userId: string, exp: number } | null> {
     try {
-      return jwt.verify(token, 'SECRET') as { userId: string };
+      return jwt.verify(token, 'SECRET') as { userId: string, exp: number };
     } catch (error) {
       console.error('Token verify some error');
       return null;

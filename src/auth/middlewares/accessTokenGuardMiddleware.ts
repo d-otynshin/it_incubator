@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { jwtService } from '../../adapters/jwt-service';
 import { usersRepository } from '../../users/users-repository';
+import { isBefore } from 'date-fns';
 
 export const accessTokenGuardMiddleware = async (
   request: Request,
@@ -16,7 +17,14 @@ export const accessTokenGuardMiddleware = async (
   const jwtPayload = await jwtService.verifyToken(token);
 
   if (jwtPayload) {
-    const user = await usersRepository.getById(jwtPayload.userId);
+    const { userId, exp } = jwtPayload;
+    const user = await usersRepository.getById(userId);
+
+    const isExpired = isBefore(exp * 1000, Date.now());
+
+    if (isExpired) {
+      return response.status(401).json({ error: 'Token is expired' });
+    }
 
     if (!user) return response.status(401).json({ error: 'No user with this token' });
     // @ts-ignore
@@ -27,6 +35,7 @@ export const accessTokenGuardMiddleware = async (
     request.user = { id, login };
     return next();
   }
+
   return response.status(401).json({ error: 'Wrong token' });
 
 }

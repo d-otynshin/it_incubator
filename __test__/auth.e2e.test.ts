@@ -3,6 +3,8 @@ import { SETTINGS } from '../src/settings'
 import jwt from 'jsonwebtoken';
 import { validUser } from './datasets';
 import { EXPIRATION_TIME } from '../src/auth/auth-service';
+import { jwtService } from '../src/adapters/jwt-service';
+import { isBefore } from 'date-fns';
 
 describe('/auth', () => {
   beforeAll(async () => { await connect() })
@@ -32,6 +34,19 @@ describe('/auth', () => {
 
     expect(registerResponse.status).toBe(204)
   })
+
+  it('should return error, if accessToken is expired', async () => {
+    const expiredAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNzM0MDk3NjEwMTY3MTcxIiwiaWF0IjoxNzM0MDk3NjExLCJleHAiOjE3MzQxMDc2MTF9._CD3IeaE-GI_UNXERbSwX7f1XjemsOhC4BoYvxbNEIo'
+    const verifiedToken = await jwtService.verifyToken(expiredAccessToken)
+
+    if (verifiedToken) {
+      const { exp } = verifiedToken;
+
+      console.log(isBefore(exp, Date.now()));
+    }
+
+    expect(verifiedToken).toBe(false)
+  });
 
   it('POST => /confirm, should return success status: 204', async () => {
     const validRegister = {
