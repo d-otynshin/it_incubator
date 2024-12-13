@@ -95,18 +95,18 @@ export const authService = {
     const user = await usersRepository.findOne(email);
     if (!user) return null;
 
-    const { emailConfirmation: { isConfirmed, code } } = user;
+    const { login, emailConfirmation: { isConfirmed, code } } = user;
     if (isConfirmed) return null
 
-    // const token = sign(
-    //   { login },
-    //   'SECRET',
-    //   { expiresIn: '1h' }
-    // );
+    const token = sign(
+      { login },
+      'SECRET',
+      { expiresIn: '1h' }
+    );
 
     try {
-      // const isChanged = await usersRepository.setConfirmationCode(login, token);
-      // if (!isChanged) return null;
+      const isChanged = await usersRepository.setConfirmationCode(login, token);
+      if (!isChanged) return null;
 
       await nodemailerService.sendEmail(
         email,
