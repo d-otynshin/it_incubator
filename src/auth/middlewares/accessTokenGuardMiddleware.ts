@@ -18,7 +18,7 @@ export const accessTokenGuardMiddleware = async (
   if (jwtPayload) {
     const user = await usersRepository.getById(jwtPayload.userId);
 
-    if (!user) return response.status(401).json({ error: 'No user with this token' });;
+    if (!user) return response.status(401).json({ error: 'No user with this token' });
     // @ts-ignore
     const { id, login } = user;
 
@@ -27,6 +27,6 @@ export const accessTokenGuardMiddleware = async (
     request.user = { id, login };
     return next();
   }
-  return response.status(401).json({ error: 'Wrong token' });;
+  return response.status(401).json({ error: 'Wrong token' });
 
 }

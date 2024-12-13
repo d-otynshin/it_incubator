@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, Response } from 'express';
 import { usersRepository } from '../../users/users-repository';
 import { mapId } from '../../helpers/mapId';
 import { jwtService } from '../../adapters/jwt-service';

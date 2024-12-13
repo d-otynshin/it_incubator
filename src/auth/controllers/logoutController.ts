@@ -6,7 +6,7 @@ export const logoutController = async (
   req: Request,
   res: Response
 ) => {
-  const token = req.cookies.refresh;
+  const token = req.cookies.refreshToken;
   if (!token) return res.status(401).json({})
 
   const decodedToken = await jwtService.decodeToken(token);

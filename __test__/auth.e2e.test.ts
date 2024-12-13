@@ -9,9 +9,13 @@ describe('/auth', () => {
 
   beforeEach(async () => { await clearDatabase() });
 
-  it('/login => POST, should return success status, 200 and accessToken', async () => {
+  it('/login => POST, should return success status, 200, accessToken and refresh cookie', async () => {
     await createUser()
-    // await createLogin()
+    const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
+
+    console.log(loginResponse.headers);
+
+    expect(loginResponse.status).toBe(200)
   });
 
   it('POST => /register, should return success status: 204', async () => {

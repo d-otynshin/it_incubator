@@ -18,14 +18,11 @@ export const loginController = async (
   const { loginOrEmail, password } = body;
 
   const loginResponse = await authService.login(loginOrEmail, password);
-
-  if (!loginResponse) {
-    return res.status(401).json(error)
-  }
+  if (!loginResponse) return res.status(401).json(error)
 
   const { accessToken, refreshToken } = loginResponse;
 
-  res.cookie('refresh', refreshToken, { httpOnly: true, secure: true })
+  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
   res.status(200).json({ accessToken })
 
   return;

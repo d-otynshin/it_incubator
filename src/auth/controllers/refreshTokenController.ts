@@ -5,7 +5,7 @@ export const refreshTokenController = async (
   req: Request,
   res: Response
 ) => {
-  const token = req.cookies.refresh_token;
+  const token = req.cookies.refreshToken;
   if (!token) return res.status(401).json({})
 
   const refreshTokenResponse = await authService.refreshToken(token);
@@ -13,7 +13,7 @@ export const refreshTokenController = async (
 
   const { accessToken, refreshToken } = refreshTokenResponse;
 
-  res.cookie('refresh', refreshToken, { httpOnly: true, secure: true })
+  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
   res.status(200).json({ accessToken })
 
   return;
