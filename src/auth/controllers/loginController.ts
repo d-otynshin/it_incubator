@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { authService } from '../auth-service';
+import { authService, EXPIRATION_TIME } from '../auth-service';
 
 const error = {
   errorsMessages: [
@@ -22,9 +22,7 @@ export const loginController = async (
 
   const { accessToken, refreshToken } = loginResponse;
 
-  const maxAge = 24 * 60 * 60 * 1000;
-
-  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge })
+  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: EXPIRATION_TIME.REFRESH })
   res.status(200).json({ accessToken })
 
   return;

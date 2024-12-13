@@ -8,7 +8,7 @@ import { generateRandomId } from '../helpers';
 import { emailTemplates } from '../helpers/emailTemplates';
 import { authRepository } from './auth-repository';
 
-const EXPIRATION_TIME = {
+export const EXPIRATION_TIME = {
   ACCESS: 1000 * 10,
   REFRESH: 1000 * 20,
 }
@@ -41,7 +41,7 @@ export const authService = {
 
     const salt = await genSalt();
     const passwordHash = await hash(password, salt)
-    const token = sign({ login }, 'SECRET', { expiresIn: '1h' });
+    const token = sign({ login }, 'SECRET', { expiresIn: EXPIRATION_TIME.ACCESS });
 
     const createdUser: any = {
       login,
@@ -106,13 +106,13 @@ export const authService = {
     const user = await usersRepository.findOne(email);
     if (!user) return null;
 
-    const { login, emailConfirmation: { isConfirmed, code } } = user;
+    const { login, emailConfirmation: { isConfirmed } } = user;
     if (isConfirmed) return null
 
     const token = sign(
       { login },
       'SECRET',
-      { expiresIn: '1h' }
+      { expiresIn: EXPIRATION_TIME.ACCESS },
     );
 
     try {

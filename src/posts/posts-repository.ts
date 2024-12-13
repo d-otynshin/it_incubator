@@ -54,24 +54,8 @@ export const postsRepository = {
   get: async (query: QueryParams) => {
     return fetchPaginated(postsCollection, query)
   },
-  getComments: async (postId: string, query: QueryParams) => {
-    // const filter: { blogId: string } | {} = {
-    //   blogId: '',
-    //   title: {
-    //     $ne: 'post title',
-    //   }
-    // };
-
-    const filter: { postId: string } | {} = { postId };
-
-    return fetchPaginated(commentsCollection, query, filter)
-  },
   createComment: async ({ id, content, user }: TCreateComment): Promise<WithId<CommentDbType> | null> => {
     const post = await postsRepository.getById(id)
-
-    // if (!post) {
-    //   blog = { name: 'blog name' } as WithId<BlogDBType>
-    // }
 
     if (!post) {
       return null

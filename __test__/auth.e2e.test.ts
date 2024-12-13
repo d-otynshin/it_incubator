@@ -2,6 +2,7 @@ import { connect, request, closeDatabase, clearDatabase, createUser, createLogin
 import { SETTINGS } from '../src/settings'
 import jwt from 'jsonwebtoken';
 import { validUser } from './datasets';
+import { EXPIRATION_TIME } from '../src/auth/auth-service';
 
 describe('/auth', () => {
   beforeAll(async () => { await connect() })
@@ -48,7 +49,7 @@ describe('/auth', () => {
     const testCode = jwt.sign(
       { login: validRegister.login },
       'SECRET',
-      { expiresIn: '1h' }
+      { expiresIn: EXPIRATION_TIME.ACCESS }
     );
 
     const confirmationResponse = await request
