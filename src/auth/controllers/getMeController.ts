@@ -1,23 +1,16 @@
 import type { Request, Response } from 'express';
 import { usersRepository } from '../../users/users-repository';
-import { mapId } from '../../helpers/mapId';
-import { jwtService } from '../../adapters/jwt-service';
 
 export const getMeController = async (
   req: Request,
   res: Response
 ) => {
-  const token = req.cookies.access;
-  if (!token) return res.status(401).json({})
+  //@ts-ignore
+  const userId = req.user.id as string;
 
-  const decodedToken = await jwtService.decodeToken(token);
-  if (!decodedToken) return res.status(401).json({});
+  if (!userId) return res.status(401).send();
 
-  const { login } = decodedToken;
-  if (!login) return res.status(401).json({});
+  const me = await usersRepository.getById(userId);
 
-  const me = await usersRepository.findOne(login);
-  if (!me) return res.status(404).send({ error: 'No such user' });
-
-  return res.status(200).send(mapId(me));
+  return res.status(200).send(me);
 }
