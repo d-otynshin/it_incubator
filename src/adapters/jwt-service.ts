@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { isAfter } from 'date-fns';
+import { isBefore } from 'date-fns';
 
 export const jwtService = {
   async createToken(
@@ -29,9 +29,10 @@ export const jwtService = {
       return null;
     }
   },
-  async isExpired(token: string): Promise<boolean> {
-    const { exp } = await this.decodeToken(token);
+  async isExpired(token: string, secret: string): Promise<boolean> {
+    // @ts-ignore
+    const { exp } = await this.verifyToken(token, secret);
 
-    return isAfter(exp, Date.now());
+    return isBefore(exp * 1000, Date.now());
   }
 };

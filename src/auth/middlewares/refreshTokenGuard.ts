@@ -12,7 +12,7 @@ export const refreshTokenGuard = async (
     return response.status(401).json({ error: 'No refresh token provided' });
   }
 
-  const isTokenExpired = await jwtService.isExpired(refreshToken);
+  const isTokenExpired = await jwtService.isExpired(refreshToken, 'REFRESH');
   if (isTokenExpired) {
     return response.status(401).json({ error: 'Refresh token expired' });
   }

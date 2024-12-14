@@ -42,14 +42,8 @@ describe('/auth', () => {
 
     const { body: { accessToken } } = loginResponse;
 
-    const verifiedToken = await jwtService.verifyToken(accessToken, 'SECRET')
-
-    if (verifiedToken) {
-      const { exp } = verifiedToken;
-
-      expect(isBefore(exp, Date.now())).toBe(true)
-    }
-
+    const isExpired = await jwtService.isExpired(accessToken, 'SECRET')
+    expect(isExpired).toBe(false)
   });
 
   it('should return error, if refreshToken is expired', async () => {
@@ -57,19 +51,12 @@ describe('/auth', () => {
     const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
 
     expect(loginResponse.status).toBe(200)
-
     const { headers } = loginResponse;
 
     const refreshToken = headers['set-cookie'][0].split('=')[1].split(';')[0];
 
-    console.log(refreshToken);
-
-    const decodedToken = await jwtService.verifyToken(refreshToken, 'REFRESH');
-
-    if (decodedToken) {
-      const { exp } = decodedToken;
-      expect(isBefore(exp, Date.now())).toBe(true)
-    }
+    const isExpired = await jwtService.isExpired(refreshToken, 'REFRESH');
+    expect(isExpired).toBe(false)
   });
 
   it('POST => /confirm, should return success status: 204', async () => {
