@@ -144,10 +144,10 @@ export const authService = {
       const isInvalid = await authRepository.getInvalidToken(token);
       if (isInvalid) return null;
 
-      const validToken = await authRepository.getValidToken(userId);
-      if (!validToken) return null;
-
-      if (validToken.token !== token) return null;
+      // const validToken = await authRepository.getValidToken(userId);
+      // if (!validToken) return null;
+      //
+      // if (validToken.token !== token) return null;
 
       const isInvalidTokenSet = await authRepository.setInvalidToken(token)
       if (!isInvalidTokenSet) return null;
