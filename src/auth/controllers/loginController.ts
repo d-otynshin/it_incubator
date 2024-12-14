@@ -22,7 +22,13 @@ export const loginController = async (
 
   const { accessToken, refreshToken } = loginResponse;
 
-  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: EXPIRATION_TIME.REFRESH })
+  const cookieConfig = {
+    httpOnly: true,
+    secure: true,
+    maxAge: EXPIRATION_TIME.REFRESH
+  }
+
+  res.cookie('refreshToken', refreshToken, cookieConfig)
   res.status(200).json({ accessToken })
 
   return;

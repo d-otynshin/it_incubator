@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { loginController } from './controllers/loginController';
-import { accessTokenGuardMiddleware } from './middlewares/accessTokenGuardMiddleware';
+import { accessTokenGuard } from './middlewares/accessTokenGuard';
 import { getMeController } from './controllers/getMeController';
 import { confirmController } from './controllers/confirmController';
 import { registerController } from './controllers/registerController';
@@ -16,11 +16,12 @@ import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
 import { checkEmailDuplicationMiddleware, checkLoginDuplicationMiddleware } from './middlewares/duplicateMiddleware';
 import { logoutController } from './controllers/logoutController';
 import { refreshTokenController } from './controllers/refreshTokenController';
+import { refreshTokenGuard } from './middlewares/refreshTokenGuard';
 
 export const authRouter = Router()
 
-authRouter.post('/logout', logoutController);
-authRouter.post('/refresh-token', refreshTokenController);
+authRouter.post('/logout', refreshTokenGuard, logoutController);
+authRouter.post('/refresh-token', refreshTokenGuard, refreshTokenController);
 
 authRouter.post(
   '/login',
@@ -31,7 +32,7 @@ authRouter.post(
 
 authRouter.get(
   '/me',
-  accessTokenGuardMiddleware,
+  accessTokenGuard,
   getMeController,
 );
 

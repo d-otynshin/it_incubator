@@ -3,7 +3,7 @@ import { jwtService } from '../../adapters/jwt-service';
 import { usersRepository } from '../../users/users-repository';
 import { isBefore } from 'date-fns';
 
-export const accessTokenGuardMiddleware = async (
+export const accessTokenGuard = async (
   request: Request,
   response: Response,
   next: NextFunction

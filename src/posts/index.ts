@@ -14,7 +14,7 @@ import {
 import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
 import { contentValidator } from '../comments/middlewares/validation';
 import { createCommentController } from './controllers/createCommentController';
-import { accessTokenGuardMiddleware } from '../auth/middlewares/accessTokenGuardMiddleware';
+import { accessTokenGuard } from '../auth/middlewares/accessTokenGuard';
 import { getCommentsController } from './controllers/getCommentsController';
 
 export const postsRouters = Router()
@@ -50,7 +50,7 @@ postsRouters.get(
 
 postsRouters.post(
   '/:id/comments',
-  accessTokenGuardMiddleware,
+  accessTokenGuard,
   findPostValidator,
   contentValidator,
   errorsHandlerMiddleware(),
