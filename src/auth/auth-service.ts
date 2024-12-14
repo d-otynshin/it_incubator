@@ -135,32 +135,27 @@ export const authService = {
   },
   refreshToken: async (token: string) => {
     try {
-      const decodedToken = await jwtService.decodeToken(token);
+      const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
       if (!decodedToken) return null;
 
-      const { login } = decodedToken;
-      if (!login) return null;
+      const { userId } = decodedToken;
+      if (!userId) return null;
 
       const isInvalid = await authRepository.getInvalidToken(token);
       if (isInvalid) return null;
 
-      const user = await usersRepository.findOne(login);
-      if (!user) return null;
-
-      const validToken = await authRepository.getValidToken(user.id);
+      const validToken = await authRepository.getValidToken(userId);
       if (!validToken) return null;
 
       if (validToken.token !== token) return null;
 
-      const { id } = login;
-
       const isInvalidTokenSet = await authRepository.setInvalidToken(token)
       if (!isInvalidTokenSet) return null;
 
-      const accessToken = await jwtService.createToken(id, 'SECRET', EXPIRATION_TIME.ACCESS);
-      const refreshToken = await jwtService.createToken(id, 'REFRESH', EXPIRATION_TIME.REFRESH);
+      const accessToken = await jwtService.createToken(userId, 'SECRET', EXPIRATION_TIME.ACCESS);
+      const refreshToken = await jwtService.createToken(userId, 'REFRESH', EXPIRATION_TIME.REFRESH);
 
-      const isValidTokenUpdated = await authRepository.setValidToken(id, refreshToken);
+      const isValidTokenUpdated = await authRepository.setValidToken(userId, refreshToken);
       if (!isValidTokenUpdated) return null;
 
       return { accessToken, refreshToken };

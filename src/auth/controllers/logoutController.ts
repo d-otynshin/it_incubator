@@ -8,8 +8,8 @@ export const logoutController = async (
 ) => {
   const token = req.cookies.refreshToken;
 
-  const decodedToken = await jwtService.decodeToken(token);
-  if (!decodedToken) return res.status(401).json({});
+  const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
+  if (!decodedToken) return res.status(401).json({ error: 'Could not verify refresh token' });
 
   const isSetInvalidToken = await authRepository.setInvalidToken(token);
 
