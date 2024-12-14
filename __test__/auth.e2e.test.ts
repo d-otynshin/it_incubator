@@ -36,16 +36,21 @@ describe('/auth', () => {
   })
 
   it('should return error, if accessToken is expired', async () => {
-    const expiredAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxNzM0MDk3NjEwMTY3MTcxIiwiaWF0IjoxNzM0MDk3NjExLCJleHAiOjE3MzQxMDc2MTF9._CD3IeaE-GI_UNXERbSwX7f1XjemsOhC4BoYvxbNEIo'
-    const verifiedToken = await jwtService.verifyToken(expiredAccessToken)
+    await createUser()
+    const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
+
+    expect(loginResponse.status).toBe(200)
+
+    const { body: { accessToken } } = loginResponse;
+
+    const verifiedToken = await jwtService.verifyToken(accessToken)
 
     if (verifiedToken) {
       const { exp } = verifiedToken;
 
-      console.log(isBefore(exp, Date.now()));
+      expect(isBefore(exp, Date.now())).toBe(true)
     }
 
-    expect(verifiedToken).toBe(false)
   });
 
   it('POST => /confirm, should return success status: 204', async () => {

@@ -8,11 +8,15 @@ export const accessTokenGuardMiddleware = async (
   response: Response,
   next: NextFunction
 ) => {
-  if (!request.headers.authorization) return response.status(401).json({ error: 'No authorization header' });
+  if (!request.headers.authorization) {
+    return response.status(401).json({ error: 'No authorization header' });
+  }
 
   const [authType, token] = request.headers.authorization.split(' ');
 
-  if (authType !== 'Bearer') return response.status(401).json({ error: 'Wrong authorization type' });
+  if (authType !== 'Bearer') {
+    return response.status(401).json({ error: 'Wrong authorization type' });
+  }
 
   const jwtPayload = await jwtService.verifyToken(token);
 

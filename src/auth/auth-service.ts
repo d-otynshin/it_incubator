@@ -9,8 +9,8 @@ import { emailTemplates } from '../helpers/emailTemplates';
 import { authRepository } from './auth-repository';
 
 export const EXPIRATION_TIME = {
-  ACCESS: 1000 * 10,
-  REFRESH: 1000 * 20,
+  ACCESS: 10,
+  REFRESH: 20,
 }
 
 export const authService = {
