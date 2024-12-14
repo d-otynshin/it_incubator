@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { isBefore } from 'date-fns';
+import { isAfter } from 'date-fns';
 
 export const jwtService = {
   async createToken(
@@ -21,9 +21,9 @@ export const jwtService = {
       return null;
     }
   },
-  async verifyToken(token: string): Promise<{ userId: string, exp: number } | null> {
+  async verifyToken(token: string, secret: string): Promise<{ userId: string, exp: number } | null> {
     try {
-      return jwt.verify(token, 'SECRET') as { userId: string, exp: number };
+      return jwt.verify(token, secret) as { userId: string, exp: number };
     } catch (error) {
       console.error('Token verify some error');
       return null;
@@ -32,6 +32,6 @@ export const jwtService = {
   async isExpired(token: string): Promise<boolean> {
     const { exp } = await this.decodeToken(token);
 
-    return isBefore(exp, Date.now());
+    return isAfter(exp, Date.now());
   }
 };

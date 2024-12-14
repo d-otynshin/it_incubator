@@ -1,10 +1,9 @@
 import { connect, request, closeDatabase, clearDatabase, createUser, createLogin } from './test-helpers';
 import { SETTINGS } from '../src/settings'
-import jwt from 'jsonwebtoken';
-import { validUser } from './datasets';
 import { EXPIRATION_TIME } from '../src/auth/auth-service';
 import { jwtService } from '../src/adapters/jwt-service';
 import { isBefore } from 'date-fns';
+import jwt from 'jsonwebtoken';
 
 describe('/auth', () => {
   beforeAll(async () => { await connect() })
@@ -43,7 +42,7 @@ describe('/auth', () => {
 
     const { body: { accessToken } } = loginResponse;
 
-    const verifiedToken = await jwtService.verifyToken(accessToken)
+    const verifiedToken = await jwtService.verifyToken(accessToken, 'SECRET')
 
     if (verifiedToken) {
       const { exp } = verifiedToken;
@@ -51,6 +50,26 @@ describe('/auth', () => {
       expect(isBefore(exp, Date.now())).toBe(true)
     }
 
+  });
+
+  it('should return error, if refreshToken is expired', async () => {
+    await createUser()
+    const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
+
+    expect(loginResponse.status).toBe(200)
+
+    const { headers } = loginResponse;
+
+    const refreshToken = headers['set-cookie'][0].split('=')[1].split(';')[0];
+
+    console.log(refreshToken);
+
+    const decodedToken = await jwtService.verifyToken(refreshToken, 'REFRESH');
+
+    if (decodedToken) {
+      const { exp } = decodedToken;
+      expect(isBefore(exp, Date.now())).toBe(true)
+    }
   });
 
   it('POST => /confirm, should return success status: 204', async () => {
@@ -75,8 +94,6 @@ describe('/auth', () => {
     const confirmationResponse = await request
       .post(`${SETTINGS.PATH.AUTH}/registration-confirmation`)
       .send({ code: testCode })
-
-    console.log(confirmationResponse.body);
 
     expect(confirmationResponse.status).toBe(204)
   })

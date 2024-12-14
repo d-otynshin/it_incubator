@@ -6,14 +6,19 @@ export const refreshTokenController = async (
   res: Response
 ) => {
   const token = req.cookies.refreshToken;
-  if (!token) return res.status(401).json({})
 
   const refreshTokenResponse = await authService.refreshToken(token);
   if (!refreshTokenResponse) return res.status(401).json({})
 
   const { accessToken, refreshToken } = refreshTokenResponse;
 
-  res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: EXPIRATION_TIME.REFRESH })
+  const cookieConfig = {
+    httpOnly: true,
+    secure: true,
+    maxAge: EXPIRATION_TIME.REFRESH
+  }
+
+  res.cookie('refreshToken', refreshToken, cookieConfig)
   res.status(200).json({ accessToken })
 
   return;

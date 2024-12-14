@@ -12,13 +12,13 @@ export const accessTokenGuard = async (
     return response.status(401).json({ error: 'No authorization header' });
   }
 
-  const [authType, token] = request.headers.authorization.split(' ');
+  const [authType, accessToken] = request.headers.authorization.split(' ');
 
   if (authType !== 'Bearer') {
     return response.status(401).json({ error: 'Wrong authorization type' });
   }
 
-  const jwtPayload = await jwtService.verifyToken(token);
+  const jwtPayload = await jwtService.verifyToken(accessToken, 'SECRET');
 
   if (jwtPayload) {
     const { userId, exp } = jwtPayload;

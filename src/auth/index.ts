@@ -20,8 +20,17 @@ import { refreshTokenGuard } from './middlewares/refreshTokenGuard';
 
 export const authRouter = Router()
 
-authRouter.post('/logout', refreshTokenGuard, logoutController);
-authRouter.post('/refresh-token', refreshTokenGuard, refreshTokenController);
+authRouter.post(
+  '/logout',
+  refreshTokenGuard,
+  logoutController
+);
+
+authRouter.post(
+  '/refresh-token',
+  refreshTokenGuard,
+  refreshTokenController
+);
 
 authRouter.post(
   '/login',
