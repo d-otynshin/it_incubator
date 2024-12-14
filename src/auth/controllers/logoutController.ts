@@ -7,7 +7,6 @@ export const logoutController = async (
   res: Response
 ) => {
   const token = req.cookies.refreshToken;
-  if (!token) return res.status(401).json({})
 
   const decodedToken = await jwtService.decodeToken(token);
   if (!decodedToken) return res.status(401).json({});
@@ -16,5 +15,5 @@ export const logoutController = async (
 
   return isSetInvalidToken
     ? res.status(204).send()
-    : res.status(401).send()
+    : res.status(401).send({ error: 'Could not set invalid token' });
 }

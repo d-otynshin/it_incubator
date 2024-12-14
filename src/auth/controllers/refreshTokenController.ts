@@ -8,7 +8,7 @@ export const refreshTokenController = async (
   const token = req.cookies.refreshToken;
 
   const refreshTokenResponse = await authService.refreshToken(token);
-  if (!refreshTokenResponse) return res.status(401).json({})
+  if (!refreshTokenResponse) return res.status(401).json({ error: 'Could not refresh token' });
 
   const { accessToken, refreshToken } = refreshTokenResponse;
 
