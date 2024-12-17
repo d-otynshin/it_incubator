@@ -12,7 +12,7 @@ export const securityRepository = {
   },
   getSession: async (id: string) => {
     try {
-      return sessionsCollection.findOne({ userId: id });
+      return sessionsCollection.findOne({ deviceId: id });
     } catch (error) {
       return null;
     }

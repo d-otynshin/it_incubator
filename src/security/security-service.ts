@@ -25,9 +25,9 @@ export const securityService = {
     const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
     if (!decodedToken) return null;
 
-    const { userId, deviceId, iat } = decodedToken;
+    const { deviceId, iat } = decodedToken;
 
-    const session = await securityRepository.getSession(userId);
+    const session = await securityRepository.getSession(deviceId);
     if (!session) return null;
 
     const { deviceId: sDeviceId, iat: siat } = session;
