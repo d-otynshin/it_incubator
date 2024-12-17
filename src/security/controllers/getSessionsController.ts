@@ -10,5 +10,5 @@ export const getSessionsController = async (
 
   return Array.isArray(sessions)
     ? res.status(200).json(sessions)
-    : res.status(401).send()
+    : res.status(401).send({ error: 'Could not read sessions' });
 }

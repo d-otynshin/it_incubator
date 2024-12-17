@@ -5,7 +5,7 @@ const sessionsCollection = db.collection('sessions');
 export const securityRepository = {
   getById: async (id: string) => {
     try {
-      return sessionsCollection.findOne({ userId: id });
+      return sessionsCollection.find({ userId: id }).toArray();
     } catch (error) {
       return null;
     }
