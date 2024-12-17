@@ -12,11 +12,10 @@ import {
   loginValidator,
   passwordValidator
 } from './middlewares/validationMiddlewares';
-import { errorsHandlerMiddleware } from '../middlewares';
+import { errorsHandlerMiddleware, refreshTokenGuard } from '../middlewares';
 import { checkEmailDuplicationMiddleware, checkLoginDuplicationMiddleware } from './middlewares/duplicateMiddleware';
 import { logoutController } from './controllers/logoutController';
 import { refreshTokenController } from './controllers/refreshTokenController';
-import { refreshTokenGuard } from './middlewares/refreshTokenGuard';
 
 export const authRouter = Router()
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { jwtService } from '../../adapters/jwt-service';
 import { securityService } from '../../security/security-service';
+import { authService } from '../auth-service';
 
 export const logoutController = async (
   req: Request,
@@ -9,9 +10,16 @@ export const logoutController = async (
   const token = req.cookies.refreshToken;
 
   const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
-  if (!decodedToken) return res.status(401).json({ error: 'Could not verify refresh token' });
+  if (!decodedToken) {
+    return res.status(401).json({ error: 'Could not verify refresh token' });
+  }
 
   const { deviceId } = decodedToken;
+
+  const isValid = await securityService.isValid(token);
+  if (!isValid) {
+    return res.status(401).json({ error: 'Could not verify refresh token' });
+  }
 
   const isTerminated = await securityService.terminateSession(deviceId)
 

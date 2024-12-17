@@ -2,15 +2,11 @@ import { Router } from 'express';
 import { updateCommentsController } from './controllers/updateCommentsController';
 import { getCommentByIdController } from './controllers/getCommentsController';
 import { deleteCommentsController } from './controllers/deleteCommentsController';
-import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
+import { errorsHandlerMiddleware } from '../middlewares';
 import { contentValidator } from './middlewares/validation';
 import { accessTokenGuard } from '../auth/middlewares/accessTokenGuard';
 
 export const commentsRouter = Router();
-
-// commentsRouter.post('/', (_, res) => {
-//   return res.status(200).json({ message: 'new method' });
-// })
 
 commentsRouter.get('/:id', getCommentByIdController)
 
