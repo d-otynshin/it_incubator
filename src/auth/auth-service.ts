@@ -1,6 +1,6 @@
 import { usersRepository } from '../users/users-repository';
 import { genSalt, hash } from 'bcrypt';
-import jwt, { sign } from 'jsonwebtoken'
+import { sign } from 'jsonwebtoken'
 import { jwtService } from '../adapters/jwt-service';
 import { add } from 'date-fns/add';
 import { nodemailerService } from '../adapters/nodomailer-service';
@@ -17,7 +17,7 @@ type TRefreshTokenInput = {
   userId: string;
   ip: string;
   name: string;
-  deviceId: number;
+  deviceId: string;
 }
 
 type TAccessTokenInput = Pick<TRefreshTokenInput, 'userId'>;
@@ -57,7 +57,7 @@ export const authService = {
     if (!user) return null;
 
     const { id: userId } = user;
-    const deviceId = generateRandomId()
+    const deviceId = String(generateRandomId())
 
     const accessToken = await authService.createAccessToken({ userId });
     const refreshToken = await authService.createRefreshToken(
@@ -194,7 +194,7 @@ export const authService = {
 
       const accessToken = await authService.createAccessToken({ userId });
 
-      const refreshToken = await authService.createRefreshToken({ userId, ip, name, deviceId: Number(deviceId) });
+      const refreshToken = await authService.createRefreshToken({ userId, ip, name, deviceId });
       if (!refreshToken) return null;
 
       const isUpdated = await securityService.updateSession(deviceId, iat)

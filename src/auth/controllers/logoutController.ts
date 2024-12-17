@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { jwtService } from '../../adapters/jwt-service';
-import { authRepository } from '../auth-repository';
 import { securityService } from '../../security/security-service';
 
 export const logoutController = async (
@@ -14,9 +13,9 @@ export const logoutController = async (
 
   const { deviceId } = decodedToken;
 
-  const isSetInvalidToken = await securityService.terminateSession(deviceId)
+  const isTerminated = await securityService.terminateSession(deviceId)
 
-  return isSetInvalidToken
+  return isTerminated
     ? res.status(204).send()
     : res.status(401).send({ error: 'Could not set invalid token' });
 }

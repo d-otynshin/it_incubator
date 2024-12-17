@@ -16,7 +16,7 @@ type TCreateTokenPayload = {
 
   ip?: string;
   name?: string;
-  deviceId?: number;
+  deviceId?: string;
 }
 
 export const jwtService = {

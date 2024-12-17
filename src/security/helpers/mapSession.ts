@@ -10,7 +10,7 @@ export type TSessionDb = {
 
 export const mapSession = (sessionDB: TSessionDb) => {
   return ({
-    deviceId: String(sessionDB.deviceId),
+    deviceId: sessionDB.deviceId,
     ip: sessionDB.ip,
     lastActiveDate: new Date(sessionDB.iat * 1000).toISOString(),
     title: sessionDB.name,
