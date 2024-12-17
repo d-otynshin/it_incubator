@@ -37,7 +37,7 @@ export const securityRepository = {
   },
   updateSession: async (deviceId: string, iat: number) => {
     try {
-      return sessionsCollection.updateOne({ deviceId }, { $set: { iat } });
+      return sessionsCollection.updateOne({ deviceId }, { $set: { lastActiveDate: iat } });
     } catch (error) {
       return null;
     }
