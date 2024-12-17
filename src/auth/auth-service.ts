@@ -6,12 +6,20 @@ import { add } from 'date-fns/add';
 import { nodemailerService } from '../adapters/nodomailer-service';
 import { generateRandomId } from '../helpers';
 import { emailTemplates } from '../helpers/emailTemplates';
-import { authRepository } from './auth-repository';
+import { securityService } from '../security/security-service';
 
 export const EXPIRATION_TIME = {
   ACCESS: 10,
   REFRESH: 20,
 }
+
+type TRefreshTokenInput = {
+  userId: string;
+  ip: string;
+  name: string;
+}
+
+type TAccessTokenInput = Pick<TRefreshTokenInput, 'userId'>;
 
 export const authService = {
   checkCredentials: async (loginOrEmail: string, password: string) => {
@@ -23,14 +31,51 @@ export const authService = {
 
     return isCorrect ? user : null;
   },
-  login: async (loginOrEmail: string, password: string) => {
+  createAccessToken: async ({ userId }: TAccessTokenInput) => {
+    return jwtService.createRefreshToken({ userId, expirationTime: EXPIRATION_TIME.ACCESS });
+  },
+  createRefreshToken: async ({ userId, ip, name }: TRefreshTokenInput) => {
+    const deviceId = generateRandomId()
+
+    return jwtService.createRefreshToken(
+      {
+        userId,
+        ip,
+        name,
+        deviceId,
+        expirationTime: EXPIRATION_TIME.REFRESH
+      }
+    );
+  },
+  login: async (
+    loginOrEmail: string,
+    password: string,
+    ip: string,
+    name?: string
+  ) => {
     const user = await authService.checkCredentials(loginOrEmail, password);
     if (!user) return null;
 
-    const { id } = user;
+    const { id: userId } = user;
+    const deviceId = generateRandomId()
 
-    const accessToken = await jwtService.createToken(id, 'SECRET', EXPIRATION_TIME.ACCESS);
-    const refreshToken = await jwtService.createToken(id, 'REFRESH', EXPIRATION_TIME.REFRESH);
+    const accessToken = await authService.createAccessToken({ userId });
+    const refreshToken = await authService.createRefreshToken(
+      {
+        userId,
+        ip,
+        name: name || 'Device'
+      }
+    );
+
+    const isCreated = await securityService.createSession({
+      userId,
+      deviceId,
+      ip,
+      name
+    })
+
+    if (!isCreated) return null;
 
     return { accessToken, refreshToken };
   },
@@ -80,8 +125,8 @@ export const authService = {
   confirmEmail: async (code: string) => {
     try {
       const decodedToken = await jwtService.decodeToken(code);
-      const { login } = decodedToken;
 
+      const { login } = decodedToken;
       if (!login) return null;
 
       const user = await usersRepository.findOne(login);
@@ -99,6 +144,7 @@ export const authService = {
 
       return null;
     } catch (error) {
+      console.error('Confirm email error', error);
       return null;
     }
   },
@@ -133,25 +179,20 @@ export const authService = {
       return null;
     }
   },
-  refreshToken: async (token: string) => {
+  updateRefreshToken: async (token: string) => {
     try {
       const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
       if (!decodedToken) return null;
 
-      const { userId } = decodedToken;
-      if (!userId) return null;
+      const { userId, deviceId, ip, name, iat } = decodedToken;
 
-      const isInvalid = await authRepository.getInvalidToken(token);
-      if (isInvalid) return null;
+      const accessToken = await authService.createAccessToken({ userId });
 
-      const isInvalidTokenSet = await authRepository.setInvalidToken(token)
-      if (!isInvalidTokenSet) return null;
+      const refreshToken = await authService.createRefreshToken({ userId, ip, name });
+      if (!refreshToken) return null;
 
-      const accessToken = await jwtService.createToken(userId, 'SECRET', EXPIRATION_TIME.ACCESS);
-      const refreshToken = await jwtService.createToken(userId, 'REFRESH', EXPIRATION_TIME.REFRESH);
-
-      const isValidTokenUpdated = await authRepository.setValidToken(userId, refreshToken);
-      if (!isValidTokenUpdated) return null;
+      const isUpdated = await securityService.updateSession(deviceId, iat)
+      if (!isUpdated) return null;
 
       return { accessToken, refreshToken };
     } catch (error) {

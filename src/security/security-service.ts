@@ -20,5 +20,25 @@ export const securityService = {
   },
   terminateSession: async (id: string) => {
     return securityRepository.terminateSessionById(id);
+  },
+  isValid: async (token: string): Promise<boolean | null> => {
+    const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
+    if (!decodedToken) return null;
+
+    const { userId, deviceId, iat } = decodedToken;
+
+    const session = await securityRepository.getById(userId);
+    if (!session) return null;
+
+    const { deviceId: sDeviceId, iat: siat } = session;
+    if (sDeviceId === deviceId && iat === siat) return true;
+
+    return null;
+  },
+  updateSession: async (deviceId: string, iat: number) => {
+    return securityRepository.updateSession(deviceId, iat)
+  },
+  createSession: async (session: any) => {
+    return securityRepository.createSession(session);
   }
 }

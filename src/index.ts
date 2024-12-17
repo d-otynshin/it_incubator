@@ -6,3 +6,5 @@ app.listen(SETTINGS.PORT, async () => {
   await connectToDB()
   console.log('...server started in port ' + SETTINGS.PORT)
 })
+
+app.set('trust proxy', true)

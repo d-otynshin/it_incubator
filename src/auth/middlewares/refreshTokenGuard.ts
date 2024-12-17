@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { jwtService } from '../../adapters/jwt-service';
-import { authRepository } from '../auth-repository';
+import { securityService } from '../../security/security-service';
 
 export const refreshTokenGuard = async (
   request: Request,
@@ -18,8 +18,8 @@ export const refreshTokenGuard = async (
       return response.status(401).json({ error: 'Refresh token expired' });
     }
 
-    const isTokenInvalid = await authRepository.getInvalidToken(refreshToken);
-    if (isTokenInvalid) {
+    const isTokenInvalid = await securityService.isValid(refreshToken);
+    if (!isTokenInvalid) {
       return response.status(401).json({ error: 'Refresh token invalid' });
     }
 

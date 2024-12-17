@@ -6,9 +6,9 @@ export const getSessionsController = async (
   res: Response
 ) => {
   const token = req.cookies.refreshToken;
-  const devices = securityService.getById(token);
+  const sessions = securityService.getById(token);
 
-  return Array.isArray(devices)
-    ? res.status(200).json(devices)
+  return Array.isArray(sessions)
+    ? res.status(200).json(sessions)
     : res.status(401).send()
 }

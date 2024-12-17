@@ -14,11 +14,20 @@ export const loginController = async (
   req: Request,
   res: Response
 ) => {
-  const { body } = req;
+  const { body, headers, ip } = req;
   const { loginOrEmail, password } = body;
+  const userAgent = headers['user-agent'];
 
-  const loginResponse = await authService.login(loginOrEmail, password);
-  if (!loginResponse) return res.status(401).json(error)
+  const loginResponse = await authService.login(
+    loginOrEmail,
+    password,
+    ip as string,
+    userAgent
+  );
+
+  if (!loginResponse) {
+    return res.status(401).json(error)
+  }
 
   const { accessToken, refreshToken } = loginResponse;
 

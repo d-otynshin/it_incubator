@@ -1,25 +1,39 @@
 import { db } from '../db/monogo-db';
 
-const sessisonsCollection = db.collection('sessions');
+const sessionsCollection = db.collection('sessions');
 
 export const securityRepository = {
   getById: async (id: string) => {
     try {
-      return sessisonsCollection.find({ userId: id });
+      return sessionsCollection.findOne({ userId: id });
     } catch (error) {
       return null;
     }
   },
   terminateSessions: async (deviceId: string) => {
     try {
-      return sessisonsCollection.deleteMany({ deviceId: { $ne: deviceId } });
+      return sessionsCollection.deleteMany({ deviceId: { $ne: deviceId } });
     } catch (error) {
       return null;
     }
   },
   terminateSessionById: async (id: string) => {
     try {
-      return sessisonsCollection.deleteOne({ id: { $ne: id } });
+      return sessionsCollection.deleteOne({ deviceId: { $ne: id } });
+    } catch (error) {
+      return null;
+    }
+  },
+  updateSession: async (deviceId: string, iat: number) => {
+    try {
+      return sessionsCollection.updateOne({ deviceId }, { $set: { iat } });
+    } catch (error) {
+      return null;
+    }
+  },
+  createSession: async (session: any) => {
+    try {
+      return sessionsCollection.insertOne(session);
     } catch (error) {
       return null;
     }

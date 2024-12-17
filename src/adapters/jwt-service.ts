@@ -7,17 +7,43 @@ type TRefreshTokenPayload = {
   iat: number;
   deviceId: string;
   ip: string;
+  name: string;
+}
+
+type TCreateTokenPayload = {
+  userId: string;
+  expirationTime: string | number;
+
+  ip?: string;
+  name?: string;
+  deviceId?: number;
 }
 
 export const jwtService = {
-  async createToken(
-    userId: string,
-    secret: string,
-    expirationTime: string | number
-  ): Promise<string> {
+  async createAccessToken({ userId, expirationTime }: TCreateTokenPayload): Promise<string> {
     return jwt.sign(
       { userId },
-      secret,
+      'SECRET',
+      { expiresIn: expirationTime }
+    );
+  },
+  async createRefreshToken(
+    {
+      userId,
+      deviceId,
+      name,
+      ip,
+      expirationTime,
+    }: TCreateTokenPayload
+  ): Promise<string> {
+    return jwt.sign(
+      {
+        userId,
+        deviceId,
+        ip,
+        name
+      },
+      'REFRESH',
       { expiresIn: expirationTime }
     );
   },
@@ -37,9 +63,11 @@ export const jwtService = {
       return null;
     }
   },
-  async isExpired(token: string, secret: string): Promise<boolean> {
-    // @ts-ignore
-    const { exp } = await this.verifyToken(token, secret);
+  async isExpired(token: string, secret: string): Promise<boolean | null> {
+    const decodedToken = await this.verifyToken(token, secret);
+    if (!decodedToken) return null;
+
+    const { exp } = decodedToken;
 
     return isBefore(exp * 1000, Date.now());
   }

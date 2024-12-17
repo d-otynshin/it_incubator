@@ -25,13 +25,11 @@ export const accessTokenGuard = async (
     const user = await usersRepository.getById(userId);
 
     const isExpired = isBefore(exp * 1000, Date.now());
-
     if (isExpired) {
       return response.status(401).json({ error: 'Token is expired' });
     }
 
     if (!user) return response.status(401).json({ error: 'No user with this token' });
-    // @ts-ignore
     const { id, login } = user;
 
     // check global declaration
