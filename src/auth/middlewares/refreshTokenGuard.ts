@@ -25,6 +25,6 @@ export const refreshTokenGuard = async (
 
     return next()
   } catch (error) {
-    return response.status(401).json({ error: 'Refresh token invalid' });
+    return response.status(401).json({ error: 'Something wrong with token' });
   }
 }
