@@ -12,7 +12,7 @@ import {
   loginValidator,
   passwordValidator
 } from './middlewares/validationMiddlewares';
-import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
+import { errorsHandlerMiddleware } from '../middlewares';
 import { checkEmailDuplicationMiddleware, checkLoginDuplicationMiddleware } from './middlewares/duplicateMiddleware';
 import { logoutController } from './controllers/logoutController';
 import { refreshTokenController } from './controllers/refreshTokenController';

@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { createUserController } from './controllers/createUserController';
-import { getUsersController } from './controllers/getUsersController';
-import { deleteUsersController } from './controllers/deleteUsersController';
-import { errorsHandlerMiddleware } from '../middlewares/errorHandler';
-import { authMiddleware } from '../middlewares/auth';
+import {
+  createUserController,
+  getUsersController,
+  deleteUsersController
+} from './controllers';
+import { errorsHandlerMiddleware, authMiddleware } from '../middlewares';
 import { userValidators } from './middlewares/validation';
 
 export const usersRouter = Router();

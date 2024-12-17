@@ -1,6 +1,14 @@
 import jwt from 'jsonwebtoken';
 import { isBefore } from 'date-fns';
 
+type TRefreshTokenPayload = {
+  userId: string;
+  exp: number;
+  iat: number;
+  deviceId: string;
+  ip: string;
+}
+
 export const jwtService = {
   async createToken(
     userId: string,
@@ -21,9 +29,9 @@ export const jwtService = {
       return null;
     }
   },
-  async verifyToken(token: string, secret: string): Promise<{ userId: string, exp: number } | null> {
+  async verifyToken(token: string, secret: string): Promise<TRefreshTokenPayload | null> {
     try {
-      return jwt.verify(token, secret) as { userId: string, exp: number };
+      return jwt.verify(token, secret) as TRefreshTokenPayload;
     } catch (error) {
       console.error('Token verify some error');
       return null;
