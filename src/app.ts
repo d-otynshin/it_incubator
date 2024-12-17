@@ -2,13 +2,13 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 
-import { authRouter } from './auth';
-import { usersRouter } from './users';
-import { postsRouters } from './posts';
-import { blogsRouters } from './blogs';
-import { testingRouter } from './testing';
-import { commentsRouter } from './comments';
-import { securityRouter } from './security';
+import { authRouter } from './domain/auth';
+import { usersRouter } from './domain/users';
+import { postsRouters } from './domain/posts';
+import { blogsRouters } from './domain/blogs';
+import { testingRouter } from './domain/testing';
+import { commentsRouter } from './domain/comments';
+import { securityRouter } from './domain/security';
 
 import { SETTINGS } from './settings';
 import { router } from './helpers/router';

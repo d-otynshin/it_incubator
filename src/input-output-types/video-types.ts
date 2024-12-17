@@ -1,8 +1,3 @@
-export type InputVideoType = {
-  title: string;
-  author: string;
-  availableResolutions: Resolutions[];
-};
 
 export enum Resolutions {
   P144 = "P144",
