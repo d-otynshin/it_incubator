@@ -33,8 +33,8 @@ export const securityService = {
     const session = await securityRepository.getSession(deviceId);
     if (!session) return null;
 
-    const { deviceId: sDeviceId, iat: siat } = session;
-    if (sDeviceId === deviceId && iat === siat) return true;
+    const { deviceId: sessionDeviceId, lastActiveDate } = session;
+    if (sessionDeviceId === deviceId && iat === lastActiveDate) return true;
 
     return null;
   },

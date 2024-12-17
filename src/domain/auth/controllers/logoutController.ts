@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { jwtService } from '../../../adapters/jwt-service';
 import { securityService } from '../../security/security-service';
-import { authService } from '../auth-service';
 
 export const logoutController = async (
   req: Request,
