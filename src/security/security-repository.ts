@@ -3,9 +3,16 @@ import { db } from '../db/monogo-db';
 const sessionsCollection = db.collection('sessions');
 
 export const securityRepository = {
-  getById: async (id: string) => {
+  getSessions: async (id: string) => {
     try {
       return sessionsCollection.find({ userId: id }).toArray();
+    } catch (error) {
+      return null;
+    }
+  },
+  getSession: async (id: string) => {
+    try {
+      return sessionsCollection.findOne({ userId: id });
     } catch (error) {
       return null;
     }
@@ -19,7 +26,7 @@ export const securityRepository = {
   },
   terminateSessionById: async (id: string) => {
     try {
-      return sessionsCollection.deleteOne({ deviceId: { $ne: id } });
+      return sessionsCollection.deleteOne({ deviceId: id });
     } catch (error) {
       return null;
     }

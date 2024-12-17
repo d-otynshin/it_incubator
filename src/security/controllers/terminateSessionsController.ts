@@ -11,5 +11,5 @@ export const terminateSessionsController = async (
 
   return isDeleted
     ? res.status(204).send()
-    : res.status(401).json({ error: 'Could not terminate sessions' });
+    : res.status(404).json({ error: 'Could not terminate sessions' });
 }

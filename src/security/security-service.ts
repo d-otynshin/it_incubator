@@ -8,7 +8,7 @@ export const securityService = {
 
     const { userId } = decodedToken;
 
-    return securityRepository.getById(userId);
+    return securityRepository.getSessions(userId);
   },
   terminateSessions: async (token: string) => {
     const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
@@ -27,7 +27,7 @@ export const securityService = {
 
     const { userId, deviceId, iat } = decodedToken;
 
-    const session = await securityRepository.getById(userId);
+    const session = await securityRepository.getSession(userId);
     if (!session) return null;
 
     const { deviceId: sDeviceId, iat: siat } = session;
