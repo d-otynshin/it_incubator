@@ -197,7 +197,7 @@ export const authService = {
       const refreshToken = await authService.createRefreshToken({ userId, ip, name, deviceId });
       if (!refreshToken) return null;
 
-      const decodedNewToken = await jwtService.verifyToken(token, 'REFRESH');
+      const decodedNewToken = await jwtService.verifyToken(refreshToken, 'REFRESH');
       if (!decodedNewToken) return null;
 
       const { iat } = decodedNewToken;
