@@ -11,9 +11,7 @@ export const validateSessionMiddleware = async (
     return res.status(400).json({ error: 'Missing required id' });
   }
 
-  const refreshToken = req.cookies.refreshToken;
-
-  const session = await securityService.getById(refreshToken)
+  const session = await securityService.getById(id)
   if (!session) {
     return res.status(404).json({ error: 'Refresh token not found' });
   }
