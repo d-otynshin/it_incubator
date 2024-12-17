@@ -14,8 +14,6 @@ describe('/auth', () => {
     await createUser()
     const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
 
-    console.log(loginResponse.headers);
-
     expect(loginResponse.status).toBe(200)
   });
 
