@@ -6,7 +6,7 @@ export const getSessionsController = async (
   res: Response
 ) => {
   const token = req.cookies.refreshToken;
-  const sessions = securityService.getById(token);
+  const sessions = await securityService.getById(token);
 
   return Array.isArray(sessions)
     ? res.status(200).json(sessions)
