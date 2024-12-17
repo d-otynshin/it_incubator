@@ -6,7 +6,6 @@ export const terminateSessionsController = async (
   res: Response
 ) => {
   const token = req.cookies.refreshToken;
-
   const isDeleted = await securityService.terminateSessions(token);
 
   return isDeleted

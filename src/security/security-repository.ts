@@ -19,14 +19,18 @@ export const securityRepository = {
   },
   terminateSessions: async (deviceId: string) => {
     try {
-      return sessionsCollection.deleteMany({ deviceId: { $ne: deviceId } });
+      const result = await sessionsCollection.deleteMany({ deviceId: { $ne: deviceId } });
+
+      return result.deletedCount > 0;
     } catch (error) {
       return null;
     }
   },
   terminateSessionById: async (id: string) => {
     try {
-      return sessionsCollection.deleteOne({ deviceId: id });
+      const result = await sessionsCollection.deleteOne({ deviceId: id });
+
+      return result.deletedCount === 1;
     } catch (error) {
       return null;
     }

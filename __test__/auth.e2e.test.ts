@@ -2,7 +2,6 @@ import { connect, request, closeDatabase, clearDatabase, createUser, createLogin
 import { SETTINGS } from '../src/settings'
 import { EXPIRATION_TIME } from '../src/auth/auth-service';
 import { jwtService } from '../src/adapters/jwt-service';
-import { isBefore } from 'date-fns';
 import jwt from 'jsonwebtoken';
 
 describe('/auth', () => {
@@ -84,4 +83,33 @@ describe('/auth', () => {
 
     expect(confirmationResponse.status).toBe(204)
   })
+
+  it('should return error on delete session', async () => {
+    await createUser()
+    const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
+
+    expect(loginResponse.status).toBe(200)
+
+    const deleteResponse = await request
+      .delete(`${SETTINGS.PATH.SECURITY}/devices/${123}`)
+
+    expect(deleteResponse.status).toBe(404)
+  });
+
+  it('should return error on delete all sessions', async () => {
+    await createUser()
+    const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
+
+    expect(loginResponse.status).toBe(200)
+
+    const { headers } = loginResponse;
+
+    const refreshToken = headers['set-cookie'][0].split('=')[1].split(';')[0];
+
+    const deleteResponse = await request
+      .set('Cookie', `refreshToken=${refreshToken}`)
+      .delete(`${SETTINGS.PATH.SECURITY}/devices`)
+
+    expect(deleteResponse.status).toBe(204)
+  });
 })
