@@ -25,7 +25,6 @@ securityRouter.delete(
 securityRouter.delete(
   '/devices/:id',
   refreshTokenGuard,
-  validateSessionMiddleware,
   permissionMiddleware,
   terminateSessionByIdController
 )
