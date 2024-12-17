@@ -1,6 +1,6 @@
 import { usersRepository } from '../users/users-repository';
 import { genSalt, hash } from 'bcrypt';
-import { sign } from 'jsonwebtoken'
+import jwt, { sign } from 'jsonwebtoken'
 import { jwtService } from '../adapters/jwt-service';
 import { add } from 'date-fns/add';
 import { nodemailerService } from '../adapters/nodomailer-service';
@@ -17,6 +17,7 @@ type TRefreshTokenInput = {
   userId: string;
   ip: string;
   name: string;
+  deviceId: number;
 }
 
 type TAccessTokenInput = Pick<TRefreshTokenInput, 'userId'>;
@@ -34,8 +35,7 @@ export const authService = {
   createAccessToken: async ({ userId }: TAccessTokenInput) => {
     return jwtService.createRefreshToken({ userId, expirationTime: EXPIRATION_TIME.ACCESS });
   },
-  createRefreshToken: async ({ userId, ip, name }: TRefreshTokenInput) => {
-    const deviceId = generateRandomId()
+  createRefreshToken: async ({ userId, ip, name, deviceId }: TRefreshTokenInput) => {
 
     return jwtService.createRefreshToken(
       {
@@ -64,15 +64,21 @@ export const authService = {
       {
         userId,
         ip,
-        name: name || 'Device'
+        name: name || 'Device',
+        deviceId,
       }
     );
+
+    const decodedToken = await jwtService.verifyToken(refreshToken, 'REFRESH')
+    if (!decodedToken) return null;
 
     const isCreated = await securityService.createSession({
       userId,
       deviceId,
       ip,
-      name
+      name,
+      exp: decodedToken.exp,
+      iat: decodedToken.iat,
     })
 
     if (!isCreated) return null;
@@ -188,7 +194,7 @@ export const authService = {
 
       const accessToken = await authService.createAccessToken({ userId });
 
-      const refreshToken = await authService.createRefreshToken({ userId, ip, name });
+      const refreshToken = await authService.createRefreshToken({ userId, ip, name, deviceId: Number(deviceId) });
       if (!refreshToken) return null;
 
       const isUpdated = await securityService.updateSession(deviceId, iat)

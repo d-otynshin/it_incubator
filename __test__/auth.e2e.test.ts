@@ -110,4 +110,20 @@ describe('/auth', () => {
 
     expect(deleteResponse.status).toBe(204)
   });
+
+  it('should return success on get all sessions', async () => {
+    await createUser()
+    const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
+
+    expect(loginResponse.status).toBe(200)
+
+    const { headers } = loginResponse;
+    const refreshToken = headers['set-cookie'][0].split('=')[1].split(';')[0];
+
+    const getAllActiveSessionsResponse = await request
+    .set('Cookie', `refreshToken=${refreshToken}`)
+    .get(`${SETTINGS.PATH.SECURITY}/devices`)
+
+    expect(getAllActiveSessionsResponse.status).toBe(200)
+  });
 })

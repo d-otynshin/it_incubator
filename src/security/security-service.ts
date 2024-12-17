@@ -3,10 +3,13 @@ import { securityRepository } from './security-repository';
 
 export const securityService = {
   getById: async (token: string) => {
+    console.log(token);
     const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
     if (!decodedToken) return null;
 
     const { userId } = decodedToken;
+
+    console.log(userId);
 
     return securityRepository.getSessions(userId);
   },
