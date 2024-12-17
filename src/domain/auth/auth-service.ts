@@ -187,15 +187,20 @@ export const authService = {
   },
   updateRefreshToken: async (token: string) => {
     try {
-      const decodedToken = await jwtService.verifyToken(token, 'REFRESH');
-      if (!decodedToken) return null;
+      const decodedOldToken = await jwtService.verifyToken(token, 'REFRESH');
+      if (!decodedOldToken) return null;
 
-      const { userId, deviceId, ip, name, iat } = decodedToken;
+      const { userId, deviceId, ip, name } = decodedOldToken;
 
       const accessToken = await authService.createAccessToken({ userId });
 
       const refreshToken = await authService.createRefreshToken({ userId, ip, name, deviceId });
       if (!refreshToken) return null;
+
+      const decodedNewToken = await jwtService.verifyToken(token, 'REFRESH');
+      if (!decodedNewToken) return null;
+
+      const { iat } = decodedNewToken;
 
       const isUpdated = await securityService.updateSession(deviceId, iat)
       if (!isUpdated) return null;
