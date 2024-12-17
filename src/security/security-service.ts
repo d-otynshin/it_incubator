@@ -9,8 +9,6 @@ export const securityService = {
 
     const { userId } = decodedToken;
 
-    console.log(userId);
-
     return securityRepository.getSessions(userId);
   },
   terminateSessions: async (token: string) => {

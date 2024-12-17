@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { securityService } from '../security-service';
+import { mapId } from '../../helpers/mapId';
+import { mapSession } from '../helpers/mapSession';
 
 export const getSessionsController = async (
   req: Request,
@@ -9,6 +11,6 @@ export const getSessionsController = async (
   const sessions = await securityService.getById(token);
 
   return Array.isArray(sessions)
-    ? res.status(200).json(sessions)
+    ? res.status(200).json(sessions.map(mapId).map(mapSession as any))
     : res.status(401).send({ error: 'Could not read sessions' });
 }
