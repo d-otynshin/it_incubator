@@ -85,10 +85,9 @@ export const authService = {
 
     return { accessToken, refreshToken };
   },
-  registerUser: async (login: string, password: string, email: string): Promise<Boolean | null> => {
+  registerUser: async (login: string, password: string, email: string) => {
     const user = await usersRepository.findOne(email);
     if (user) return null;
-
 
     const salt = await genSalt();
     const passwordHash = await hash(password, salt)
@@ -113,20 +112,17 @@ export const authService = {
 
     await usersRepository.create(createdUser);
 
-    try {
-      await nodemailerService.sendEmail(
-        createdUser.email,
-        token,
-        'register',
-        emailTemplates.registrationEmail
-      );
+    nodemailerService.sendEmail(
+      createdUser.email,
+      token,
+      'register',
+      emailTemplates.registrationEmail
+    ).catch(() => {
+      console.log('error');
+      return null
+    })
 
-      return true;
-    } catch (e: unknown) {
-      console.error('Send email error', e);
-
-      return null;
-    }
+    return true;
   },
   confirmEmail: async (code: string) => {
     try {
@@ -167,23 +163,19 @@ export const authService = {
       { expiresIn: EXPIRATION_TIME.ACCESS },
     );
 
-    try {
-      const isChanged = await usersRepository.setConfirmationCode(login, token);
-      if (!isChanged) return null;
+    const isChanged = await usersRepository.setConfirmationCode(login, token);
+    if (!isChanged) return null;
 
-      await nodemailerService.sendEmail(
-        email,
-        token,
-        'resend',
-        emailTemplates.registrationEmail
-      );
+    nodemailerService.sendEmail(
+      email,
+      token,
+      'resend',
+      emailTemplates.registrationEmail
+    ).catch(() => {
+      return null
+    })
 
-      return true;
-    } catch (e: unknown) {
-      console.error('Send email error', e);
-
-      return null;
-    }
+    return true;
   },
   updateRefreshToken: async (token: string) => {
     try {
