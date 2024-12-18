@@ -15,7 +15,7 @@ export const cRateLimiterMiddleware = async (
       log => isAfter(log.date, subSeconds(new Date(), 100))
     );
 
-    if (filteredLogs.length >= 5) {
+    if (filteredLogs.length > 5) {
       return response.status(429).json({ message: 'Rate limit' })
     }
 
