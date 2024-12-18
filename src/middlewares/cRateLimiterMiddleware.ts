@@ -12,7 +12,7 @@ export const cRateLimiterMiddleware = async (
 
     const logs = await crateLimiterRepository.get(ip as string, url);
     const filteredLogs = logs.filter(
-      log => isAfter(log.date, subSeconds(new Date(), 100))
+      log => isAfter(log.date, subSeconds(new Date(), 10))
     );
 
     await crateLimiterRepository.set(ip as string, url, new Date());
