@@ -10,10 +10,6 @@ describe('/auth', () => {
 
   beforeEach(async () => { await clearDatabase() });
 
-  it('should clear database', async () => {
-    await clearDatabase()
-  });
-
   it('/login => POST, should return success status, 200, accessToken and refresh cookie', async () => {
     await createUser()
     const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })

@@ -7,11 +7,11 @@ export const cRateLimiterMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    const { ip, baseUrl } = request;
+    const { ip, url } = request;
 
-    await crateLimiterRepository.set(ip as string, baseUrl, new Date());
+    await crateLimiterRepository.set(ip as string, url, new Date());
 
-    const requests = await crateLimiterRepository.get(ip as string, baseUrl);
+    const requests = await crateLimiterRepository.get(ip as string, url);
 
     if (requests.length > 5) {
       return response.status(429).json({ message: 'Rate limit' })
