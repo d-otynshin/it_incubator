@@ -15,9 +15,7 @@ export const cRateLimiterMiddleware = async (
       log => isAfter(log.date, subSeconds(new Date(), 10))
     );
 
-    await crateLimiterRepository.set(ip as string, url, new Date(), filteredLogs.length);
-
-    console.log(filteredLogs);
+    await crateLimiterRepository.set(ip as string, url, new Date(), logs.length, filteredLogs.length);
 
     if (filteredLogs.length >= 5) {
       return response.status(429).json({ message: 'Rate limit' })
