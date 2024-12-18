@@ -50,8 +50,8 @@ authRouter.post(
 
 authRouter.get(
   '/me',
-  accessTokenGuard,
   cRateLimiterMiddleware,
+  accessTokenGuard,
   getMeController,
 );
 
