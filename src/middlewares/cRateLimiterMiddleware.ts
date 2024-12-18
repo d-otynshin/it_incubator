@@ -9,6 +9,8 @@ export const cRateLimiterMiddleware = async (
 ) => {
   try {
     const { ip, url } = request;
+    await crateLimiterRepository.set(ip as string, url, new Date());
+
     const logs = await crateLimiterRepository.get(ip as string, url);
 
     const tenSecondsAgo = subSeconds(new Date(), 10);
@@ -17,8 +19,6 @@ export const cRateLimiterMiddleware = async (
     if (lastLogs.length > 5) {
       return response.status(429).json({ message: 'Rate limit' })
     }
-
-    await crateLimiterRepository.set(ip as string, url, new Date());
 
     return next()
   } catch (error) {
