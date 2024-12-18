@@ -128,11 +128,4 @@ describe('/auth', () => {
 
     expect(getAllActiveSessionsResponse.status).toBe(200)
   })
-
-  it('should return error due to rate limiter exceeded', async () => {
-    await createUser()
-    const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })
-
-    console.log(loginResponse.headers);
-  });
 })

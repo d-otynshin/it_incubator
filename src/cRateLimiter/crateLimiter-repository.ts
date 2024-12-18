@@ -1,6 +1,7 @@
 import { db } from '../db/monogo-db';
+import { sub } from 'date-fns/sub';
 
-const tenSecondsAgo = new Date(Date.now() - 10000)
+const tenSecondsAgo = sub(new Date(), { seconds: 10 });
 
 const limitersCollection = db.collection('limiters');
 
