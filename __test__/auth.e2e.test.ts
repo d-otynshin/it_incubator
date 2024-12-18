@@ -131,5 +131,6 @@ describe('/auth', () => {
     await createUser()
 
     await createLogin({ loginOrEmail: 'user', password: '123456' })
+    await createLogin({ loginOrEmail: 'user', password: '123456' })
   });
 })

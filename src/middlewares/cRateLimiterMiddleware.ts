@@ -9,16 +9,17 @@ export const cRateLimiterMiddleware = async (
 ) => {
   try {
     const { ip, url } = request;
-    await crateLimiterRepository.set(ip as string, url, new Date());
 
     const logs = await crateLimiterRepository.get(ip as string, url);
+    const filteredLogs = logs.filter(
+      log => isAfter(log.date, subSeconds(new Date(), 100))
+    );
 
-    const tenSecondsAgo = subSeconds(new Date(), 10);
-    const lastLogs = logs.filter(log => isAfter(log.date, tenSecondsAgo));
-
-    if (lastLogs.length > 5) {
+    if (filteredLogs.length >= 5) {
       return response.status(429).json({ message: 'Rate limit' })
     }
+
+    await crateLimiterRepository.set(ip as string, url, new Date());
 
     return next()
   } catch (error) {
