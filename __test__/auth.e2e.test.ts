@@ -126,4 +126,10 @@ describe('/auth', () => {
 
     expect(getAllActiveSessionsResponse.status).toBe(200)
   })
+
+  it('should show rate limiter', async () => {
+    await createUser()
+
+    await createLogin({ loginOrEmail: 'user', password: '123456' })
+  });
 })
