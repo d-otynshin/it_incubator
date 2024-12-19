@@ -29,8 +29,3 @@ export type TValidLogin = {
   loginOrEmail: string;
   password: string;
 }
-
-export const validLogin = {
-  loginOrEmail: 'user@mail.com',
-  password: '123456',
-}

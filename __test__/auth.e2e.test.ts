@@ -31,6 +31,19 @@ describe('/auth', () => {
     expect(registerResponse.status).toBe(204)
   })
 
+  it('POST => /password-recovery, should return success status: 204', async () => {
+    const createdUserResponse = await createUser()
+    expect(createdUserResponse.status).toBe(201)
+
+    const recoveryResponse = await request
+    .post(`${SETTINGS.PATH.AUTH}/password-recovery`)
+    .send({ email: 'user@mail.com' })
+
+    console.log(recoveryResponse.body);
+
+    expect(recoveryResponse.status).toBe(204)
+  })
+
   it('should return error, if accessToken is expired', async () => {
     await createUser()
     const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })

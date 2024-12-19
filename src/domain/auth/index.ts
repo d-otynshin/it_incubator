@@ -88,7 +88,7 @@ authRouter.post(
 );
 
 authRouter.post(
-  'password-recovery',
+  '/password-recovery',
   cRateLimiterMiddleware,
   emailValidator,
   errorsHandlerMiddleware(),
@@ -96,7 +96,7 @@ authRouter.post(
 )
 
 authRouter.post(
-  'new-password',
+  '/new-password',
   cRateLimiterMiddleware,
   newPasswordValidation,
   recoveryCodeValidation,
