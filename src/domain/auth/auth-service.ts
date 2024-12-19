@@ -214,9 +214,6 @@ export const authService = {
         { expiresIn: EXPIRATION_TIME.ACCESS },
       );
 
-      const isChanged = await usersRepository.setConfirmationCode(login, passwordRecoveryToken);
-      if (!isChanged) return null;
-
       nodemailerService.sendEmail(
         email,
         passwordRecoveryToken,
@@ -225,6 +222,9 @@ export const authService = {
       ).catch(() => {
         return null
       })
+
+      const isChanged = await usersRepository.setConfirmationCode(login, passwordRecoveryToken);
+      if (!isChanged) return null;
 
       return true;
     } catch (error) {
