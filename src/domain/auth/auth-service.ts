@@ -240,7 +240,7 @@ export const authService = {
       const decodedRecoveryToken = await jwtService.verifyToken(recoveryCode, 'SECRET');
       if (!decodedRecoveryToken) return null;
 
-      const { userId, exp } = decodedRecoveryToken;
+      const { userId } = decodedRecoveryToken;
 
       const user = await usersRepository.getById(userId);
       if (!user) return null;

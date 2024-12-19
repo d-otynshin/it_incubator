@@ -4,10 +4,8 @@ import { codedAuth } from './datasets';
 
 describe('/users', () => {
   beforeAll(async () => { await connect() })
-  // await mongoose.connect(mongoURI)
 
   afterAll(async () => { await closeDatabase() })
-  // await mongoose.connection.close()
 
   beforeEach(async () => { await clearDatabase() });
 
@@ -33,9 +31,9 @@ describe('/users', () => {
     };
 
     await request
-    .set({ 'Authorization': 'Basic ' + codedAuth })
-    .post(SETTINGS.PATH.USERS)
-    .send(validUser);
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .post(SETTINGS.PATH.USERS)
+      .send(validUser);
 
     const users = await request.get(SETTINGS.PATH.USERS);
 

@@ -4,6 +4,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { Db, MongoClient } from 'mongodb';
 import { codedAuth, TValidLogin, validBlog, validPost, validUser } from './datasets';
 import { SETTINGS } from '../src/settings';
+import mongoose from 'mongoose';
 
 let mongoServer: MongoMemoryServer;
 let client: MongoClient;
@@ -15,6 +16,7 @@ export const connect = async () => {
 
   client = new MongoClient(uri);
   await client.connect();
+  await mongoose.connect(uri)
 
   db = client.db();
 
@@ -23,6 +25,7 @@ export const connect = async () => {
 
 export const closeDatabase = async () => {
   await client.close();
+  await mongoose.disconnect()
   await mongoServer.stop();
 };
 

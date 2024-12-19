@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { loginController } from './controllers/loginController';
 import { accessTokenGuard } from './middlewares/accessTokenGuard';
 import { getMeController } from './controllers/getMeController';
 import { confirmController } from './controllers/confirmController';
@@ -24,11 +23,20 @@ import {
   checkLoginDuplicationMiddleware
 } from './middlewares/duplicateMiddleware';
 import {
+  loginController,
   newPasswordController,
   passwordRecoveryController
 } from './controllers';
 
 export const authRouter = Router()
+
+authRouter.post(
+  '/login',
+  cRateLimiterMiddleware,
+  loginOrEmailValidator,
+  errorsHandlerMiddleware(),
+  loginController
+);
 
 authRouter.post(
   '/logout',
@@ -42,14 +50,6 @@ authRouter.post(
   cRateLimiterMiddleware,
   refreshTokenGuard,
   refreshTokenController
-);
-
-authRouter.post(
-  '/login',
-  cRateLimiterMiddleware,
-  loginOrEmailValidator,
-  errorsHandlerMiddleware(),
-  loginController
 );
 
 authRouter.get(
