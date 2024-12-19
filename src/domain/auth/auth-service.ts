@@ -201,5 +201,61 @@ export const authService = {
     } catch (error) {
       return null;
     }
+  },
+  passwordRecovery: async (email: string) => {
+    try {
+      const user = await usersRepository.findOne(email);
+      if (!user) return null;
+
+      const { login } = user;
+
+      const passwordRecoveryToken = sign(
+        { login },
+        'SECRET',
+        { expiresIn: EXPIRATION_TIME.ACCESS },
+      );
+
+      const isChanged = await usersRepository.setConfirmationCode(login, passwordRecoveryToken);
+      if (!isChanged) return null;
+
+      nodemailerService.sendEmail(
+        email,
+        passwordRecoveryToken,
+        'Password recovery',
+        emailTemplates.passwordRecoveryEmail
+      ).catch(() => {
+        return null
+      })
+
+      return true;
+    } catch (error) {
+      return null
+    }
+  },
+  newPassword: async (newPassword: string, recoveryCode: string) => {
+    try {
+      const isExpired = await jwtService.isExpired(recoveryCode, 'SECRET');
+      if (isExpired) return null;
+
+      const decodedRecoveryToken = await jwtService.verifyToken(recoveryCode, 'SECRET');
+      if (!decodedRecoveryToken) return null;
+
+      const { userId, exp } = decodedRecoveryToken;
+
+      const user = await usersRepository.getById(userId);
+      if (!user) return null;
+
+      const { login, emailConfirmation: { code } } = user;
+      if (code !== recoveryCode) {
+        return null
+      }
+
+      const salt = await genSalt();
+      const passwordHash = await hash(newPassword, salt)
+
+      return usersRepository.setNewPassword(login, salt, passwordHash)
+    } catch (error) {
+      return null;
+    }
   }
 }

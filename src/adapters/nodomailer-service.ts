@@ -2,7 +2,12 @@ import nodemailer from 'nodemailer';
 import { SETTINGS } from '../settings';
 
 export const nodemailerService = {
-  async sendEmail(email: string, code: string, subject: string, template: (code: string) => string): Promise<boolean> {
+  async sendEmail(
+    email: string,
+    code: string,
+    subject: string,
+    template: (code: string) => string
+  ): Promise<boolean> {
 
     let transport = nodemailer.createTransport({
       service: 'gmail',

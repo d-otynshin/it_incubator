@@ -1,12 +1,8 @@
 import { createBlog, createLogin, createPost, createUser, request } from './test-helpers';
 import { SETTINGS } from '../src/settings'
-import { setDB } from '../src/db/db';
 import { codedAuth, invalidPost, validPost } from './datasets';
 
 describe('/posts', () => {
-  beforeAll(() => setDB())
-  afterAll(() => setDB())
-
   it('should return 201 for valid post data', async () => {
     const createBlogResponse = await createBlog()
     const blogId = createBlogResponse.body.id;

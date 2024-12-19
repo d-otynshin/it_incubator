@@ -11,8 +11,8 @@ import {
   codeValidator,
   emailValidator,
   loginOrEmailValidator,
-  loginValidator,
-  passwordValidator
+  loginValidator, newPasswordValidation,
+  passwordValidator, recoveryCodeValidation
 } from './middlewares/validationMiddlewares';
 import {
   cRateLimiterMiddleware,
@@ -23,6 +23,10 @@ import {
   checkEmailDuplicationMiddleware,
   checkLoginDuplicationMiddleware
 } from './middlewares/duplicateMiddleware';
+import {
+  newPasswordController,
+  passwordRecoveryController
+} from './controllers';
 
 export const authRouter = Router()
 
@@ -82,3 +86,20 @@ authRouter.post(
   errorsHandlerMiddleware(),
   resendEmailController
 );
+
+authRouter.post(
+  'password-recovery',
+  cRateLimiterMiddleware,
+  emailValidator,
+  errorsHandlerMiddleware(),
+  passwordRecoveryController
+)
+
+authRouter.post(
+  'new-password',
+  cRateLimiterMiddleware,
+  newPasswordValidation,
+  recoveryCodeValidation,
+  errorsHandlerMiddleware(),
+  newPasswordController
+)

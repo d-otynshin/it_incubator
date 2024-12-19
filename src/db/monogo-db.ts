@@ -1,21 +1,26 @@
 import { Db, MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+const dbName: string = 'blogger_platform'
 const MONGO_DB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 
 const client: MongoClient = new MongoClient(MONGO_DB_URI)
-export const db: Db = client.db('blogger_platform');
+export const db: Db = client.db(dbName);
 
 export const connectToDB = async () => {
   try {
-    await client.connect()
+    await client.connect() // remove
+    await mongoose.connect(MONGO_DB_URI + '/' + dbName);
     console.log('connected to db')
 
     return true
   } catch (e) {
     console.log(e)
-    await client.close()
+    await mongoose.connect(MONGO_DB_URI + '/' + dbName);
+
+    await client.close() // remove
     return false
   }
 }

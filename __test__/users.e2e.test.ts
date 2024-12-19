@@ -4,7 +4,10 @@ import { codedAuth } from './datasets';
 
 describe('/users', () => {
   beforeAll(async () => { await connect() })
+  // await mongoose.connect(mongoURI)
+
   afterAll(async () => { await closeDatabase() })
+  // await mongoose.connection.close()
 
   beforeEach(async () => { await clearDatabase() });
 

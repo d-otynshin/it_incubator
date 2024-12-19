@@ -8,5 +8,7 @@ export const createUserController = async (
   const { login, email, password } = req.body;
   const user = await usersService.create({ login, email, password });
 
-  return user ? res.status(201).json(user) : res.status(400).json();
+  return user
+    ? res.status(201).json(user)
+    : res.status(400).json();
 }

@@ -20,6 +20,7 @@ app.use(cors())
 app.use(cookieParser())
 
 app.get(SETTINGS.PATH.INDEX, router)
+
 app.use(SETTINGS.PATH.TESTING, testingRouter)
 app.use(SETTINGS.PATH.BLOGS, blogsRouters)
 app.use(SETTINGS.PATH.POSTS, postsRouters)
