@@ -1,5 +1,5 @@
 import { Db, MongoClient } from 'mongodb';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -12,13 +12,13 @@ export const db: Db = client.db(dbName);
 export const connectToDB = async () => {
   try {
     await client.connect() // remove
-    await mongoose.connect(MONGO_DB_URI + '/' + dbName);
+    // await mongoose.connect(MONGO_DB_URI + '/' + dbName);
     console.log('connected to db')
 
     return true
   } catch (e) {
     console.log(e)
-    await mongoose.connect(MONGO_DB_URI + '/' + dbName);
+    // await mongoose.disconnect();
 
     await client.close() // remove
     return false

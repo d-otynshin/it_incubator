@@ -1,6 +1,8 @@
 import { UserDBType } from '../../db/user-db-type';
 import { QueryParams } from '../../helpers/parseQuery';
-import { fetchPaginated } from '../../helpers/fetchPaginated';
+import { fetchModelPaginated } from '../../helpers/fetchPaginated';
+import { UserModel } from './users-entity';
+import { UpdateWriteOpResult } from 'mongoose';
 import { Collection } from 'mongodb';
 import { db } from '../../db/monogo-db';
 
@@ -8,10 +10,11 @@ type TFindUsers = Record<string, { $regex: string, $options: string }>
 
 const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users');
 
-export const usersRepository = {
+
+export const usersMongooseRepository = {
   create: async ({ login, passwordHash, salt, email, createdAt, id, emailConfirmation }: UserDBType) => {
     try {
-      await usersCollection.insertOne({
+      await UserModel.insertMany([{
         login,
         passwordHash,
         salt,
@@ -19,7 +22,7 @@ export const usersRepository = {
         createdAt,
         id,
         emailConfirmation
-      });
+      }]);
 
       return true;
     } catch (error) {
@@ -45,33 +48,33 @@ export const usersRepository = {
         }
       }
 
-      return fetchPaginated(usersCollection, query, filter);
+      return fetchModelPaginated(UserModel, query, filter);
     } catch (error) {
       return null;
     }
   },
   getById: async (id: string) => {
     try {
-      return usersCollection.findOne({ id });
+      return UserModel.findOne({ id }).lean();
     } catch (error) {
       return null;
     }
   },
   findOne: async (loginOrEmail: string) => {
     try {
-      return usersCollection.findOne({
+      return UserModel.findOne({
         $or: [
           { login: loginOrEmail },
           { email: loginOrEmail }
         ]
-      })
+      }).lean();
     } catch (error) {
       return null;
     }
   },
   delete: async (id: string) => {
     try {
-      const result = await usersCollection.deleteOne({ id })
+      const result = await UserModel.deleteOne({ id })
 
       return result.deletedCount === 1;
     } catch (error) {
@@ -80,7 +83,7 @@ export const usersRepository = {
   },
   setConfirmed: async (login: string) => {
     try {
-      const result = await usersCollection.updateOne({ login }, { $set: { 'emailConfirmation.isConfirmed': true } });
+      const result: UpdateWriteOpResult = await UserModel.updateOne({ login }, { $set: { 'emailConfirmation.isConfirmed': true } });
 
       return result.matchedCount === 1;
     } catch (error) {
@@ -89,7 +92,7 @@ export const usersRepository = {
   },
   setConfirmationCode: async (login: string, code: string) => {
     try {
-      const result = await usersCollection.updateOne({ login }, { $set:  { 'emailConfirmation.code': code } });
+      const result: UpdateWriteOpResult = await UserModel.updateOne({ login }, { $set:  { 'emailConfirmation.code': code } });
 
       return result.matchedCount === 1;
     } catch (error) {
@@ -98,7 +101,7 @@ export const usersRepository = {
   },
   setNewPassword: async (login: string, salt: string, passwordHash: string) => {
     try {
-      const result = await usersCollection.updateOne(
+      const result: UpdateWriteOpResult = await UserModel.updateOne(
         { login },
         {
           $set: {
