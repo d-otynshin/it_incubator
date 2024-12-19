@@ -9,7 +9,7 @@ type TFindUsers = Record<string, { $regex: string, $options: string }>
 export const usersRepository = {
   create: async ({ login, passwordHash, salt, email, createdAt, id, emailConfirmation }: UserDBType) => {
     try {
-      const result = await UserModel.insertMany([{
+      await UserModel.insertMany([{
         login,
         passwordHash,
         salt,
@@ -21,7 +21,6 @@ export const usersRepository = {
 
       return true;
     } catch (error) {
-      console.log('create user error:', error);
       return false;
     }
   },

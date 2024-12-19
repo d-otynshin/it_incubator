@@ -18,6 +18,8 @@ export const loginController = async (
   const { loginOrEmail, password } = body;
   const userAgent = headers['user-agent'];
 
+  console.log('login');
+
   const loginResponse = await authService.login(
     loginOrEmail,
     password,

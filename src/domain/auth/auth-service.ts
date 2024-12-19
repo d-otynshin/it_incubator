@@ -118,7 +118,6 @@ export const authService = {
       'register',
       emailTemplates.registrationEmail
     ).catch(() => {
-      console.log('error');
       return null
     })
 

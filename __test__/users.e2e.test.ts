@@ -35,9 +35,9 @@ describe('/users', () => {
       .post(SETTINGS.PATH.USERS)
       .send(validUser);
 
-    const users = await request.get(SETTINGS.PATH.USERS);
+    const getUsersResponse = await request.get(SETTINGS.PATH.USERS);
 
-    expect(users.status).toBe(200);
+    expect(getUsersResponse.status).toBe(200);
   });
 
   it('should return 400 for valid blog data', async () => {
