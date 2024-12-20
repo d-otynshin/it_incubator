@@ -15,7 +15,9 @@ export const recoveryCodeGuard = async (
   }
 
   const decodedRecoveryToken = await jwtService.verifyToken(recoveryCode, 'SECRET');
-  if (!decodedRecoveryToken) return null;
+  if (!decodedRecoveryToken) {
+    return res.status(400).json({ errorsMessages: [{ field: 'recoveryCode', message: 'recoveryCode is invalid' }] });
+  }
 
   const { login } = decodedRecoveryToken;
 
@@ -26,7 +28,7 @@ export const recoveryCodeGuard = async (
 
   const { emailConfirmation: { code } } = user;
   if (code !== recoveryCode) {
-    return res.status(401).json({ errorsMessages: [{ field: 'recoveryCode', message: 'recoveryCode is invalid' }] });
+    return res.status(400).json({ errorsMessages: [{ field: 'recoveryCode', message: 'recoveryCode is invalid' }] });
   }
 
   next()
