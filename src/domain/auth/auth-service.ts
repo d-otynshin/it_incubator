@@ -238,12 +238,12 @@ export const authService = {
       const decodedRecoveryToken = await jwtService.verifyToken(recoveryCode, 'SECRET');
       if (!decodedRecoveryToken) return null;
 
-      const { userId } = decodedRecoveryToken;
+      const { login } = decodedRecoveryToken;
 
-      const user = await usersRepository.getById(userId);
+      const user = await usersRepository.findOne(login);
       if (!user) return null;
 
-      const { login, emailConfirmation: { code } } = user;
+      const { emailConfirmation: { code } } = user;
       if (code !== recoveryCode) {
         return null
       }

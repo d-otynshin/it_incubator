@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import { isBefore } from 'date-fns';
 
 type TRefreshTokenPayload = {
+  login: string;
   userId: string;
   exp: number;
   iat: number;

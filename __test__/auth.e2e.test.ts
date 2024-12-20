@@ -54,7 +54,7 @@ describe('/auth', () => {
   it('POST => /new-password, should return success status: 204', async () => {
     const newPasswordResponse = await request
     .post(`${SETTINGS.PATH.AUTH}/new-password`)
-    .send({ newPassword: 'qwerty2', recoveryCode: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImxnLTU4MTgwNSIsImlhdCI6MTczNDY4NjU4NCwiZXhwIjoxNzM0Njg2NjA0fQ.jgAxwwulrHwoG-Yv1x4nYCRXOPOQ-uNeRl7WLPsQJKs' })
+    .send({ newPassword: 'qwerty2', recoveryCode: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImxnLTgxMzUwIiwiaWF0IjoxNzM0Njg3MDgzLCJleHAiOjE3MzQ2ODgwODN9.lf-_DlP8d1PvIXy1G1gz69eUTgQ2Ojn05jViXFsn034' })
 
     expect(newPasswordResponse.status).toBe(204)
   })
