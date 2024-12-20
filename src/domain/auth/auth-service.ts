@@ -232,21 +232,10 @@ export const authService = {
   },
   newPassword: async (newPassword: string, recoveryCode: string) => {
     try {
-      const isExpired = await jwtService.isExpired(recoveryCode, 'SECRET');
-      if (isExpired) return null;
-
       const decodedRecoveryToken = await jwtService.verifyToken(recoveryCode, 'SECRET');
       if (!decodedRecoveryToken) return null;
 
       const { login } = decodedRecoveryToken;
-
-      const user = await usersRepository.findOne(login);
-      if (!user) return null;
-
-      const { emailConfirmation: { code } } = user;
-      if (code !== recoveryCode) {
-        return null
-      }
 
       const salt = await genSalt();
       const passwordHash = await hash(newPassword, salt)

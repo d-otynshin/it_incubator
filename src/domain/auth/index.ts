@@ -6,27 +6,35 @@ import { registerController } from './controllers/registerController';
 import { resendEmailController } from './controllers/resendEmailController';
 import { logoutController } from './controllers/logoutController';
 import { refreshTokenController } from './controllers/refreshTokenController';
+
 import {
   codeValidator,
   emailValidator,
   loginOrEmailValidator,
-  loginValidator, newPasswordValidation,
-  passwordValidator, recoveryCodeValidation
+  loginValidator,
+  newPasswordValidation,
+  passwordValidator,
+  recoveryCodeValidation
 } from './middlewares/validationMiddlewares';
+
 import {
   cRateLimiterMiddleware,
   errorsHandlerMiddleware,
   refreshTokenGuard
 } from '../../middlewares';
+
 import {
   checkEmailDuplicationMiddleware,
   checkLoginDuplicationMiddleware
 } from './middlewares/duplicateMiddleware';
+
 import {
   loginController,
   newPasswordController,
   passwordRecoveryController
 } from './controllers';
+
+import { recoveryCodeGuard } from './middlewares/recoveryCodeGuard';
 
 export const authRouter = Router()
 
@@ -101,5 +109,6 @@ authRouter.post(
   newPasswordValidation,
   recoveryCodeValidation,
   errorsHandlerMiddleware(),
+  recoveryCodeGuard,
   newPasswordController
 )
