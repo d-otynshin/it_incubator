@@ -51,6 +51,14 @@ describe('/auth', () => {
     expect(recoveryResponse.status).toBe(204)
   })
 
+  it('POST => /new-password, should return success status: 204', async () => {
+    const newPasswordResponse = await request
+    .post(`${SETTINGS.PATH.AUTH}/new-password`)
+    .send({ newPassword: 'qwerty2', recoveryCode: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImxnLTMyNDQwNCIsImlhdCI6MTczNDY4NDMyNiwiZXhwIjoxNzM0Njg0MzM2fQ.xyu8ssV7AuyQEmkw9DTd-m3MFNRgx_2x2cmt9F5MNOM' })
+
+    expect(newPasswordResponse.status).toBe(204)
+  })
+
   it('should return error, if accessToken is expired', async () => {
     await createUser()
     const loginResponse = await createLogin({ loginOrEmail: 'user', password: '123456' })

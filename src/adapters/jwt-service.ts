@@ -59,6 +59,7 @@ export const jwtService = {
     try {
       return jwt.verify(token, secret) as TRefreshTokenPayload;
     } catch (error) {
+      console.log(error);
       console.error('Token verify some error');
       return null;
     }

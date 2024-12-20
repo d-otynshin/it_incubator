@@ -211,7 +211,7 @@ export const authService = {
       const passwordRecoveryToken = sign(
         { login },
         'SECRET',
-        { expiresIn: EXPIRATION_TIME.ACCESS },
+        { expiresIn: EXPIRATION_TIME.REFRESH },
       );
 
       const isSent = await nodemailerService.sendEmail(
