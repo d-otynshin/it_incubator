@@ -8,7 +8,6 @@ export const nodemailerService = {
     subject: string,
     template: (code: string) => string
   ): Promise<boolean> {
-
     let transport = nodemailer.createTransport({
       service: 'gmail',
       auth: {

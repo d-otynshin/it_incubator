@@ -6,6 +6,12 @@ import { db } from '../../db/monogo-db';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
 
+type TSetNewPassword = {
+  login: string;
+  salt: string;
+  passwordHash: string;
+}
+
 const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users');
 
 export const usersRepository = {
@@ -96,7 +102,7 @@ export const usersRepository = {
       return false;
     }
   },
-  setNewPassword: async (login: string, salt: string, passwordHash: string) => {
+  setNewPassword: async ({ login, salt, passwordHash }: TSetNewPassword) => {
     try {
       const result = await usersCollection.updateOne(
         { login },

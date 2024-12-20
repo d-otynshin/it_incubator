@@ -3,6 +3,7 @@ import { SETTINGS } from '../src/settings'
 import { EXPIRATION_TIME } from '../src/domain/auth/auth-service';
 import { jwtService } from '../src/adapters/jwt-service';
 import jwt from 'jsonwebtoken';
+import { codedAuth, validUser } from './datasets';
 
 describe('/auth', () => {
   beforeAll(async () => { await connect() })
@@ -32,14 +33,20 @@ describe('/auth', () => {
   })
 
   it('POST => /password-recovery, should return success status: 204', async () => {
-    const createdUserResponse = await createUser()
-    expect(createdUserResponse.status).toBe(201)
+    const createdUserResponse = await request
+    .set({ 'Authorization': 'Basic ' + codedAuth })
+    .post(SETTINGS.PATH.USERS)
+    .send({
+      login: 'd-otynshin',
+      email: 'daniyar.otynshin@gmail.com',
+      password: 'qwerty1'
+    });
+
+    expect(createdUserResponse.status).toBe(201);
 
     const recoveryResponse = await request
     .post(`${SETTINGS.PATH.AUTH}/password-recovery`)
-    .send({ email: 'user@mail.com' })
-
-    console.log(recoveryResponse.body);
+    .send({ email: 'daniyar.otynshin@gmail.com' })
 
     expect(recoveryResponse.status).toBe(204)
   })

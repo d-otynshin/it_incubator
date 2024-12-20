@@ -214,14 +214,13 @@ export const authService = {
         { expiresIn: EXPIRATION_TIME.ACCESS },
       );
 
-      nodemailerService.sendEmail(
+      const isSent = await nodemailerService.sendEmail(
         email,
         passwordRecoveryToken,
         'Password recovery',
         emailTemplates.passwordRecoveryEmail
-      ).catch(() => {
-        return null
-      })
+      )
+      if (!isSent) return null
 
       const isChanged = await usersRepository.setConfirmationCode(login, passwordRecoveryToken);
       if (!isChanged) return null;
@@ -252,7 +251,7 @@ export const authService = {
       const salt = await genSalt();
       const passwordHash = await hash(newPassword, salt)
 
-      return usersRepository.setNewPassword(login, salt, passwordHash)
+      return usersRepository.setNewPassword({ login, salt, passwordHash })
     } catch (error) {
       return null;
     }
