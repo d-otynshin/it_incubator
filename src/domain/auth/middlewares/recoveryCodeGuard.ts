@@ -26,7 +26,7 @@ export const recoveryCodeGuard = async (
 
   const { emailConfirmation: { code } } = user;
   if (code !== recoveryCode) {
-    return res.status(401).json({ errors: [{ field: 'recoveryCode', message: 'recoveryCode is invalid' }] });
+    return res.status(401).json({ errorsMessages: [{ field: 'recoveryCode', message: 'recoveryCode is invalid' }] });
   }
 
   next()
