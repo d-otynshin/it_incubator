@@ -14,6 +14,11 @@ type TSetNewPassword = {
 
 const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users');
 
+export interface IUsersRepository {
+  create(user: UserDBType): Promise<boolean>;
+  delete: (id: string) => Promise<boolean>;
+}
+
 export const usersRepository = {
   create: async ({ login, passwordHash, salt, email, createdAt, id, emailConfirmation }: UserDBType) => {
     try {

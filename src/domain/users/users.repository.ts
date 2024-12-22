@@ -1,20 +1,23 @@
 import { UserDBType } from '../../db/user-db-type';
 import { QueryParams } from '../../helpers/parseQuery';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
-import { UserModel } from './users-entity';
+import { UserModel } from './users.entity';
 import { UpdateWriteOpResult } from 'mongoose';
-import { Collection } from 'mongodb';
-import { db } from '../../db/monogo-db';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
 
-const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users');
+type TNewPassword = {
+  login: string;
+  passwordHash: string;
+  salt: string;
+}
 
+export class UsersRepository {
+  constructor(private readonly userModel: typeof UserModel) {}
 
-export const usersMongooseRepository = {
-  create: async ({ login, passwordHash, salt, email, createdAt, id, emailConfirmation }: UserDBType) => {
+  async create({ login, passwordHash, salt, email, createdAt, id, emailConfirmation }: UserDBType) {
     try {
-      await UserModel.insertMany([{
+      await this.userModel.insertMany([{
         login,
         passwordHash,
         salt,
@@ -28,8 +31,8 @@ export const usersMongooseRepository = {
     } catch (error) {
       return false;
     }
-  },
-  get: async (query: QueryParams) => {
+  }
+  async get(query: QueryParams) {
     try {
       const { searchLoginTerm, searchEmailTerm } = query;
       const filter: TFindUsers = {};
@@ -48,21 +51,21 @@ export const usersMongooseRepository = {
         }
       }
 
-      return fetchModelPaginated(UserModel, query, filter);
+      return fetchModelPaginated(this.userModel.bind(this.userModel), query, filter);
     } catch (error) {
       return null;
     }
-  },
-  getById: async (id: string) => {
+  }
+  async getById(id: string) {
     try {
-      return UserModel.findOne({ id }).lean();
+      return this.userModel.findOne({ id }).lean();
     } catch (error) {
       return null;
     }
-  },
-  findOne: async (loginOrEmail: string) => {
+  }
+  async findOne (loginOrEmail: string) {
     try {
-      return UserModel.findOne({
+      return this.userModel.findOne({
         $or: [
           { login: loginOrEmail },
           { email: loginOrEmail }
@@ -71,37 +74,37 @@ export const usersMongooseRepository = {
     } catch (error) {
       return null;
     }
-  },
-  delete: async (id: string) => {
+  }
+  async delete(id: string) {
     try {
-      const result = await UserModel.deleteOne({ id })
+      const result = await this.userModel.deleteOne({ id })
 
       return result.deletedCount === 1;
     } catch (error) {
       return false;
     }
-  },
-  setConfirmed: async (login: string) => {
+  }
+  async setConfirmed(login: string) {
     try {
-      const result: UpdateWriteOpResult = await UserModel.updateOne({ login }, { $set: { 'emailConfirmation.isConfirmed': true } });
+      const result: UpdateWriteOpResult = await this.userModel.updateOne({ login }, { $set: { 'emailConfirmation.isConfirmed': true } });
 
       return result.matchedCount === 1;
     } catch (error) {
       return false;
     }
-  },
-  setConfirmationCode: async (login: string, code: string) => {
+  }
+  async setConfirmationCode (login: string, code: string) {
     try {
-      const result: UpdateWriteOpResult = await UserModel.updateOne({ login }, { $set:  { 'emailConfirmation.code': code } });
+      const result: UpdateWriteOpResult = await this.userModel.updateOne({ login }, { $set:  { 'emailConfirmation.code': code } });
 
       return result.matchedCount === 1;
     } catch (error) {
       return false;
     }
-  },
-  setNewPassword: async (login: string, salt: string, passwordHash: string) => {
+  }
+  async setNewPassword({ login, salt, passwordHash }: TNewPassword) {
     try {
-      const result: UpdateWriteOpResult = await UserModel.updateOne(
+      const result: UpdateWriteOpResult = await this.userModel.updateOne(
         { login },
         {
           $set: {
@@ -115,5 +118,7 @@ export const usersMongooseRepository = {
     } catch (error) {
       return false;
     }
-  },
+  }
 }
+
+export const usersRepository = new UsersRepository(UserModel)

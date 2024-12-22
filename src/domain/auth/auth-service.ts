@@ -1,4 +1,3 @@
-import { usersRepository } from '../users/users-repository';
 import { genSalt, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken'
 import { jwtService } from '../../adapters/jwt-service';
@@ -7,6 +6,7 @@ import { nodemailerService } from '../../adapters/nodomailer-service';
 import { generateRandomId } from '../../helpers';
 import { emailTemplates } from '../../helpers/emailTemplates';
 import { securityService } from '../security/security-service';
+import { usersRepository } from '../users/users.repository';
 
 export const EXPIRATION_TIME = {
   ACCESS: 10,
@@ -36,7 +36,6 @@ export const authService = {
     return jwtService.createRefreshToken({ userId, expirationTime: EXPIRATION_TIME.ACCESS });
   },
   createRefreshToken: async ({ userId, ip, name, deviceId }: TRefreshTokenInput) => {
-
     return jwtService.createRefreshToken(
       {
         userId,

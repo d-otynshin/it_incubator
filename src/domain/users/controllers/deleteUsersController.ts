@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { usersService } from '../users-service';
+import { usersService } from '../users.service';
 
 export const deleteUsersController = async (
   req: Request,

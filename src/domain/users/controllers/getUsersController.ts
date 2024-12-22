@@ -8,5 +8,7 @@ export const getUsersController = async (
   const { query } = req;
   const users = await usersQueryRepository.get(query);
 
-  return users ? res.status(200).json(users) : res.status(404).send({ error: 'no such users' });
+  return users
+    ? res.status(200).json(users)
+    : res.status(404).send({ error: 'no such users' });
 }
