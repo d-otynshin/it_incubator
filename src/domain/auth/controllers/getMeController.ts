@@ -7,13 +7,10 @@ export const getMeController = async (
   req: Request,
   res: Response
 ) => {
-  //@ts-ignore
-  const userId = req.user.id as string;
+  const { id } = req.user;
+  if (!id) return res.status(401).send();
 
-  if (!userId) return res.status(401).send();
-
-  const me = await usersRepository.getById(userId);
-
+  const me = await usersRepository.getById(id);
   if (!me) return res.status(401).send({ error: 'no such user' });
 
   return res.status(200).send(mapUser(mapId(me)));

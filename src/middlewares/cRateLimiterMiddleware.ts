@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { crateLimiterRepository } from '../cRateLimiter/crateLimiter-repository';
 import { isAfter, subSeconds } from 'date-fns';
+import { crateLimiterRepository } from '../rate-limiter/crateLimiter-repository';
 
 export const cRateLimiterMiddleware = async (
   request: Request,

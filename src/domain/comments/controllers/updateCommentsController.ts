@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { commentsService } from '../comments-service';
 import { commentsQueryRepository } from '../comments-query-repository';
+import { commentsService } from '../comments.service';
 
 export const updateCommentsController = async (
   req: Request,
@@ -8,8 +8,6 @@ export const updateCommentsController = async (
 ) => {
   const { content } = req.body;
   const { id } = req.params;
-
-  //@ts-ignore
   const { id: userId } = req.user;
 
   const comment = await commentsQueryRepository.getById(id);

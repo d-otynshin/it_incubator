@@ -1,7 +1,12 @@
+import 'express'
+
 declare global {
   namespace Express {
     export interface Request {
-      userId: string | null
+      user: {
+        id: string;
+        login: string;
+      }
     }
   }
 }

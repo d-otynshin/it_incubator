@@ -1,17 +1,15 @@
 import { Request, Response } from 'express';
-import { commentsService } from '../comments-service';
 import { commentsQueryRepository } from '../comments-query-repository';
+import { commentsService } from '../comments.service';
 
 export const deleteCommentsController = async (
   req: Request,
   res: Response
 ) => {
   const { id } = req.params;
-  //@ts-ignore
   const { id: userId } = req.user;
 
   const comment = await commentsQueryRepository.getById(id);
-
   if (!comment) {
     return res.status(404).json({ error: 'Comment not found' });
   }

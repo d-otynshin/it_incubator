@@ -8,7 +8,6 @@ export const createCommentController = async (
   res: Response
 ) => {
   const createdComment = await postsRepository.createComment({
-    //@ts-ignore
     user: req.user,
     content: req.body.content,
     id: req.params.id
