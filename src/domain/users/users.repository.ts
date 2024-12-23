@@ -1,8 +1,8 @@
 import { QueryParams } from '../../helpers/parseQuery';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
-import { UserModel } from './users.entity';
 import { UpdateWriteOpResult } from 'mongoose';
 import { TUserDb } from './type';
+import { UserModel } from '../../db';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
 

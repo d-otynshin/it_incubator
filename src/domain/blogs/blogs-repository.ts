@@ -3,7 +3,7 @@ import { generateRandomId } from '../../helpers';
 import { QueryParams } from '../../helpers/parseQuery';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { TBlogDb, TBlogDto } from './blogs.entity';
-import { PostModel, TPostDb, TPostDto } from '../posts/posts.entity';
+import { TPostDb, TPostDto } from '../posts/posts.entity';
 import { BlogModel } from '../../db';
 
 export const blogsRepository = {

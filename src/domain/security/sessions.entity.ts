@@ -18,5 +18,3 @@ export const SessionSchema = new mongoose.Schema<WithId<TSessionDb>>({
   exp: { type: Number, require: true },
   iat: { type: Number, require: true },
 })
-
-export const SessionModel = mongoose.model<WithId<TSessionDb>>('sessions', SessionSchema)
