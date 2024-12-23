@@ -7,7 +7,7 @@ const MONGO_DB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 
 export const connectToDB = async (): Promise<boolean> => {
   try {
-    await mongoose.connect(MONGO_DB_URI + '/' + dbName);
+    await mongoose.connect(MONGO_DB_URI);
     console.log('connected to db')
 
     return true
