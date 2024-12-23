@@ -1,15 +1,13 @@
-import { Collection, WithId } from 'mongodb';
+import { WithId } from 'mongodb';
 import { BlogDBType } from '../../db/blog-db-type';
-import { db } from '../../db/monogo-db';
 import { generateRandomId } from '../../helpers';
 import { TBlogInput } from './types';
 import { QueryParams } from '../../helpers/parseQuery';
-import { fetchPaginated } from '../../helpers/fetchPaginated';
+import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { TPostInput } from '../posts/types';
 import { PostDBType } from '../../db/post-db-type';
-
-const blogCollection: Collection<BlogDBType> = db.collection<BlogDBType>('blogs');
-const postsCollection: Collection<PostDBType> = db.collection<PostDBType>('posts');
+import { BlogModel } from './blogs.entity';
+import { PostModel } from '../posts/posts.entity';
 
 export const blogsRepository = {
   create: async (body: TBlogInput): Promise<WithId<BlogDBType>> => {
@@ -20,7 +18,7 @@ export const blogsRepository = {
       isMembership: false
     }
 
-    await blogCollection.insertOne(createdBlog);
+    await BlogModel.insertMany([createdBlog]);
 
     return createdBlog as WithId<BlogDBType>;
   },
@@ -36,17 +34,17 @@ export const blogsRepository = {
       ...body,
     }
 
-    await postsCollection.insertOne(createdPost)
+    await PostModel.insertMany([createdPost])
 
     return createdPost as WithId<PostDBType>;
   },
   delete: async (id: string) => {
-    const result = await blogCollection.deleteOne({ id })
+    const result = await BlogModel.deleteOne({ id })
 
     return result.deletedCount === 1;
   },
   getById: async (id: string): Promise<WithId<BlogDBType> | null> => {
-    return blogCollection.findOne({ id })
+    return BlogModel.findOne({ id })
   },
   get: async (query: QueryParams) => {
     let { searchNameTerm } = query;
@@ -61,7 +59,7 @@ export const blogsRepository = {
       filter = {};
     }
 
-    return fetchPaginated(blogCollection, query, filter)
+    return fetchModelPaginated(BlogModel, query, filter)
   },
   getPosts: async (_: string, query: QueryParams) => {
     const filter: { blogId: string } | {} = {
@@ -71,10 +69,10 @@ export const blogsRepository = {
       }
     };
 
-    return fetchPaginated(postsCollection, query, filter)
+    return fetchModelPaginated(PostModel, query, filter)
   },
   updateById: async (id: string, body: TBlogInput): Promise<boolean> => {
-    const result = await blogCollection.updateOne({ id }, { $set: body })
+    const result = await BlogModel.updateOne({ id }, { $set: body })
 
     return result.matchedCount === 1;
   }

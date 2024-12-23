@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
 import { postsRepository } from '../posts-repository';
 import { CommentInputType } from '../../../db/comment-db-type';
-import { mapComment } from '../../comments/comments-query-repository';
+import { mapComment } from '../../comments/comments-query.repository';
 
 export const createCommentController = async (
   req: Request<any, any, CommentInputType>,
