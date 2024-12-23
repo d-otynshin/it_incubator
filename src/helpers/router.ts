@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 
 export const router = (
   _: Request,
   res: Response
 ) => {
-  const mongoStatus = process.env.MONGODB_URI ? "connected" : "disconnected"
+  const mongoStatus = mongoose.connection.readyState
   res.status(200).json({ "connection": mongoStatus })
 }
