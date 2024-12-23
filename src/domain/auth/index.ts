@@ -18,7 +18,7 @@ import {
 } from './middlewares/validationMiddlewares';
 
 import {
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   errorsHandlerMiddleware,
   refreshTokenGuard
 } from '../../middlewares';
@@ -40,7 +40,7 @@ export const authRouter = Router()
 
 authRouter.post(
   '/login',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   loginOrEmailValidator,
   errorsHandlerMiddleware(),
   loginController
@@ -48,28 +48,28 @@ authRouter.post(
 
 authRouter.post(
   '/logout',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   refreshTokenGuard,
   logoutController
 );
 
 authRouter.post(
   '/refresh-token',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   refreshTokenGuard,
   refreshTokenController
 );
 
 authRouter.get(
   '/me',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   accessTokenGuard,
   getMeController,
 );
 
 authRouter.post(
   '/registration',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   loginValidator,
   emailValidator,
   passwordValidator,
@@ -81,7 +81,7 @@ authRouter.post(
 
 authRouter.post(
   '/registration-confirmation',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   codeValidator,
   errorsHandlerMiddleware(),
   confirmController
@@ -89,7 +89,7 @@ authRouter.post(
 
 authRouter.post(
   '/registration-email-resending',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   emailValidator,
   errorsHandlerMiddleware(),
   resendEmailController
@@ -97,7 +97,7 @@ authRouter.post(
 
 authRouter.post(
   '/password-recovery',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   emailValidator,
   errorsHandlerMiddleware(),
   passwordRecoveryController
@@ -105,7 +105,7 @@ authRouter.post(
 
 authRouter.post(
   '/new-password',
-  cRateLimiterMiddleware,
+  rateLimiterMiddleware,
   newPasswordValidation,
   recoveryCodeValidation,
   errorsHandlerMiddleware(),
