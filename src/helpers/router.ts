@@ -4,5 +4,6 @@ export const router = (
   _: Request,
   res: Response
 ) => {
-  res.status(200).json({ version: '1.0' })
+  const mongoURI = process.env.MONGODB_URI
+  res.status(200).json({ mongoURI })
 }
