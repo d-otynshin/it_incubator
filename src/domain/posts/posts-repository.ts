@@ -3,9 +3,10 @@ import { WithId } from 'mongodb';
 import { blogsRepository } from '../blogs/blogs-repository';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { QueryParams } from '../../helpers/parseQuery';
-import { PostModel, TPostDb, TPostDto } from './posts.entity';
+import { TPostDb, TPostDto } from './posts.entity';
 import { CommentModel, TCommentDb } from '../comments/comments.entity';
 import { TBlogDb } from '../blogs/blogs.entity';
+import { PostModel } from '../../db';
 
 type TCreateComment = {
   id: string;
