@@ -1,9 +1,9 @@
 import { app } from './app'
 import { SETTINGS } from './settings'
-import { connectToDB } from './db/monogo-db';
+import { connectToDb } from './db';
 
 app.listen(SETTINGS.PORT, async () => {
-  await connectToDB()
+  await connectToDb()
   console.log('...server started in port ' + SETTINGS.PORT)
 })
 
