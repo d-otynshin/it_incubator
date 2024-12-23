@@ -2,8 +2,9 @@ import { WithId } from 'mongodb';
 import { generateRandomId } from '../../helpers';
 import { QueryParams } from '../../helpers/parseQuery';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
-import { BlogModel, TBlogDb, TBlogDto } from './blogs.entity';
+import { TBlogDb, TBlogDto } from './blogs.entity';
 import { PostModel, TPostDb, TPostDto } from '../posts/posts.entity';
+import { BlogModel } from '../../db';
 
 export const blogsRepository = {
   create: async (body: TBlogDto): Promise<WithId<TBlogDb>> => {
