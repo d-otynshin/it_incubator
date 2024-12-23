@@ -4,7 +4,7 @@ import { QueryParams } from '../../helpers/parseQuery';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { TBlogDb, TBlogDto } from './blogs.entity';
 import { TPostDb, TPostDto } from '../posts/posts.entity';
-import { BlogModel } from '../../db';
+import { BlogModel, PostModel } from '../../db';
 
 export const blogsRepository = {
   create: async (body: TBlogDto): Promise<WithId<TBlogDb>> => {
