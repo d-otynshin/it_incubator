@@ -1,8 +1,8 @@
-import { UserDBType } from '../../db/user-db-type';
 import { QueryParams } from '../../helpers/parseQuery';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { UserModel } from './users.entity';
 import { UpdateWriteOpResult } from 'mongoose';
+import { TUserDb } from './type';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
 
@@ -15,7 +15,7 @@ type TNewPassword = {
 export class UsersRepository {
   constructor(private readonly userModel: typeof UserModel) {}
 
-  async create({ login, passwordHash, salt, email, createdAt, id, emailConfirmation }: UserDBType) {
+  async create({ login, passwordHash, salt, email, createdAt, id, emailConfirmation }: TUserDb) {
     try {
       await this.userModel.insertMany([{
         login,

@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 import { WithId } from 'mongodb';
 
+export type TPostDto = {
+  title: string;
+  shortDescription: string;
+  content: string;
+  blogId: string;
+}
+
 export type TPostDb = {
   id: string;
   title: string;

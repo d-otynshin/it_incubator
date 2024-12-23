@@ -1,4 +1,3 @@
-import { CommentDbType } from '../../db/comment-db-type';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { QueryParams } from '../../helpers/parseQuery';
 import { CommentModel, TCommentDb } from './comments.entity';
@@ -11,7 +10,7 @@ type PaginatedComments = {
   items: any[]
 }
 
-export const mapComment = (comment: CommentDbType) => ({
+export const mapComment = (comment: TCommentDb) => ({
   id: comment.id,
   content: comment.content,
   createdAt: comment.createdAt,

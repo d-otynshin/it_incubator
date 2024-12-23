@@ -2,12 +2,11 @@ import { Response, Request } from 'express'
 
 import { blogsRepository } from '../blogs-repository';
 import { mapId } from '../../../helpers/mapId';
-import { TPostInput } from '../../posts/types';
-import { PostDBType } from '../../../db/post-db-type';
+import { TPostDb, TPostDto } from '../../posts/posts.entity';
 
 export const createPostByBlogIdController = async (
-  req: Request<any, any, TPostInput>,
-  res: Response<PostDBType>
+  req: Request<any, any, TPostDto>,
+  res: Response<TPostDb>
 ) => {
   const id = req.params.id;
   const body = req.body;

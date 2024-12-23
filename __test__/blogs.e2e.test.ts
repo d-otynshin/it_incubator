@@ -24,7 +24,7 @@ describe('/blogs', () => {
 
   it('should return 200 for getting valid blog data', async () => {
     const validBlog = {
-      name: 'some_name',
+      name: 'name_from_test',
       description: 'Sample Description',
       websiteUrl: 'valid-url.com',
     };
@@ -34,11 +34,15 @@ describe('/blogs', () => {
       .post(SETTINGS.PATH.BLOGS)
       .send(validBlog);
 
+    console.log(createBlogResponse.body);
+
     const blogId = createBlogResponse.body.id
 
-    const blog = await request.get(`${SETTINGS.PATH.BLOGS}/${blogId}`);
+    const getBlogResponse = await request.get(`${SETTINGS.PATH.BLOGS}/${blogId}`);
 
-    expect(blog.status).toBe(200);
+    console.log(getBlogResponse.body);
+
+    expect(getBlogResponse.status).toBe(200);
   });
 
 

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { BlogDBType } from '../../../db/blog-db-type';
 import { blogsRepository } from '../blogs-repository';
+import { TBlogDto } from '../blogs.entity';
 
 export const updateBlogController = async (
-  req: Request<{ id: string }, null, BlogDBType>,
+  req: Request<{ id: string }, null, TBlogDto>,
   res: Response
 ) => {
   const { id } = req.params;

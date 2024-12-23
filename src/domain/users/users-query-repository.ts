@@ -1,15 +1,15 @@
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { WithId } from 'mongodb';
-import { UserDBType } from '../../db/user-db-type';
 import { QueryParams } from '../../helpers/parseQuery';
 import { UserModel } from './users.entity';
+import { TUserDb } from './type';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
 
 const mapUsersOutput = (paginatedUsers: any) => {
   const { items } = paginatedUsers;
 
-  paginatedUsers.items = items.map((user: WithId<UserDBType>) => {
+  paginatedUsers.items = items.map((user: WithId<TUserDb>) => {
     return {
       createdAt: user.createdAt,
       email: user.email,

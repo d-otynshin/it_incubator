@@ -1,22 +1,24 @@
 import { app } from '../src/app'
 import { agent } from 'supertest'
-import { MongoMemoryServer } from 'mongodb-memory-server';
+// import { MongoMemoryServer } from 'mongodb-memory-server';
 import { codedAuth, TValidLogin, validBlog, validPost, validUser } from './datasets';
 import { SETTINGS } from '../src/settings';
 import mongoose from 'mongoose';
 
-let mongoServer: MongoMemoryServer;
+// let mongoServer: MongoMemoryServer;
 
 export const connect = async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
+  // mongoServer = await MongoMemoryServer.create();
+  // const uri = mongoServer.getUri();
 
-  await mongoose.connect(uri)
+  const uri = process.env.MONGODB_URI;
+
+  await mongoose.connect(uri as string);
 };
 
 export const closeDatabase = async () => {
   await mongoose.disconnect()
-  await mongoServer.stop();
+  // await mongoServer.stop();
 };
 
 export const clearDatabase = async () => {

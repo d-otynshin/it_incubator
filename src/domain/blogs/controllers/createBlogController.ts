@@ -1,15 +1,12 @@
 import { Response, Request } from 'express'
 
-import { OutputErrorsType } from '../../../input-output-types/output-errors-type'
-
-import { TBlogInput } from '../types';
-import { BlogDBType } from '../../../db/blog-db-type';
 import { blogsRepository } from '../blogs-repository';
 import { mapId } from '../../../helpers/mapId';
+import { TBlogDb, TBlogDto } from '../blogs.entity';
 
 export const createBlogController = async (
-  req: Request<any, any, TBlogInput>,
-  res: Response<BlogDBType>
+  req: Request<any, any, TBlogDto>,
+  res: Response<TBlogDb>
 ) => {
   const createdBlog = await blogsRepository.create(req.body)
 

@@ -1,6 +1,14 @@
 import { Response, Request, NextFunction } from 'express'
 import { validationResult } from 'express-validator'
-import { FieldNamesType, OutputErrorsType } from '../input-output-types/output-errors-type'
+
+export type Error = {
+  message: string;
+  field: string;
+}
+
+export type OutputErrorsType = {
+  errorsMessages: Error[]
+}
 
 export const errorsHandlerMiddleware = (status = 400) => async (
   request: Request,
@@ -10,7 +18,7 @@ export const errorsHandlerMiddleware = (status = 400) => async (
   const error = validationResult(request)
 
   if (!error.isEmpty()) {
-    const errorsArray = error.array({ onlyFirstError: true }) as { path: FieldNamesType, msg: string }[]
+    const errorsArray = error.array({ onlyFirstError: true }) as { path: string, msg: string }[]
 
     response
       .status(status)

@@ -5,7 +5,6 @@ export const router = async (
   _: Request,
   res: Response
 ) => {
-  const connection = await mongoose.connect(process.env.MONGODB_URI as string);
   const mongoStatus = mongoose.connection.readyState
-  res.status(200).json({ "connection": mongoStatus, "response": connection })
+  res.status(200).json({ "connection": mongoStatus })
 }

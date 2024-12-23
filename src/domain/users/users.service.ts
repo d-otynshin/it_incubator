@@ -1,10 +1,10 @@
 import { genSalt, hash } from 'bcrypt';
 import { generateRandomId } from '../../helpers';
 import { usersRepository } from './users.repository';
-import { UserDBType } from '../../db/user-db-type';
+import { TUserDb } from './type';
 
 interface IUsersRepository {
-  create(user: UserDBType): Promise<boolean>;
+  create(user: TUserDb): Promise<boolean>;
   delete: (id: string) => Promise<boolean>;
 }
 

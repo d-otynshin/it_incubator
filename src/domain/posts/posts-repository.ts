@@ -1,14 +1,11 @@
-import { PostDBType } from '../../db/post-db-type';
 import { generateRandomId } from '../../helpers';
-import { TPostInput } from './types';
 import { WithId } from 'mongodb';
 import { blogsRepository } from '../blogs/blogs-repository';
 import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { QueryParams } from '../../helpers/parseQuery';
-import { BlogDBType } from '../../db/blog-db-type';
-import { CommentDbType } from '../../db/comment-db-type';
-import { PostModel } from './posts.entity';
-import { CommentModel } from '../comments/comments.entity';
+import { PostModel, TPostDb, TPostDto } from './posts.entity';
+import { CommentModel, TCommentDb } from '../comments/comments.entity';
+import { TBlogDb } from '../blogs/blogs.entity';
 
 type TCreateComment = {
   id: string;
@@ -20,39 +17,39 @@ type TCreateComment = {
 }
 
 export const postsRepository = {
-  create: async (body: TPostInput): Promise<WithId<PostDBType> | null> => {
+  create: async (body: TPostDto): Promise<WithId<TPostDb> | null> => {
     let blog = await blogsRepository.getById(body.blogId)
 
     if (!blog) {
-      blog = { name: 'blog name' } as WithId<BlogDBType>
+      blog = { name: 'blog name' } as WithId<TBlogDb>
     }
 
-    const createdPost: PostDBType = {
+    const createdPost: TPostDb = {
       id: generateRandomId().toString(),
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toISOString() as unknown as Date,
       blogName: blog?.name,
       ...body,
     }
 
     await PostModel.insertMany([createdPost])
 
-    return createdPost as WithId<PostDBType>;
+    return createdPost as WithId<TPostDb>;
   },
   delete: async (id: string): Promise<boolean> => {
     const result = await PostModel.deleteOne({ id })
 
     return result.deletedCount === 1;
   },
-  getById: async (id: string): Promise<WithId<PostDBType> | null> => {
+  getById: async (id: string): Promise<WithId<TPostDb> | null> => {
     return PostModel.findOne({ id })
   },
-  getByBlogId: async (blogId: string): Promise<PostDBType | null> => {
+  getByBlogId: async (blogId: string): Promise<TPostDb | null> => {
     return PostModel.findOne({ blogId })
   },
   get: async (query: QueryParams) => {
     return fetchModelPaginated(PostModel, query)
   },
-  createComment: async ({ id, content, user }: TCreateComment): Promise<WithId<CommentDbType> | null> => {
+  createComment: async ({ id, content, user }: TCreateComment): Promise<WithId<TCommentDb> | null> => {
     const post = await postsRepository.getById(id)
 
     if (!post) {
@@ -64,7 +61,7 @@ export const postsRepository = {
       userLogin: user.login,
     }
 
-    const createdComment: { postId: string } & CommentDbType = {
+    const createdComment: { postId: string } & TCommentDb = {
       id: generateRandomId().toString(),
       createdAt: new Date(),
       content: content,
@@ -74,9 +71,9 @@ export const postsRepository = {
 
     await CommentModel.insertMany([createdComment])
 
-    return createdComment as unknown as WithId<CommentDbType>;
+    return createdComment as unknown as WithId<TCommentDb>;
   },
-  update: async (id: string, body: TPostInput): Promise<boolean> => {
+  update: async (id: string, body: TPostDto): Promise<boolean> => {
     const result = await PostModel.updateOne({ id }, { $set: body })
 
     return result.matchedCount === 1;
