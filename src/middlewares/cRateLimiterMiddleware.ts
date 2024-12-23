@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { isAfter, subSeconds } from 'date-fns';
-import { crateLimiterRepository } from '../rate-limiter/crateLimiter-repository';
+import { customRateLimiterRepository } from '../rate-limiter/custom-rate-limiter-repository';
 
 export const cRateLimiterMiddleware = async (
   request: Request,
@@ -10,12 +10,12 @@ export const cRateLimiterMiddleware = async (
   try {
     const { ip, url } = request;
 
-    const logs = await crateLimiterRepository.get(ip as string, url);
+    const logs = await customRateLimiterRepository.get(ip as string, url);
     const filteredLogs = logs.filter(
       log => isAfter(log.date, subSeconds(new Date(), 10))
     );
 
-    await crateLimiterRepository.set(ip as string, url, new Date(), logs.length, filteredLogs.length);
+    await customRateLimiterRepository.set(ip as string, url, new Date(), logs.length, filteredLogs.length);
 
     if (filteredLogs.length >= 5) {
       return response.status(429).json({ message: 'Rate limit' })

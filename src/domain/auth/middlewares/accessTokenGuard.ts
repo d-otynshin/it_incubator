@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { jwtService } from '../../../adapters/jwt-service';
-import { usersRepository } from '../../users/users-repository';
+import { usersRepository } from '../../users/users.repository';
 import { isBefore } from 'date-fns';
 
 export const accessTokenGuard = async (
@@ -32,8 +32,6 @@ export const accessTokenGuard = async (
     if (!user) return response.status(401).json({ error: 'No user with this token' });
     const { id, login } = user;
 
-    // check global declaration
-    // @ts-ignore
     request.user = { id, login };
     return next();
   }

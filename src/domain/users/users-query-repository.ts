@@ -1,12 +1,10 @@
-import { fetchPaginated } from '../../helpers/fetchPaginated';
-import { Collection, WithId } from 'mongodb';
-import { db } from '../../db/monogo-db';
+import { fetchModelPaginated } from '../../helpers/fetchPaginated';
+import { WithId } from 'mongodb';
 import { UserDBType } from '../../db/user-db-type';
 import { QueryParams } from '../../helpers/parseQuery';
+import { UserModel } from './users.entity';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
-
-const usersCollection: Collection<UserDBType> = db.collection<UserDBType>('users');
 
 const mapUsersOutput = (paginatedUsers: any) => {
   const { items } = paginatedUsers;
@@ -52,7 +50,7 @@ export const usersQueryRepository = {
         }
       }
 
-      const paginatedUsers = await fetchPaginated(usersCollection, query, filter);
+      const paginatedUsers = await fetchModelPaginated(UserModel, query, filter);
 
       return mapUsersOutput(paginatedUsers);
     } catch (error) {

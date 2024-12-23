@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { jwtService } from '../../../adapters/jwt-service';
-import { usersRepository } from '../../users/users-repository';
+import { usersRepository } from '../../users/users.repository';
 
 export const recoveryCodeGuard = async (
   req: Request,

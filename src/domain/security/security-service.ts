@@ -1,5 +1,6 @@
 import { jwtService } from '../../adapters/jwt-service';
 import { securityRepository } from './security-repository';
+import { TSessionDb } from './sessions.entity';
 
 export const securityService = {
   getById: async (id: string) => {
@@ -41,7 +42,7 @@ export const securityService = {
   updateSession: async (deviceId: string, iat: number) => {
     return securityRepository.updateSession(deviceId, iat)
   },
-  createSession: async (session: any) => {
+  createSession: async (session: TSessionDb) => {
     return securityRepository.createSession(session);
   }
 }

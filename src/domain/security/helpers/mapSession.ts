@@ -1,12 +1,4 @@
-export type TSessionDb = {
-  _id: string;
-  userId: string;
-  deviceId: number;
-  ip: string;
-  name: string;
-  exp: number;
-  iat: number;
-};
+import { TSessionDb } from '../sessions.entity';
 
 export const mapSession = (sessionDB: TSessionDb) => {
   return ({

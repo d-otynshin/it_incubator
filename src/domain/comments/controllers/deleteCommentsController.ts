@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { commentsQueryRepository } from '../comments-query-repository';
+import { commentsQueryRepository } from '../comments-query.repository';
 import { commentsService } from '../comments.service';
 
 export const deleteCommentsController = async (

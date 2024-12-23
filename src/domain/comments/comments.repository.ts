@@ -1,10 +1,9 @@
-import { CommentModel, TCommentDb } from './comments.entity';
-import type { TCommentInput } from './type';
+import { CommentModel, TCommentDb, TCommentDto } from './comments.entity';
 import { WithId } from 'mongodb';
 
 export interface ICommentsRepository {
   get: (id: string) => Promise<WithId<TCommentDb> | null>;
-  update: (data: TCommentInput) => Promise<boolean>;
+  update: (data: TCommentDto) => Promise<boolean>;
   delete: (id: string) => Promise<boolean>;
 }
 
@@ -19,7 +18,7 @@ export class CommentsRepository implements ICommentsRepository {
     }
   }
 
-  async update({ id, content }: TCommentInput) {
+  async update({ id, content }: TCommentDto) {
     try {
       const updateResult = await this.commentModel.updateOne({ id }, { $set: { content } })
 

@@ -1,7 +1,12 @@
 import { genSalt, hash } from 'bcrypt';
 import { generateRandomId } from '../../helpers';
-import { IUsersRepository } from './users-repository';
 import { usersRepository } from './users.repository';
+import { UserDBType } from '../../db/user-db-type';
+
+interface IUsersRepository {
+  create(user: UserDBType): Promise<boolean>;
+  delete: (id: string) => Promise<boolean>;
+}
 
 type UserRegistrationType = {
   login: string;

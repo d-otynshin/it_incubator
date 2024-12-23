@@ -11,7 +11,7 @@ export const db: Db = client.db(dbName);
 
 export const connectToDB = async (): Promise<boolean> => {
   try {
-    await client.connect() // remove
+    // await client.connect() // remove
     await mongoose.connect(MONGO_DB_URI + '/' + dbName);
     console.log('connected to db')
 
@@ -19,7 +19,7 @@ export const connectToDB = async (): Promise<boolean> => {
   } catch (e) {
     console.log(e)
     await mongoose.disconnect();
-    await client.close() // remove
+    // await client.close() // remove
 
     return false
   }

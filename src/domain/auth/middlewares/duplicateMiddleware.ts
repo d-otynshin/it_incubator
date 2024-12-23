@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { usersRepository } from '../../users/users-repository';
+import { usersRepository } from '../../users/users.repository';
 
 export const checkEmailDuplicationMiddleware = async (
   req: Request,

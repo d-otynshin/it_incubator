@@ -1,25 +1,23 @@
-import { db } from '../../db/monogo-db';
-
-const sessionsCollection = db.collection('sessions');
+import { SessionModel } from './sessions.entity';
 
 export const securityRepository = {
   getSessions: async (id: string) => {
     try {
-      return sessionsCollection.find({ userId: id }).toArray();
+      return SessionModel.find({ userId: id });
     } catch (error) {
       return null;
     }
   },
   getSession: async (id: string) => {
     try {
-      return sessionsCollection.findOne({ deviceId: id });
+      return SessionModel.findOne({ deviceId: id });
     } catch (error) {
       return null;
     }
   },
   terminateSessions: async (deviceId: string) => {
     try {
-      const result = await sessionsCollection.deleteMany({ deviceId: { $ne: deviceId } });
+      const result = await SessionModel.deleteMany({ deviceId: { $ne: deviceId } });
 
       return result.deletedCount > 0;
     } catch (error) {
@@ -28,7 +26,7 @@ export const securityRepository = {
   },
   terminateSessionById: async (id: string) => {
     try {
-      const result = await sessionsCollection.deleteOne({ deviceId: id });
+      const result = await SessionModel.deleteOne({ deviceId: id });
 
       return result.deletedCount === 1;
     } catch (error) {
@@ -37,14 +35,14 @@ export const securityRepository = {
   },
   updateSession: async (deviceId: string, iat: number) => {
     try {
-      return sessionsCollection.updateOne({ deviceId }, { $set: { iat } });
+      return SessionModel.updateOne({ deviceId }, { $set: { iat } });
     } catch (error) {
       return null;
     }
   },
   createSession: async (session: any) => {
     try {
-      return sessionsCollection.insertOne(session);
+      return SessionModel.insertMany([session]);
     } catch (error) {
       return null;
     }

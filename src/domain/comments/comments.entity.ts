@@ -13,7 +13,7 @@ export type TCommentDb = {
   createdAt: Date;
 }
 
-export type TCommentDto = Pick<TCommentDb, 'content'>
+export type TCommentDto = Pick<TCommentDb, 'id' | 'content'>
 
 const CommentatorSchema = new mongoose.Schema<TCommentator>({
   userLogin: String,
