@@ -75,7 +75,7 @@ export const authService = {
       userId,
       deviceId,
       ip,
-      name,
+      name: name || 'Device',
       exp: decodedToken.exp,
       iat: decodedToken.iat,
     })
