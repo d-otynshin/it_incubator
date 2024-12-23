@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { postsRepository } from '../posts-repository';
-import { commentsQueryRepository } from '../../comments/comments-query-repository';
+import { commentsQueryRepository } from '../../comments/comments-query.repository';
 
 export const getCommentsController = async (
   req: Request,
