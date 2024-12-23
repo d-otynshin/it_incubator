@@ -141,7 +141,7 @@ describe('/blogs', () => {
 
   it('should return success status', async () => {
     const response = await request
-    .get(`${SETTINGS.PATH.BLOGS}?pageSize=5&pageNumber=1&searchNameTerm=Tim&sortDirection=asc&sortBy=name`)
+      .get(`${SETTINGS.PATH.BLOGS}?pageSize=5&pageNumber=1&searchNameTerm=Tim&sortDirection=asc&sortBy=name`)
 
     expect(response.status).toBe(200)
   })

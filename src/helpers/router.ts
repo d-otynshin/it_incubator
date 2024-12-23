@@ -4,6 +4,6 @@ export const router = (
   _: Request,
   res: Response
 ) => {
-  const mongoURI = process.env.MONGODB_URI
-  res.status(200).json({ mongoURI })
+  const mongoStatus = process.env.MONGODB_URI ? "connected" : "disconnected"
+  res.status(200).json({ "connection": mongoStatus })
 }

@@ -1,13 +1,11 @@
 import { app } from '../src/app'
 import { agent } from 'supertest'
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { Db } from 'mongodb';
 import { codedAuth, TValidLogin, validBlog, validPost, validUser } from './datasets';
 import { SETTINGS } from '../src/settings';
 import mongoose from 'mongoose';
 
 let mongoServer: MongoMemoryServer;
-let db: Db;
 
 export const connect = async () => {
   mongoServer = await MongoMemoryServer.create();
@@ -22,10 +20,13 @@ export const closeDatabase = async () => {
 };
 
 export const clearDatabase = async () => {
-  const collections = await db.collections();
+  const models = mongoose.models;
 
-  for (let collection of collections) {
-    await collection.deleteMany({});
+  for (const modelName in models) {
+    if (Object.prototype.hasOwnProperty.call(models, modelName)) {
+      const model = models[modelName];
+      await model.deleteMany({});
+    }
   }
 };
 
