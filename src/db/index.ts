@@ -24,5 +24,6 @@ export const connectToDb = async (): Promise<void> => {
   } catch (e) {
     console.log('db connection error:', e)
     await mongoose.disconnect();
+    throw e;
   }
 }
