@@ -7,4 +7,4 @@ app.listen(SETTINGS.PORT, async () => {
   console.log('...server started in port ' + SETTINGS.PORT)
 })
 
-app.set('trust proxy', true)
+//app.set('trust proxy', true)
