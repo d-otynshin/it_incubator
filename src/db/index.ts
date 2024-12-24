@@ -4,7 +4,6 @@ dotenv.config();
 
 const MONGO_DB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 
-
 export const connectToDb = async (): Promise<void> => {
   try {
     await mongoose.connect(MONGO_DB_URI);
