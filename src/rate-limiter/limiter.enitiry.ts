@@ -14,3 +14,5 @@ export const LimiterSchema = new mongoose.Schema<WithId<TLimiterDb>>({
   logs: { type: Number, require: true },
   createdAt: Date,
 })
+
+export const LimiterModel = mongoose.model<WithId<TLimiterDb>>('limiters', LimiterSchema)

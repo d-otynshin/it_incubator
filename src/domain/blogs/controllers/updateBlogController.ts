@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { blogsRepository } from '../blogs-repository';
+import { blogsRepository } from '../blogs.repository';
 import { TBlogDto } from '../blogs.entity';
 
 export const updateBlogController = async (

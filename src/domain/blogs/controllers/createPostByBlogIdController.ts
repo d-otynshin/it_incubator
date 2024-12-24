@@ -1,6 +1,6 @@
 import { Response, Request } from 'express'
 
-import { blogsRepository } from '../blogs-repository';
+import { blogsRepository } from '../blogs.repository';
 import { mapId } from '../../../helpers/mapId';
 import { TPostDb, TPostDto } from '../../posts/posts.entity';
 

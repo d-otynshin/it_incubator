@@ -28,3 +28,5 @@ export const PostSchema = new mongoose.Schema<WithId<TPostDb>>({
   blogName: { type: String, require: true },
   createdAt: { type: Date, require: true },
 })
+
+export const PostModel = mongoose.model<WithId<TPostDb>>('posts', PostSchema)

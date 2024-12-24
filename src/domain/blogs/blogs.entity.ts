@@ -24,3 +24,5 @@ export const BlogSchema = new mongoose.Schema<WithId<TBlogDb>>({
   createdAt: { type: Date, require: true },
   isMembership: { type: Boolean, require: true },
 })
+
+export const BlogModel = mongoose.model<WithId<TBlogDb>>('blogs', BlogSchema)

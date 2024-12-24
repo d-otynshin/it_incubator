@@ -1,4 +1,4 @@
-import { SessionModel } from '../../db';
+import { SessionModel } from './sessions.entity';
 
 export const securityRepository = {
   getSessions: async (id: string) => {

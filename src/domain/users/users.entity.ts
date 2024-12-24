@@ -17,3 +17,5 @@ export const UserSchema = new mongoose.Schema<WithId<TUserDb>>({
   createdAt: { type: Date, require: true },
   emailConfirmation: EmailConfirmationSchema,
 })
+
+export const UserModel = mongoose.model<WithId<TUserDb>>('users', UserSchema)

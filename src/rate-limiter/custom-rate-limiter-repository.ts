@@ -1,4 +1,4 @@
-import { LimiterModel } from '../db';
+import { LimiterModel } from './limiter.enitiry';
 
 export const customRateLimiterRepository = {
   set: async (ip: string, url: string, date: Date, logs: number) => {

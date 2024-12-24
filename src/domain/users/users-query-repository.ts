@@ -2,7 +2,7 @@ import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { WithId } from 'mongodb';
 import { QueryParams } from '../../helpers/parseQuery';
 import { TUserDb } from './type';
-import { UserModel } from '../../db';
+import { UserModel } from './users.entity';
 
 type TFindUsers = Record<string, { $regex: string, $options: string }>
 
