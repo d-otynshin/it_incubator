@@ -17,13 +17,13 @@ export const PostModel = mongoose.model<WithId<TPostDb>>('posts', PostSchema)
 export const SessionModel = mongoose.model<WithId<TSessionDb>>('sessions', SessionSchema)
 export const UserModel = mongoose.model<WithId<TUserDb>>('users', UserSchema)
 
-export const connectToDb = async (): Promise<void> => {
-  try {
-    await mongoose.connect(MONGO_DB_URI);
-    console.log('connected to db')
-  } catch (e) {
-    console.log('db connection error:', e)
-    await mongoose.disconnect();
-    throw e;
-  }
-}
+// export const connectToDb = async (): Promise<void> => {
+//   try {
+//     await mongoose.connect(MONGO_DB_URI);
+//     console.log('connected to db')
+//   } catch (e) {
+//     console.log('db connection error:', e)
+//     await mongoose.disconnect();
+//     throw e;
+//   }
+// }
