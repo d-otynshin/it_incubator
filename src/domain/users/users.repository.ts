@@ -1,10 +1,6 @@
-import { QueryParams } from '../../helpers/parseQuery';
-import { fetchModelPaginated } from '../../helpers/fetchPaginated';
 import { UpdateWriteOpResult } from 'mongoose';
 import { TUserDb } from './type';
 import { UserModel } from './users.entity';
-
-type TFindUsers = Record<string, { $regex: string, $options: string }>
 
 type TNewPassword = {
   login: string;
@@ -30,30 +26,6 @@ export class UsersRepository {
       return true;
     } catch (error) {
       return false;
-    }
-  }
-  async get(query: QueryParams) {
-    try {
-      const { searchLoginTerm, searchEmailTerm } = query;
-      const filter: TFindUsers = {};
-
-      if (searchLoginTerm) {
-        filter.login = {
-          $regex: searchLoginTerm,
-          $options: 'i'
-        }
-      }
-
-      if (searchEmailTerm) {
-        filter.email = {
-          $regex: searchEmailTerm,
-          $options: 'i'
-        }
-      }
-
-      return fetchModelPaginated(this.userModel.bind(this.userModel), query, filter);
-    } catch (error) {
-      return null;
     }
   }
   async getById(id: string) {
