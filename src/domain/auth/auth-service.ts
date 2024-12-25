@@ -9,8 +9,8 @@ import { securityService } from '../security/security-service';
 import { usersRepository } from '../users/users.repository';
 
 export const EXPIRATION_TIME = {
-  ACCESS: 10,
-  REFRESH: 20,
+  ACCESS: 10000,
+  REFRESH: 20000,
 }
 
 type TRefreshTokenInput = {
