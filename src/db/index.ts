@@ -9,6 +9,9 @@ export const connectToDb = async (): Promise<unknown | null> => {
     const mongooseConnection = await mongoose.connect(MONGO_DB_URI);
 
     console.log('connected to db')
+    console.log(mongooseConnection)
+    //@ts-ignore
+    console.log(mongooseConnection.msg)
     return mongooseConnection;
   } catch (error) {
     console.log(error);
