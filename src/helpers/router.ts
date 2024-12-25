@@ -1,13 +1,10 @@
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import { connectToDb } from '../db';
 
 export const router = async (
   _: Request,
   res: Response
 ) => {
-  await connectToDb()
-
   console.log('ENV', process.env)
 
   const mongoStatus = mongoose.connection.readyState
