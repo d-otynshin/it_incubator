@@ -52,7 +52,7 @@ export const jwtService = {
     try {
       return jwt.decode(token);
     } catch (error: unknown) {
-      console.error("Can't decode token", error);
+      console.error('Can not decode token', error);
       return null;
     }
   },

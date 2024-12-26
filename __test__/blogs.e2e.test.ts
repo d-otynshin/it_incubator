@@ -34,13 +34,9 @@ describe('/blogs', () => {
       .post(SETTINGS.PATH.BLOGS)
       .send(validBlog);
 
-    console.log(createBlogResponse.body);
-
     const blogId = createBlogResponse.body.id
 
     const getBlogResponse = await request.get(`${SETTINGS.PATH.BLOGS}/${blogId}`);
-
-    console.log(getBlogResponse.body);
 
     expect(getBlogResponse.status).toBe(200);
   });
