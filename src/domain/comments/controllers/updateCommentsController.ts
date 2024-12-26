@@ -7,10 +7,10 @@ export const updateCommentsController = async (
   res: Response
 ) => {
   const { content } = req.body;
-  const { id } = req.params;
+  const { id: commentId } = req.params;
   const { id: userId } = req.user;
 
-  const comment = await commentsQueryRepository.getById(id);
+  const comment = await commentsQueryRepository.getById(commentId, userId);
 
   if (!comment) {
     return res.status(404).json({ error: 'Comment not found' });
@@ -20,7 +20,7 @@ export const updateCommentsController = async (
     return res.status(403).json({ error: 'Try to update or delete the entity that was created by another user' });
   }
 
-  const isUpdated = await commentsService.update({ id, content });
+  const isUpdated = await commentsService.update({ id: commentId, content });
 
   return isUpdated ? res.status(204).send() : res.status(400).json({ message: 'Comment was not updated' });
 }

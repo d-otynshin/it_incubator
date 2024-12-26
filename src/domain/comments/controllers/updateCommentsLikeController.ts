@@ -7,10 +7,10 @@ export const updateCommentsLikeController = async (
   res: Response
 ) => {
   const { likeStatus } = req.body;
-  const { id } = req.params;
+  const { id: commentId } = req.params;
   const { id: userId } = req.user;
 
-  const comment = await commentsQueryRepository.getById(id);
+  const comment = await commentsQueryRepository.getById(commentId, userId);
 
   if (!comment) {
     return res.status(404).json({ error: 'Comment not found' });
@@ -18,7 +18,7 @@ export const updateCommentsLikeController = async (
 
   const isUpdated = await commentsService.interact(
     {
-      commentId: id,
+      commentId,
       userId,
       action: likeStatus
     }

@@ -27,7 +27,7 @@ export type TCommentator = {
 
 export type TInteraction = {
   id: string;
-  action: 'Like' | 'Dislike';
+  action: LikeStatus.Like | LikeStatus.Dislike;
   updatedAt: Date;
 }
 
@@ -37,6 +37,10 @@ export type TCommentDb = {
   commentatorInfo: TCommentator;
   interactions: TInteraction[];
   createdAt: Date;
+}
+
+export type TCommentView = Omit<TCommentDb, 'interactions'> & {
+  likesInfo: TLikeInfo
 }
 
 export type TCommentDto = Pick<TCommentDb, 'id' | 'content'>

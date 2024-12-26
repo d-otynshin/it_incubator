@@ -1,6 +1,7 @@
 import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated';
 import { QueryParams } from '../../infrastructure/helpers/parseQuery';
-import { CommentModel, TCommentDb } from './comments.entity';
+import { CommentModel } from './comments.entity';
+import { LikeStatus, TCommentDb, TCommentView } from './comments.types';
 
 type PaginatedComments = {
   pagesCount: number,
@@ -10,28 +11,41 @@ type PaginatedComments = {
   items: any[]
 }
 
-export const mapComment = (comment: TCommentDb) => ({
-  id: comment.id,
-  content: comment.content,
-  createdAt: comment.createdAt,
-  commentatorInfo: comment.commentatorInfo,
-})
+export const mapComment = (
+  comment: TCommentDb,
+  userId: string
+): TCommentView => {
+  const { interactions } = comment;
+  const likesCount = interactions.filter(interaction => interaction.action === LikeStatus.Like).length;
+  const dislikesCount = interactions.filter(interaction => interaction.action === LikeStatus.Like).length;
+
+  const myInteraction = interactions.find((interaction) => interaction.id === userId)
+  const myStatus = myInteraction?.action || LikeStatus.None;
+
+  return {
+    id: comment.id,
+    content: comment.content,
+    createdAt: comment.createdAt,
+    commentatorInfo: comment.commentatorInfo,
+    likesInfo: { likesCount, dislikesCount, myStatus }
+  }
+}
 
 export interface ICommentsQueryRepository {
-  get: (postId: string, query: QueryParams) => Promise<PaginatedComments | null>;
-  getById: (id: string) => Promise<TCommentDb | null>;
+  get: (userId: string, postId: string, query: QueryParams) => Promise<PaginatedComments | null>;
+  getById: (commentId: string, userId: string) => Promise<TCommentView | null>;
 }
 
 export class CommentsQueryRepository implements ICommentsQueryRepository {
   constructor(private readonly commentModel: typeof CommentModel) {}
 
-  async get(postId: string, query: QueryParams): Promise<PaginatedComments | null> {
+  async get(userId: string, postId: string, query: QueryParams): Promise<PaginatedComments | null> {
     try {
       const filter: { postId: string } | {} = { postId };
 
       const paginatedCommentsDb: PaginatedComments  = await fetchModelPaginated(this.commentModel.bind(this), query, filter)
 
-      paginatedCommentsDb.items = paginatedCommentsDb.items.map(mapComment);
+      paginatedCommentsDb.items = paginatedCommentsDb.items.map((commentDb) => mapComment(commentDb, userId));
 
       return paginatedCommentsDb;
     } catch (error) {
@@ -39,15 +53,15 @@ export class CommentsQueryRepository implements ICommentsQueryRepository {
     }
   }
 
-  async getById(id: string) {
+  async getById(commentId: string, userId: string) {
     try {
-      const commentDb = await this.commentModel.findOne({ id })
+      const commentDb = await this.commentModel.findOne({ id: commentId })
 
       if (!commentDb) {
         return null;
       }
 
-      return mapComment(commentDb);
+      return mapComment(commentDb, userId);
     } catch (error) {
       return null;
     }

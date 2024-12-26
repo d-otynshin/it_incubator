@@ -6,13 +6,13 @@ export const getCommentsController = async (
   req: Request,
   res: Response
 ) => {
-  const { query, params } = req;
+  const { query, params, user } = req;
   const { id } = params
 
   const post = await postsRepository.getById(id)
   if (!post) return res.status(404).json({ message: "Post not found" })
 
-  const blogs = await commentsQueryRepository.get(id, query);
+  const blogs = await commentsQueryRepository.get(user.id, id, query);
 
   return res.status(200).json(blogs)
 }
