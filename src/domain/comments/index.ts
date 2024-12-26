@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { updateCommentsController } from './controllers/updateCommentsController';
-import { getCommentByIdController } from './controllers/getCommentsController';
+import { getCommentByIdController } from './controllers/getCommentByIdController';
 import { deleteCommentsController } from './controllers/deleteCommentsController';
 import { updateCommentsLikeController } from './controllers/updateCommentsLikeController';
 

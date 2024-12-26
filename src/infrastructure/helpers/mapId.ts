@@ -1,7 +1,6 @@
-import { ObjectId, WithId } from 'mongodb';
+import { WithId } from 'mongodb';
 
-export const mapId = <T>(document: WithId<T>) => {
-  delete (document as { _id?: ObjectId })._id;
-
-  return document;
+export const mapId = <T>(document: WithId<T>): T => {
+  const { _id, ...rest } = document;
+  return rest as T;
 }

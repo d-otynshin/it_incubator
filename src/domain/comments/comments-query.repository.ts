@@ -1,9 +1,7 @@
 import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated';
 import { QueryParams } from '../../infrastructure/helpers/parseQuery';
 import { CommentModel } from './comments.entity';
-import { LikeStatus, TCommentator, TCommentDb, TCommentView } from './comments.types';
-import { mapId } from '../../infrastructure/helpers/mapId';
-import { WithId } from 'mongodb';
+import { LikeStatus, TCommentDb, TCommentView } from './comments.types';
 
 type PaginatedComments = {
   pagesCount: number,
@@ -15,20 +13,27 @@ type PaginatedComments = {
 
 export const mapComment = (
   comment: TCommentDb,
-  userId: string
+  userId?: string
 ): TCommentView => {
   const { interactions } = comment;
   const likesCount = interactions.filter(interaction => interaction.action === LikeStatus.Like).length;
   const dislikesCount = interactions.filter(interaction => interaction.action === LikeStatus.Like).length;
 
-  const myInteraction = interactions.find((interaction) => interaction.id === userId)
-  const myStatus = myInteraction?.action || LikeStatus.None;
+  let myStatus = LikeStatus.None;
 
-  return {
+  if (userId) {
+    const myInteraction = interactions.find((interaction) => interaction.id === userId)
+    myStatus = myInteraction?.action || LikeStatus.None;
+  }
+
+  return  {
     id: comment.id,
     content: comment.content,
     createdAt: comment.createdAt,
-    commentatorInfo: mapId(comment.commentatorInfo as WithId<TCommentator>),
+    commentatorInfo: {
+      userId: comment.commentatorInfo.userId,
+      userLogin: comment.commentatorInfo.userLogin,
+    },
     likesInfo: { likesCount, dislikesCount, myStatus }
   }
 }
@@ -55,7 +60,7 @@ export class CommentsQueryRepository implements ICommentsQueryRepository {
     }
   }
 
-  async getById(commentId: string, userId: string) {
+  async getById(commentId: string, userId?: string) {
     try {
       const commentDb = await this.commentModel.findOne({ id: commentId })
 

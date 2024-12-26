@@ -174,10 +174,13 @@ describe('/posts', () => {
       .post(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
       .send(validComment)
 
+    const commentId = createCommentResponse.body.id;
     expect(createCommentResponse.status).toBe(201);
 
-    const getCommentResponse = await request.get(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
+    // const getCommentResponse = await request.get(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
+    const getCommentByIdResponse = await request.get(`${SETTINGS.PATH.COMMENTS}/${commentId}`)
 
-    expect(getCommentResponse.status).toBe(200);
+    // expect(getCommentResponse.status).toBe(200);
+    expect(getCommentByIdResponse.status).toBe(200);
   })
 })
