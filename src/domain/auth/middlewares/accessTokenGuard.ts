@@ -18,12 +18,14 @@ export const accessTokenGuard = async (
     return response.status(401).json({ error: 'Wrong authorization type' });
   }
 
-  const jwtPayload = await jwtService.verifyToken(accessToken, 'SECRET');
+  console.log('accessToken', accessToken);
 
-  console.log('accessToken', jwtPayload);
+  const tokenPayload = await jwtService.verifyToken(accessToken, 'SECRET');
 
-  if (jwtPayload) {
-    const { userId, exp } = jwtPayload;
+  console.log('tokenPayload', tokenPayload);
+
+  if (tokenPayload) {
+    const { userId, exp } = tokenPayload;
     const user = await usersRepository.getById(userId);
 
     const isExpired = isBefore(exp * 1000, Date.now());
