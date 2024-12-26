@@ -17,7 +17,7 @@ export const mapComment = (
 ): TCommentView => {
   const { interactions } = comment;
   const likesCount = interactions.filter(interaction => interaction.action === LikeStatus.Like).length;
-  const dislikesCount = interactions.filter(interaction => interaction.action === LikeStatus.Like).length;
+  const dislikesCount = interactions.filter(interaction => interaction.action === LikeStatus.Dislike).length;
 
   let myStatus = LikeStatus.None;
 
@@ -67,6 +67,8 @@ export class CommentsQueryRepository implements ICommentsQueryRepository {
       if (!commentDb) {
         return null;
       }
+
+      console.log('commentDb', commentDb);
 
       return mapComment(commentDb, userId);
     } catch (error) {

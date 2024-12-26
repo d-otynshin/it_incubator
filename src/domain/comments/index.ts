@@ -10,10 +10,15 @@ import {
 } from './middlewares/validation';
 import { accessTokenGuard } from '../auth/middlewares/accessTokenGuard';
 import { errorsHandlerMiddleware } from '../../infrastructure/middlewares';
+import { accessTokenProvider } from '../auth/middlewares/accessTokenProvider';
 
 export const commentsRouter = Router();
 
-commentsRouter.get('/:id', getCommentByIdController)
+commentsRouter.get(
+  '/:id',
+  accessTokenProvider,
+  getCommentByIdController
+)
 
 commentsRouter.put(
   '/:id',

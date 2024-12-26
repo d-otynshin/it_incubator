@@ -183,4 +183,50 @@ describe('/posts', () => {
     // expect(getCommentResponse.status).toBe(200);
     expect(getCommentByIdResponse.status).toBe(200);
   })
+
+  it('should return correct number of likes', async () => {
+    const createBlogResponse = await createBlog()
+
+    const blogId = createBlogResponse.body.id;
+
+    const createPostResponse = await createPost(blogId)
+    const postId = createPostResponse.body.id;
+
+    const createdUserResponse = await createUser()
+
+    expect(createdUserResponse.status).toBe(201);
+
+    const validLogin = {
+      loginOrEmail: 'user@mail.com',
+      password: '123456',
+    }
+
+    const loginResponse = await createLogin(validLogin)
+
+    const accessToken = loginResponse.body.accessToken;
+
+    const validComment = {
+      content: 'test comment_12345678910',
+    }
+
+    const createCommentResponse = await request
+      .set({ 'Authorization': `Bearer ${accessToken}` })
+      .post(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
+      .send(validComment)
+
+    const commentId = createCommentResponse.body.id;
+    expect(createCommentResponse.status).toBe(201);
+
+    const getCommentByIdResponse = await request.get(`${SETTINGS.PATH.COMMENTS}/${commentId}`)
+    expect(getCommentByIdResponse.status).toBe(200);
+
+    const createCommentLikeResponse = await request
+        .set({ 'Authorization': `Bearer ${accessToken}` })
+        .put(`${SETTINGS.PATH.COMMENTS}/${commentId}/like-status`)
+        .send({ likeStatus: 'Like' })
+
+    await request.get(`${SETTINGS.PATH.COMMENTS}/${commentId}`)
+
+    expect(createCommentLikeResponse.status).toBe(204);
+  })
 })
