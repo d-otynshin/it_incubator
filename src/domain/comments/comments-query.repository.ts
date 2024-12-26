@@ -52,10 +52,12 @@ export class CommentsQueryRepository implements ICommentsQueryRepository {
 
       const paginatedCommentsDb: PaginatedComments  = await fetchModelPaginated(this.commentModel, query, filter)
 
+      console.log(paginatedCommentsDb);
       paginatedCommentsDb.items = paginatedCommentsDb.items.map((commentDb) => mapComment(commentDb, userId));
 
       return paginatedCommentsDb;
     } catch (error) {
+      console.log(error);
       return null;
     }
   }

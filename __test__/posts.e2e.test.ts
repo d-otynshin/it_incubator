@@ -174,14 +174,12 @@ describe('/posts', () => {
       .post(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
       .send(validComment)
 
-    const commentId = createCommentResponse.body.id;
     expect(createCommentResponse.status).toBe(201);
 
-    // const getCommentResponse = await request.get(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
-    const getCommentByIdResponse = await request.get(`${SETTINGS.PATH.COMMENTS}/${commentId}`)
+    const getCommentResponse = await request.get(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
+    console.log(getCommentResponse.body);
 
-    // expect(getCommentResponse.status).toBe(200);
-    expect(getCommentByIdResponse.status).toBe(200);
+    expect(getCommentResponse.status).toBe(200);
   })
 
   it('should return correct number of likes', async () => {

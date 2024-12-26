@@ -18,12 +18,14 @@ export async function fetchModelPaginated<TSchema>(
     .sort(sortOption)
     .skip((pageNumber - 1) * pageSize)
     .limit(pageSize)
+    .lean()
 
   return {
     pagesCount: Math.ceil(totalCount / pageSize),
     page: pageNumber,
     pageSize,
     totalCount,
+    // @ts-ignore
     items: data.map(mapId),
   };
 }
