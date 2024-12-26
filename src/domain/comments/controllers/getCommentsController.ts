@@ -6,8 +6,7 @@ export const getCommentByIdController = async (
   res: Response,
 ) => {
   const { id: commentId } = req.params;
-  const { id: userId } = req.user;
-  const comment = await commentsQueryRepository.getById(commentId, userId);
+  const comment = await commentsQueryRepository.getById(commentId, req?.user.id);
 
   return comment
     ? res.status(200).json(comment)

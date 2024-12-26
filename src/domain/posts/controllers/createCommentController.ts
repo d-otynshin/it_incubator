@@ -18,6 +18,6 @@ export const createCommentController = async (
   })
 
   return createdComment
-    ? res.status(201).json(mapComment(createdComment, user.id))
+    ? res.status(201).json(mapComment(createdComment, user?.id))
     : res.status(404).send()
 }
