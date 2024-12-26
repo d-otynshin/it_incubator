@@ -174,8 +174,6 @@ describe('/posts', () => {
       .post(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
       .send(validComment)
 
-    console.log(createCommentResponse.body);
-
     expect(createCommentResponse.status).toBe(201);
 
     const commentResponse = await request.get(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
