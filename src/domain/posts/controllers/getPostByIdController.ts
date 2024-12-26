@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { postsRepository } from '../posts-repository';
-import { mapId } from '../../../helpers/mapId';
+import { mapId } from '../../../infrastructure/helpers/mapId';
 
 interface FindByIdRequest extends Request {
   params: { id: string };

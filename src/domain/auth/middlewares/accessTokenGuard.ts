@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { jwtService } from '../../../adapters/jwt-service';
+import { jwtService } from '../../../infrastructure/adapters/jwt-service';
 import { usersRepository } from '../../users/users.repository';
 import { isBefore } from 'date-fns';
 

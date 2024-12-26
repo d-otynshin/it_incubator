@@ -4,7 +4,7 @@ import {
   getUsersController,
   deleteUsersController
 } from './controllers';
-import { errorsHandlerMiddleware, authMiddleware } from '../../middlewares';
+import { errorsHandlerMiddleware, authMiddleware } from '../../infrastructure/middlewares';
 import {
   loginValidator,
   emailValidator,

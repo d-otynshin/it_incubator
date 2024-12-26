@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
 
 import type { TBlogDb, TBlogDto } from '../blogs.entity';
-import { mapId } from '../../../helpers/mapId';
+import { mapId } from '../../../infrastructure/helpers/mapId';
 import { blogsRepository } from '../blogs.repository';
 
 export const createBlogController = async (

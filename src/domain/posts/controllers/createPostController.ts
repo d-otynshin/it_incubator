@@ -1,7 +1,7 @@
 import { Response, Request } from 'express'
 
 import { postsRepository } from '../posts-repository';
-import { mapId } from '../../../helpers/mapId';
+import { mapId } from '../../../infrastructure/helpers/mapId';
 import { TPostDb, TPostDto } from '../posts.entity';
 
 export const createPostController = async (

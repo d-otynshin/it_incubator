@@ -21,7 +21,7 @@ import {
   rateLimiterMiddleware,
   errorsHandlerMiddleware,
   refreshTokenGuard
-} from '../../middlewares';
+} from '../../infrastructure/middlewares';
 
 import {
   checkEmailDuplicationMiddleware,

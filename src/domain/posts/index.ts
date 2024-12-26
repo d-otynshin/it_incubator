@@ -4,14 +4,14 @@ import { createPostController } from './controllers/createPostController';
 import { deletePostController } from './controllers/deletePostController';
 import { updatePostController } from './controllers/updatePostController';
 import { getPostByIdController } from './controllers/getPostByIdController';
-import { authMiddleware } from '../../middlewares';
+import { authMiddleware } from '../../infrastructure/middlewares';
 import {
   findBlogByIdValidator,
   findByBlogIdValidator,
   findPostValidator,
   postsValidators
 } from './middlewares/postsValidators';
-import { errorsHandlerMiddleware } from '../../middlewares';
+import { errorsHandlerMiddleware } from '../../infrastructure/middlewares';
 import { contentValidator } from '../comments/middlewares/validation';
 import { createCommentController } from './controllers/createCommentController';
 import { accessTokenGuard } from '../auth/middlewares/accessTokenGuard';

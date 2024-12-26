@@ -4,7 +4,7 @@ import { createBlogController } from './controllers/createBlogController';
 import { deleteBlogController } from './controllers/deleteBlogController';
 import { updateBlogController } from './controllers/updateBlogController';
 import { getBlogByIdController } from './controllers/getBlogByIdController';
-import { authMiddleware, errorsHandlerMiddleware } from '../../middlewares';
+import { authMiddleware, errorsHandlerMiddleware } from '../../infrastructure/middlewares';
 import { blogValidators } from './middlewares/blogValidators'
 import { getPostsController } from './controllers/getPostsController';
 import { createPostByBlogIdController } from './controllers/createPostByBlogIdController';

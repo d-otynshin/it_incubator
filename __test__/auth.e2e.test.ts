@@ -1,7 +1,7 @@
 import { connect, request, closeDatabase, clearDatabase, createUser, createLogin } from './test-helpers';
 import { SETTINGS } from '../src/settings'
 import { EXPIRATION_TIME } from '../src/domain/auth/auth-service';
-import { jwtService } from '../src/adapters/jwt-service';
+import { jwtService } from '../src/infrastructure/adapters/jwt-service';
 import jwt from 'jsonwebtoken';
 import { codedAuth, validUser } from './datasets';
 

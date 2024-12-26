@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { jwtService } from '../../../adapters/jwt-service';
+import { jwtService } from '../../../infrastructure/adapters/jwt-service';
 import { securityService } from '../security-service';
 
 export const permissionMiddleware = async (

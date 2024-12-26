@@ -11,7 +11,7 @@ import { commentsRouter } from './domain/comments';
 import { securityRouter } from './domain/security';
 
 import { SETTINGS } from './settings';
-import { router } from './helpers/router';
+import { router } from './infrastructure/helpers/router';
 
 export const app = express()
 

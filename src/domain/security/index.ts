@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { permissionMiddleware } from './middlewares';
-import { refreshTokenGuard } from '../../middlewares';
+import { refreshTokenGuard } from '../../infrastructure/middlewares';
 import {
   getSessionsController,
   terminateSessionsController,

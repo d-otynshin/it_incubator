@@ -1,6 +1,6 @@
-import { fetchModelPaginated } from '../../helpers/fetchPaginated';
+import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated';
 import { WithId } from 'mongodb';
-import { QueryParams } from '../../helpers/parseQuery';
+import { QueryParams } from '../../infrastructure/helpers/parseQuery';
 import { TUserDb } from './type';
 import { UserModel } from './users.entity';
 

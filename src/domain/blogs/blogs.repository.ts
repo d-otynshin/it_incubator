@@ -1,7 +1,7 @@
 import { WithId } from 'mongodb';
-import { generateRandomId } from '../../helpers';
-import { QueryParams } from '../../helpers/parseQuery';
-import { fetchModelPaginated } from '../../helpers/fetchPaginated';
+import { generateRandomId } from '../../infrastructure/helpers';
+import { QueryParams } from '../../infrastructure/helpers/parseQuery';
+import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated';
 import { BlogModel, TBlogDb, TBlogDto } from './blogs.entity';
 import { PostModel, TPostDb, TPostDto } from '../posts/posts.entity';
 

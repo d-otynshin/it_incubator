@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { mapId } from '../../../helpers/mapId';
-import { mapUser } from '../../../helpers/mapUser';
+import { mapId } from '../../../infrastructure/helpers/mapId';
+import { mapUser } from '../../../infrastructure/helpers/mapUser';
 import { usersRepository } from '../../users/users.repository';
 
 export const getMeController = async (

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { jwtService } from '../../../adapters/jwt-service';
+import { jwtService } from '../../../infrastructure/adapters/jwt-service';
 import { securityService } from '../../security/security-service';
 
 export const logoutController = async (

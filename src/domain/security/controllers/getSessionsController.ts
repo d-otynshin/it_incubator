@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { securityService } from '../security-service';
-import { mapId } from '../../../helpers/mapId';
+import { mapId } from '../../../infrastructure/helpers/mapId';
 import { mapSession } from '../helpers/mapSession';
 
 export const getSessionsController = async (

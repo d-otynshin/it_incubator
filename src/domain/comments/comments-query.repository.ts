@@ -1,5 +1,5 @@
-import { fetchModelPaginated } from '../../helpers/fetchPaginated';
-import { QueryParams } from '../../helpers/parseQuery';
+import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated';
+import { QueryParams } from '../../infrastructure/helpers/parseQuery';
 import { CommentModel, TCommentDb } from './comments.entity';
 
 type PaginatedComments = {

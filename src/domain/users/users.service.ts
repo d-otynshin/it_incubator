@@ -1,5 +1,5 @@
 import { genSalt, hash } from 'bcrypt';
-import { generateRandomId } from '../../helpers';
+import { generateRandomId } from '../../infrastructure/helpers';
 import { usersRepository } from './users.repository';
 import { TUserDb } from './type';
 

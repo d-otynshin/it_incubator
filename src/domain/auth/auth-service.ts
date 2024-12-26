@@ -1,10 +1,10 @@
 import { genSalt, hash } from 'bcrypt';
 import { sign } from 'jsonwebtoken'
-import { jwtService } from '../../adapters/jwt-service';
+import { jwtService } from '../../infrastructure/adapters/jwt-service';
 import { add } from 'date-fns/add';
-import { nodemailerService } from '../../adapters/nodomailer-service';
-import { generateRandomId } from '../../helpers';
-import { emailTemplates } from '../../helpers/emailTemplates';
+import { nodemailerService } from '../../infrastructure/adapters/nodomailer-service';
+import { generateRandomId } from '../../infrastructure/helpers';
+import { emailTemplates } from '../../infrastructure/helpers/emailTemplates';
 import { securityService } from '../security/security-service';
 import { usersRepository } from '../users/users.repository';
 

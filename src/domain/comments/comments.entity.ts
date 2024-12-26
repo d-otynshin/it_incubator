@@ -1,19 +1,12 @@
 import mongoose from 'mongoose';
 import { WithId } from 'mongodb';
+import { TCommentator, TCommentDb, TInteraction } from './comments.types';
 
-type TCommentator = {
-  userId: string;
-  userLogin: string;
-}
-
-export type TCommentDb = {
-  id: string;
-  content: string;
-  commentatorInfo: TCommentator;
-  createdAt: Date;
-}
-
-export type TCommentDto = Pick<TCommentDb, 'id' | 'content'>
+const InteractionSchema = new mongoose.Schema<TInteraction>({
+  id: { type: String, require: true },
+  updatedAt: { type: Date, require: true },
+  action: { type: String, require: true },
+})
 
 const CommentatorSchema = new mongoose.Schema<TCommentator>({
   userLogin: String,
@@ -23,8 +16,9 @@ const CommentatorSchema = new mongoose.Schema<TCommentator>({
 export const CommentSchema = new mongoose.Schema<WithId<TCommentDb>>({
   id: { type: String, require: true },
   content: { type: String, require: true },
-  createdAt: { type: Date },
-  commentatorInfo: CommentatorSchema,
+  createdAt: { type: Date, require: true },
+  commentatorInfo: { type: CommentatorSchema, required: true },
+  interactions: { type: [InteractionSchema], require: true },
 })
 
 export const CommentModel = mongoose.model<WithId<TCommentDb>>('comments', CommentSchema)

@@ -1,8 +1,8 @@
-import { generateRandomId } from '../../helpers';
+import { generateRandomId } from '../../infrastructure/helpers';
 import { WithId } from 'mongodb';
 import { blogsRepository } from '../blogs/blogs.repository';
-import { fetchModelPaginated } from '../../helpers/fetchPaginated';
-import { QueryParams } from '../../helpers/parseQuery';
+import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated';
+import { QueryParams } from '../../infrastructure/helpers/parseQuery';
 import { PostModel, TPostDb, TPostDto } from './posts.entity';
 import { CommentModel, TCommentDb } from '../comments/comments.entity';
 import { TBlogDb } from '../blogs/blogs.entity';

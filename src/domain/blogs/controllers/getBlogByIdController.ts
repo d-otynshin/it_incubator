@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { blogsRepository } from '../blogs.repository';
-import { mapId } from '../../../helpers/mapId';
+import { mapId } from '../../../infrastructure/helpers/mapId';
 import { TBlogDb } from '../blogs.entity';
 
 interface FindByIdRequest extends Request {
