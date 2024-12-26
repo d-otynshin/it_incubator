@@ -33,7 +33,7 @@ export const authService = {
     return isCorrect ? user : null;
   },
   createAccessToken: async ({ userId }: TAccessTokenInput) => {
-    return jwtService.createRefreshToken({ userId, expirationTime: EXPIRATION_TIME.ACCESS });
+    return jwtService.createAccessToken({ userId, expirationTime: EXPIRATION_TIME.ACCESS });
   },
   createRefreshToken: async ({ userId, ip, name, deviceId }: TRefreshTokenInput) => {
     return jwtService.createRefreshToken(

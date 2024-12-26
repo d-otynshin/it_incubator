@@ -45,6 +45,7 @@ postsRouters.delete('/:id', authMiddleware, deletePostController)
 
 postsRouters.get(
   '/:id/comments',
+  accessTokenGuard,
   getCommentsController
 )
 

@@ -18,27 +18,22 @@ export const accessTokenGuard = async (
     return response.status(401).json({ error: 'Wrong authorization type' });
   }
 
-  console.log('accessToken', accessToken);
-
   const tokenPayload = await jwtService.verifyToken(accessToken, 'SECRET');
-
-  console.log('tokenPayload', tokenPayload);
-
-  if (tokenPayload) {
-    const { userId, exp } = tokenPayload;
-    const user = await usersRepository.getById(userId);
-
-    const isExpired = isBefore(exp * 1000, Date.now());
-    if (isExpired) {
-      return response.status(401).json({ error: 'Token is expired' });
-    }
-
-    if (!user) return response.status(401).json({ error: 'No user with this token' });
-    const { id, login } = user;
-
-    request.user = { id, login };
-    return next();
+  if (!tokenPayload) {
+    return response.status(401).json({ error: 'Invalid token' });
   }
 
-  return response.status(401).json({ error: 'Wrong token' });
+  const { userId, exp } = tokenPayload;
+  const user = await usersRepository.getById(userId);
+
+  const isExpired = isBefore(exp * 1000, Date.now());
+  if (isExpired) {
+    return response.status(401).json({ error: 'Token is expired' });
+  }
+
+  if (!user) return response.status(401).json({ error: 'No user with this token' });
+  const { id, login } = user;
+
+  request.user = { id, login };
+  return next();
 }

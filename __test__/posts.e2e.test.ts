@@ -1,8 +1,22 @@
-import { createBlog, createLogin, createPost, createUser, request } from './test-helpers';
+import {
+  clearDatabase,
+  closeDatabase,
+  connect,
+  createBlog,
+  createLogin,
+  createPost,
+  createUser,
+  request
+} from './test-helpers';
 import { SETTINGS } from '../src/settings'
 import { codedAuth, invalidPost, validPost } from './datasets';
 
 describe('/posts', () => {
+  beforeAll(async () => { await connect() })
+  afterAll(async () => { await closeDatabase() })
+
+  beforeEach(async () => { await clearDatabase() });
+
   it('should return 201 for valid post data', async () => {
     const createBlogResponse = await createBlog()
     const blogId = createBlogResponse.body.id;
@@ -132,6 +146,7 @@ describe('/posts', () => {
 
   it('should return success status on comment creation', async () => {
     const createBlogResponse = await createBlog()
+
     const blogId = createBlogResponse.body.id;
 
     const createPostResponse = await createPost(blogId)
@@ -158,6 +173,8 @@ describe('/posts', () => {
       .set({ 'Authorization': `Bearer ${accessToken}` })
       .post(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
       .send(validComment)
+
+    console.log(createCommentResponse.body);
 
     expect(createCommentResponse.status).toBe(201);
 
