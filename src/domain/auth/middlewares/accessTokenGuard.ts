@@ -20,6 +20,8 @@ export const accessTokenGuard = async (
 
   const jwtPayload = await jwtService.verifyToken(accessToken, 'SECRET');
 
+  console.log('accessToken', jwtPayload);
+
   if (jwtPayload) {
     const { userId, exp } = jwtPayload;
     const user = await usersRepository.getById(userId);
@@ -37,5 +39,4 @@ export const accessTokenGuard = async (
   }
 
   return response.status(401).json({ error: 'Wrong token' });
-
 }
