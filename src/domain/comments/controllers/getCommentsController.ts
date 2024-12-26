@@ -8,6 +8,8 @@ export const getCommentByIdController = async (
   const { id: commentId } = req.params;
   const comment = await commentsQueryRepository.getById(commentId, req.user?.id);
 
+  console.log(comment);
+
   return comment
     ? res.status(200).json(comment)
     : res.status(404).send({ message: "Comment not found" })
