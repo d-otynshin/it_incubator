@@ -1,3 +1,5 @@
+import { WithId } from 'mongodb';
+
 export enum LikeStatus {
   None = 'None',
   Like = 'Like',
@@ -34,7 +36,7 @@ export type TInteraction = {
 export type TCommentDb = {
   id: string;
   content: string;
-  commentatorInfo: TCommentator;
+  commentatorInfo: WithId<TCommentator>;
   interactions: TInteraction[];
   createdAt: Date;
 }

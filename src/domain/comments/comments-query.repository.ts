@@ -2,6 +2,7 @@ import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated
 import { QueryParams } from '../../infrastructure/helpers/parseQuery';
 import { CommentModel } from './comments.entity';
 import { LikeStatus, TCommentDb, TCommentView } from './comments.types';
+import { mapId } from '../../infrastructure/helpers/mapId';
 
 type PaginatedComments = {
   pagesCount: number,
@@ -26,7 +27,7 @@ export const mapComment = (
     id: comment.id,
     content: comment.content,
     createdAt: comment.createdAt,
-    commentatorInfo: comment.commentatorInfo,
+    commentatorInfo: mapId(comment.commentatorInfo),
     likesInfo: { likesCount, dislikesCount, myStatus }
   }
 }
