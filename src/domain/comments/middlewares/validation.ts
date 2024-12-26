@@ -6,4 +6,5 @@ export const contentValidator = body('content')
 
 export const likeStatusValidator = body('likeStatus')
 .isString().withMessage('not a string')
+.isIn(['Like', 'Dislike', 'None']).withMessage('wrong value')
 .trim().isLength({ min: 1 }).withMessage('required')
