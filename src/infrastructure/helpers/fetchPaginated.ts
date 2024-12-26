@@ -14,10 +14,10 @@ export async function fetchModelPaginated<TSchema>(
   let totalCount = await model.countDocuments(filter);
 
   const data = await model
-  .find(filter)
-  .sort(sortOption)
-  .skip((pageNumber - 1) * pageSize)
-  .limit(pageSize)
+    .find(filter)
+    .sort(sortOption)
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
 
   return {
     pagesCount: Math.ceil(totalCount / pageSize),

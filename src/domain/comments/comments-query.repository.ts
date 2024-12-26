@@ -1,8 +1,9 @@
 import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated';
 import { QueryParams } from '../../infrastructure/helpers/parseQuery';
 import { CommentModel } from './comments.entity';
-import { LikeStatus, TCommentDb, TCommentView } from './comments.types';
+import { LikeStatus, TCommentator, TCommentDb, TCommentView } from './comments.types';
 import { mapId } from '../../infrastructure/helpers/mapId';
+import { WithId } from 'mongodb';
 
 type PaginatedComments = {
   pagesCount: number,
@@ -27,7 +28,7 @@ export const mapComment = (
     id: comment.id,
     content: comment.content,
     createdAt: comment.createdAt,
-    commentatorInfo: mapId(comment.commentatorInfo),
+    commentatorInfo: mapId(comment.commentatorInfo as WithId<TCommentator>),
     likesInfo: { likesCount, dislikesCount, myStatus }
   }
 }
@@ -44,7 +45,7 @@ export class CommentsQueryRepository implements ICommentsQueryRepository {
     try {
       const filter: { postId: string } | {} = { postId };
 
-      const paginatedCommentsDb: PaginatedComments  = await fetchModelPaginated(this.commentModel.bind(this), query, filter)
+      const paginatedCommentsDb: PaginatedComments  = await fetchModelPaginated(this.commentModel, query, filter)
 
       paginatedCommentsDb.items = paginatedCommentsDb.items.map((commentDb) => mapComment(commentDb, userId));
 

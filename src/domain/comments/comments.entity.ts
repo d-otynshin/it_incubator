@@ -19,6 +19,7 @@ export const CommentSchema = new mongoose.Schema<WithId<TCommentDb>>({
   createdAt: { type: Date, require: true },
   commentatorInfo: { type: CommentatorSchema, required: true },
   interactions: { type: [InteractionSchema], require: true },
+  postId: { type: String, require: true },
 })
 
 export const CommentModel = mongoose.model<WithId<TCommentDb>>('comments', CommentSchema)

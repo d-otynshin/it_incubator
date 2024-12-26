@@ -176,8 +176,8 @@ describe('/posts', () => {
 
     expect(createCommentResponse.status).toBe(201);
 
-    const commentResponse = await request.get(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
+    const getCommentResponse = await request.get(`${SETTINGS.PATH.POSTS}/${postId}/comments`)
 
-    expect(commentResponse.status).toBe(200);
+    expect(getCommentResponse.status).toBe(200);
   })
 })
