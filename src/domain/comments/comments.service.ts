@@ -31,7 +31,8 @@ export class CommentsService {
     }
 
     if (interaction.action === action) {
-      return this.commentsRepository.removeInteraction({ commentId, userId });
+      // return this.commentsRepository.removeInteraction({ commentId, userId });
+      return true;
     }
 
     return this.commentsRepository.updateInteraction({
