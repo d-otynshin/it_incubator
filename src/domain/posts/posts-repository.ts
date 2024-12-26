@@ -4,8 +4,9 @@ import { blogsRepository } from '../blogs/blogs.repository';
 import { fetchModelPaginated } from '../../infrastructure/helpers/fetchPaginated';
 import { QueryParams } from '../../infrastructure/helpers/parseQuery';
 import { PostModel, TPostDb, TPostDto } from './posts.entity';
-import { CommentModel, TCommentDb } from '../comments/comments.entity';
+import { CommentModel } from '../comments/comments.entity';
 import { TBlogDb } from '../blogs/blogs.entity';
+import { TCommentDb } from '../comments/comments.types';
 
 type TCreateComment = {
   id: string;
@@ -66,7 +67,8 @@ export const postsRepository = {
       createdAt: new Date(),
       content: content,
       postId: post.id,
-      commentatorInfo
+      commentatorInfo,
+      interactions: []
     }
 
     await CommentModel.insertMany([createdComment])
