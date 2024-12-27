@@ -71,10 +71,12 @@ class BlogsRepository {
   async getPosts(_: string, query: QueryParams) {
     const filter: { blogId: string } | {} = {
       blogId: '',
-      title: {
-        $ne: 'post title',
-      }
+      // title: {
+      //   $ne: 'post title',
+      // }
     }
+
+    console.log('filter', filter);
 
     return fetchModelPaginated(this.postModel, query, filter)
   }
