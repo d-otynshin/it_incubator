@@ -21,7 +21,8 @@ describe('/posts', () => {
     const createBlogResponse = await createBlog()
     const blogId = createBlogResponse.body.id;
 
-    await createPost(blogId)
+    const createPostResponse = await createPost(blogId)
+    console.log(createPostResponse.body);
   });
 
   it('should return status 200, content: post by id', async () => {
