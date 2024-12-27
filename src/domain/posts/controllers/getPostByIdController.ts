@@ -10,7 +10,7 @@ export const getPostByIdController = async (
   res: Response
 ) => {
   const { id: postId } = req.params;
-  const { id: userId } = req.user;
+  const userId = req.user?.id;
 
   const post = await postsQueryRepository.getById(postId, userId);
 

@@ -37,6 +37,7 @@ class BlogsRepository {
       id: generateRandomId().toString(),
       createdAt: new Date().toISOString() as unknown as Date,
       blogName: blog?.name,
+      interactions: [],
       ...body,
     }
 
