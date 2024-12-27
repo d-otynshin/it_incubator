@@ -17,12 +17,18 @@ describe('/posts', () => {
 
   beforeEach(async () => { await clearDatabase() });
 
-  it('should return 201 for valid post data', async () => {
+  it('should return 200 for valid post data', async () => {
     const createBlogResponse = await createBlog()
     const blogId = createBlogResponse.body.id;
 
-    const createPostResponse = await createPost(blogId)
-    console.log(createPostResponse.body);
+    await createPost(blogId)
+
+    const getPostsResponse = await request
+      .get(`${SETTINGS.PATH.POSTS}`)
+
+    console.log(getPostsResponse.body);
+
+    expect(getPostsResponse.status).toBe(200);
   });
 
   it('should return status 200, content: post by id', async () => {

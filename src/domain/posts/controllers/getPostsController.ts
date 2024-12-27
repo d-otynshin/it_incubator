@@ -5,7 +5,7 @@ export const getPostsController = async (
   req: Request,
   res: Response
 ) => {
-  const { id: userId } = req.user;
+  const userId = req.user?.id;
 
   const posts = await postsQueryRepository.get(userId, req.query)
 

@@ -6,13 +6,14 @@ import { QueryParams } from '../../infrastructure/helpers/parseQuery';
 import { PostModel, TInteraction, TPostDb, TPostDto } from './posts.entity';
 import { CommentModel } from '../comments/comments.entity';
 import { TBlogDb } from '../blogs/blogs.entity';
-import { TCommentDb, TLikeStatus } from '../comments/comments.types';
+import { TCommentDb } from '../comments/comments.types';
+import { LikeStatus } from '../shared/types';
 
 export type TPostInteractionDto = {
   postId: string;
   userId: string;
   login: string;
-  action: TLikeStatus;
+  action: LikeStatus.Like | LikeStatus.Dislike;
 }
 
 type TCreateComment = {
@@ -132,7 +133,7 @@ export const postsRepository = {
     }: TPostInteractionDto
   ): Promise<boolean> {
     try {
-      const createdInteraction = {
+      const createdInteraction: TInteraction = {
         userId,
         login,
         action,

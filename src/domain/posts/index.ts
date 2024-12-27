@@ -8,7 +8,7 @@ import { authMiddleware } from '../../infrastructure/middlewares';
 import {
   findBlogByIdValidator,
   findByBlogIdValidator,
-  findPostValidator,
+  findPostValidator, likeStatusValidator,
   postsValidators
 } from './middlewares/postsValidators';
 import { errorsHandlerMiddleware } from '../../infrastructure/middlewares';
@@ -71,5 +71,7 @@ postsRouters.post(
 postsRouters.put(
   '/:id/like-status',
   accessTokenGuard,
+  likeStatusValidator,
+  errorsHandlerMiddleware(),
   updatePostsLikeController
 )

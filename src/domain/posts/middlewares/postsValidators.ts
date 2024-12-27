@@ -61,6 +61,11 @@ export const findPostValidator = async (
   next()
 }
 
+export const likeStatusValidator = body('likeStatus')
+.isString().withMessage('not a string')
+.isIn(['Like', 'Dislike', 'None']).withMessage('wrong value')
+.trim().isLength({ min: 1 }).withMessage('required')
+
 export const postsValidators = [
   titleValidator,
   shortDescriptionValidator,
