@@ -1,8 +1,4 @@
-export enum LikeStatus {
-  None = 'None',
-  Like = 'Like',
-  Dislike = 'Dislike',
-}
+import { LikeStatus } from '../shared/types';
 
 export type TLikeStatus = 'None' | 'Like' | 'Dislike';
 

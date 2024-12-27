@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
-import { postsRepository } from '../posts-repository';
+import { postsQueryRepository } from '../posts-query.repository';
 
 export const getPostsController = async (
   req: Request,
   res: Response
 ) => {
-  const { query } = req;
-  const posts = await postsRepository.get(query)
+  const { id: userId } = req.user;
+
+  const posts = await postsQueryRepository.get(userId, req.query)
 
   res.status(200).json(posts)
 }

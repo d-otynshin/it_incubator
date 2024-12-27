@@ -16,10 +16,16 @@ import { contentValidator } from '../comments/middlewares/validation';
 import { createCommentController } from './controllers/createCommentController';
 import { accessTokenGuard } from '../auth/middlewares/accessTokenGuard';
 import { getCommentsController } from './controllers/getCommentsController';
+import { accessTokenProvider } from '../auth/middlewares/accessTokenProvider';
+import { updatePostsLikeController } from './controllers/updatePostsLikeController';
 
 export const postsRouters = Router()
 
-postsRouters.get('/', getPostsController)
+postsRouters.get(
+  '/',
+  accessTokenProvider,
+  getPostsController
+)
 
 postsRouters.post('/',
   authMiddleware,
@@ -29,7 +35,11 @@ postsRouters.post('/',
   createPostController
 )
 
-postsRouters.get('/:id', getPostByIdController)
+postsRouters.get(
+  '/:id',
+  accessTokenProvider,
+  getPostByIdController
+)
 
 postsRouters.put(
   '/:id',
@@ -56,4 +66,10 @@ postsRouters.post(
   contentValidator,
   errorsHandlerMiddleware(),
   createCommentController
+)
+
+postsRouters.put(
+  '/:id/like-status',
+  accessTokenGuard,
+  updatePostsLikeController
 )
