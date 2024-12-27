@@ -27,7 +27,12 @@ export const mapPost = (
   const newestLikes = interactions
     .filter(interaction => interaction.action === LikeStatus.Like)
     .sort((likeA, likeB) => (isBefore(likeA.addedAt, likeB.addedAt) ? 1 : -1))
-    .slice(0, 3);
+    .slice(0, 3)
+    .map((like) => ({
+      userId: like.userId,
+      login: like.login,
+      addedAt: like.addedAt,
+    }))
 
   return  {
     id: post.id,
