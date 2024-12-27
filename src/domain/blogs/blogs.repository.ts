@@ -76,8 +76,6 @@ class BlogsRepository {
       // }
     }
 
-    console.log('filter', filter);
-
     return fetchModelPaginated(this.postModel, query, filter)
   }
 
