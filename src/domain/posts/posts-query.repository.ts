@@ -21,7 +21,9 @@ export const mapPost = (
 
   if (userId) {
     const myInteraction = interactions.find((interaction) => interaction.userId === userId)
-    myStatus = myInteraction?.action || LikeStatus.None;
+    if (myInteraction) {
+      myStatus = myInteraction.action
+    }
   }
 
   const newestLikes = interactions
@@ -29,9 +31,9 @@ export const mapPost = (
     .sort((likeA, likeB) => (isBefore(likeA.addedAt, likeB.addedAt) ? 1 : -1))
     .slice(0, 3)
     .map((like) => ({
+      addedAt: like.addedAt,
       userId: like.userId,
       login: like.login,
-      addedAt: like.addedAt,
     }))
 
   return  {

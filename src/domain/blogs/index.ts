@@ -9,6 +9,7 @@ import { blogValidators } from './middlewares/blogValidators'
 import { getPostsController } from './controllers/getPostsController';
 import { createPostByBlogIdController } from './controllers/createPostByBlogIdController';
 import { postsValidators } from '../posts/middlewares/postsValidators';
+import { accessTokenProvider } from '../auth/middlewares/accessTokenProvider';
 
 export const blogsRouters = Router()
 
@@ -26,6 +27,11 @@ blogsRouters.post('/:id/posts',
   createPostByBlogIdController
 )
 blogsRouters.get('/:id', getBlogByIdController)
-blogsRouters.get('/:blogId/posts', getPostsController)
+
+blogsRouters.get(
+  '/:blogId/posts',
+  accessTokenProvider,
+  getPostsController
+)
 blogsRouters.put('/:id', authMiddleware, ...blogValidators, errorsHandlerMiddleware(), updateBlogController)
 blogsRouters.delete('/:id', authMiddleware, deleteBlogController)
