@@ -136,7 +136,7 @@ export const postsRepository = {
         userId,
         login,
         action,
-        addedAd: new Date()
+        addedAt: new Date()
       }
 
       await PostModel.updateOne(
