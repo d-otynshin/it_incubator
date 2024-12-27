@@ -13,7 +13,7 @@ export type TExtendedLikeInfo = {
   likesCount: number;
   dislikesCount: number;
   myStatus: LikeStatus;
-  newestLikes: TInteraction[],
+  newestLikes: TInteractionView[],
 }
 
 export type TInteraction = {
@@ -22,6 +22,8 @@ export type TInteraction = {
   action: LikeStatus.Like | LikeStatus.Dislike;
   addedAt: Date;
 }
+
+export type TInteractionView = Omit<TInteraction, 'action'>;
 
 export type TPostDb = {
   id: string;
